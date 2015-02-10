@@ -1,0 +1,210 @@
+
+Providing Ancient FORTRAN Routines As Simple RubyExts
+=====================================================
+
+  Date: Oct 24th, 2014
+Author: Thomas Dierkes (dierkes at zib dot de)
+
+Abstract
+--------
+This package has been developed for educational purpose,
+but can be used equally well as a versatile research tool.
+As it is often the case, a lot of well-tested and good 
+working FORTRAN codes are available since decades, but 
+have fallen into oblivion more or less, because ... (why?)
+
+Here, the two codes LIMEX4_3A and NLSCON (both from Zuse 
+Institute Berlin, Germany) have been taken as a nice example 
+to show that Ruby Extensions (RubyExt) can be based even on 
+FORTRAN codes.  Note that other approaches, such as making 
+use of automated wrapper generators (SWIG, for exmaple) have 
+also been tried, but do not integrate into Ruby as nicely as 
+hand-coded Ruby Extentions, in our opinion.
+
+
+Introduction
+------------
+The extensions are provided as dynamic link libraries,
+'Limex.so', 'LimexDL.so', and 'Nlscon.so', respectively.  
+They can be included into any Ruby script by using the 
+usual 'require' call, or, even more conveniently, the 
+'require_relative' call.  Note that the provided extensions 
+have to load their .so files, in turn, containing the original 
+FORTRAN functionality, plus, in case of 'LimexDL.so', a 
+special tailored 'libODEydot.so' is *absolutely* needed.
+
+For even more usability, these extensions are then embedded
+into corresponding Ruby classes, 'Model.rb', 'ModelDL.rb', 
+and 'SysBioFit.rb'.  In fact, these classes are derived from 
+the binary .so Ruby extensions in order to provide a much
+richer user interface.
+
+
+Howto build all libs 
+--------------------
+In the root directory of the package (i.e. ZIB_RubyExt/), 
+there is a file 'Makefile': simply enter the root directory,
+and
+
+  .../ZIB_RubyExt$ make
+
+should do the rest.  There had cases been reported that the 
+build process of 'libsbml.so' during the make run failed, 
+unfortunately.  In such a case, follow the error messages 
+of that libsbml-package, fix these, and try the make command 
+in the root directoy ZIB_RubyExt/ again.  Same applies, if 
+some 'ruby-dev' are missing.  Needless to mention, all of 
+ZIB_RubyExt/ takes Ruby 1.9.1 (and above) for granted.
+
+Finally, the make command should finish with ``Done "all" target´´.
+Congartulation, you just built your own Ruby extensions! 
+
+
+Example(s)
+----------
+The usage is demonstrated in Ruby scripts 'check_Nlscon_with_*.rb'
+that can be find in the test case directories ZIB_RubyExt/tst/*/.
+At the moment,
+
+   'GynCycle', 
+   'POTASSIUM', 
+   'PredatorPrey', and 
+   'ReactionChainABC' 
+
+are available in ZIB_RubyExt/tst/.  The 'check_Nlscon_with_*.rb' script
+can be called, inside the corresponding subdirectory, directly from the 
+command line, e.g.
+
+  ...ZIB_RubyExt/tst/PredatorPrey$ ./check_Nlscon_with_PredPrey_model.rb
+
+if everthing worked fine up to here.  Note that './' in front of the 
+call is certainly necessary, because of security reason you will not 
+have the current directory '.' in search path, will you?
+
+
+
+
+
+
+*** Interface Nlscon. *************************************************
+
+  #!/usr/bin/env ruby
+
+  require 'Nlscon'
+
+  nlscon = Nlscon.new([n,m,mfit])
+
+  # in attributes
+  nlscon.f  = ... # Symbol ':fun' of function 'def fun(n, m, mcon, x)'
+                  #                  must return an Array(n): f[]
+  nlscon.df = ... # Symbol ':jac' of function 'def jac(n, m, mcon, x)'
+                  #                must return an Array(m,n): df[][]
+
+  # in/out attributes
+  nlscon.x     = ...  # Array(n)
+  nlscon.xscal = ...  # Array(n)
+  nlscon.fobs  = ...  # Array(mfit)
+  nlscon.fscal = ...  # Array(mfit)
+  nlscon.rtol  = ...  # Value
+  nlscon.atol  = ...  # Value
+  nlscon.iopt  = ...  # Hash(  "qsucc" => Int, 
+                      #       "jacgen" => Int,
+                      #        "iscal" => Int,
+                      #        "mperr" => Int,
+                      #       "mprmon" => Int,
+                      #       "mprsol" => Int,
+                      #        "qstat" => Int,
+                      #       "mprsta" => Int,
+                      #       "nonlin" => Int,
+                      #       "qrank1" => Int,
+                      #       "qnscal" => Int,
+                      #        "iterm" => Int,
+                      #       "ibdamp" => Int
+                      #     )
+  nlscon.iwk   = ...  # Hash( "nitmax" => Int,
+                      #        "irank" => Int,
+                      #       "ifccnt" => Int
+                      #     )
+  nlscon.rwk    = ... # Hash(  "fcbnd" => Value,
+                      #       "fcstrt" => Value,
+                      #        "fcmin" => Value,
+                      #        "sigma" => Value,
+                      #         "cond" => Value,
+                      #        "ajdel" => Value,
+                      #        "ajmin" => Value,
+                      #       "etadif" => Value,
+                      #       "etaini" => Value
+                      #     )
+
+  # out attributes
+  nlscon.ierr         # Int
+
+  # methods
+  status = nlscon.iterate  # status: Int
+
+***********************************************************************
+
+
+*** Interface Limex. **************************************************
+
+  #!/usr/bin/env ruby
+ 
+  require 'Limex'
+
+  limex = Limex.new([])  # or .new(y0) with Array(n): y0[]
+
+  # in attributes
+  limex.rtol    = ... # Value
+  limex.atol    = ... # Value
+
+  # in/out attributes
+  limex.y0      = ... # Array(n)
+  limex.hmax    = ... # Value
+  limex.inistep = ... # Value
+  limex.dense   = ... # Int
+  limex.monitor = ... # Int
+  
+  # out attributes
+  limex.tolerance     # Hash(    "rtol" => Value,
+                      #          "atol" => Value,
+                      #       "inistep" => Value,
+                      #          "hmax" => Value
+                      #     )
+  limex.interval      # Array(2): [ t0, T ]
+  limex.solution      # Hash(      
+                      #         t1 => Array(n),
+                      #         t2 => Array(n),
+                      #         ...,
+                      #         T => Array(n)
+                      #     )
+  limex.steps         # Array(): [ t1, t2, t3, ..., T ]
+
+  # methods
+  ifail = limex.run(tspan) { |t,y| block }  
+                      # Array(3): ifail
+                      # Array(k): tspan 
+                      #    either [t0, T] or [t0, t1, ..., T ]
+                      # block must return Array(n): df[]
+
+***********************************************************************
+
+For more details we refer to the (extensive!) commands in the original
+FORTRAN source codes, in 'LIMEX4_3A/' and 'NLSCON/' , respectively.
+
+ 
+
+Bibliography
+------------
+
+[1] Yukihiro Matsumoto :
+    Programming Ruby - The Pragmatic Programmer's Guide, 
+    Addison Wesley Longman, 2001.
+
+[2] Peter Deuflhard :
+    Newton Methods for Nonlinear Problems, 
+    Springer, 2nd ed., 2006.
+
+[3] Ulli Nowak, Lutz Weimann :
+    A Family of Newton Codes for Systems of Highly Nonlinear Equations,
+    Technical Report TR-91-10, Zuse Institute Berlin (ZIB).
+

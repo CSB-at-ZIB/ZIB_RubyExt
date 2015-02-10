@@ -1,0 +1,13 @@
+Name: libSBML
+Description: An API library for reading/writing/manipulating SBML
+URL: http://sbml.org/Software/libSBML
+Version: 4.3.1
+
+prefix=/home/tom/Work/Programs/ZIB_RubyExt/pkg
+exec_prefix=/home/tom/Work/Programs/ZIB_RubyExt/pkg
+libdir=/home/tom/Work/Programs/ZIB_RubyExt/pkg/lib
+includedir=/home/tom/Work/Programs/ZIB_RubyExt/pkg/include
+
+Libs: -L${libdir}        -lxml2 -lz -lbz2 -lsbml -lstdc++ -lm
+Cflags: -I${includedir}  
+Requires: libxml-2.0 >= 2.6.22

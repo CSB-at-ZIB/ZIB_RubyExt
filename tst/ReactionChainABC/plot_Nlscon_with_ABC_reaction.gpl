@@ -1,0 +1,40 @@
+#! /usr/bin/gnuplot -p
+
+p0 = system('cat rb_Nlscon_with_ABC_parameter.dat | head -2 | tail -1')
+p1 = system('cat rb_Nlscon_with_ABC_parameter.dat | tail -1')
+kbegin = sprintf("with  k1 = %.3E, k2 = %.3E", word(p0,2)+0, word(p0,3)+0)
+kend = sprintf("with  k1 = %.3E, k2 = %.3E", word(p1,2)+0, word(p1,3)+0)
+headline = "Reaction Chain  A ---> B ---> C"
+
+set term wxt 0 enhanced
+set grid
+set xlabel "Time [a.u.]"
+set ylabel "Conc. [a.u.]"
+set title "Measurement Data"
+set key right center
+
+plot for [a=2:4] 'rb_Nlscon_with_ABC_data.dat' u 1:a t sprintf('data %d',a-1) w lp lc a-1
+
+
+set term wxt 1 enhanced
+set grid
+set xlabel "Time [a.u.]"
+set ylabel "Conc. [a.u.]"
+set title sprintf("%s ;  %s", headline, kbegin)
+# set title "Reaction Chain  A ---> B ---> C ;  with  k1 = 0.30E+00, k2 = 0.35E+01"
+set key right center
+
+plot for [a=2:4] 'rb_Nlscon_with_ABC_solution.dat' i sprintf('== Iter %4d', 0) u 1:a t sprintf("c%c", 63+a) w l, for [a=2:4] 'rb_Nlscon_with_ABC_data.dat' u 1:a t sprintf('data %d',a-1) w p lc a-1
+
+
+set term wxt 2 enhanced
+set grid
+set xlabel "Time [a.u.]"
+set ylabel "Conc. [a.u.]"
+set title sprintf("%s ;  %s", headline, kend)
+# set title "Reaction Chain  A ---> B ---> C ;  with  k1 = 0.202E+01, k2 = 0.989E+00"
+set key right center
+
+plot for [a=2:4] 'rb_Nlscon_with_ABC_solution.dat' i sprintf('== Iter %4d', -1) u 1:a t sprintf("c%c", 63+a) w l, for [a=2:4] 'rb_Nlscon_with_ABC_data.dat' u 1:a t sprintf('data %d',a-1) w p lc a-1
+
+

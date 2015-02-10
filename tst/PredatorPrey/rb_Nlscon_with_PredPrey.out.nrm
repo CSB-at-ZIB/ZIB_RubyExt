@@ -1,0 +1,153 @@
+# invoked with call in bash/csh:
+# .../ZIB_RubyExt/tst/PredatorPrey$ ./check_Nlscon_with_PredPrey_model.rb 
+
+
+    N L S C O N  *****  V e r s i o n  2 . 3 . 3 ***
+
+ Gauss-Newton-Method for the solution of nonlinear least squares problems
+
+
+ Real    Workspace declared as       914 is used up to       846 ( 92.6 percent)
+
+ Integer Workspace declared as        56 is used up to        50 ( 89.3 percent)
+
+
+
+ Number of parameters to be estimated (N) :    4
+ Number of data to fitted, e.g. observations (MFIT) :   42
+ Number of equality constraints (MCON) :    0
+
+ Prescribed relative precision (RTOL) :   0.10D-03
+
+ The Jacobian is supplied by numerical differentiation (feedback strategy included)
+ Automatic row scaling of the Jacobian is allowed
+
+ Rank-1 updates are inhibited
+ Problem is specified as being highly nonlinear
+ Bounded damping strategy is off
+ Maximum permitted number of iteration steps :     35
+
+
+ Internal parameters:
+
+ Starting value for damping factor FCSTART =  0.10D-01
+ Minimum allowed damping factor FCMIN =  0.10D-01
+ Rank-1 updates decision parameter SIGMA =  0.10D+04
+ Initial Jacobian pseudo-rank IRANK =     4
+ Maximum permitted subcondition COND =  0.10D+17
+
+
+
+  **************************************************************************
+
+        It       Normf               Normx       Damp.Fct.   New      Rank
+         0      0.2721094D+02       0.352D-01                0         4
+    1
+         1      0.2695615D+02       0.351D-01      0.010     0         4
+    2
+         2      0.1326907D+02       0.469D-01      0.754     0         4
+    3
+         3      0.9471625D+01       0.443D-01      0.380     0         4
+    4
+         4      0.4933691D+01       0.161D-01      0.892     0         4
+    5
+         5      0.4239681D+01       0.453D-03      1.000     0         4
+    6
+         6      0.4236244D+01       0.298D-03      1.000     0         4
+    7
+         7      0.4236228D+01       0.889D-05      1.000     0         4
+         8      0.4236228D+01    *  0.460D-09      1.000
+
+
+
+ Solution of nonlinear least squares problem obtained within   8 iteration steps
+
+ Incompatibility factor kappa 0.298D-01
+
+
+ Achieved relative accuracy  0.273D-06
+
+
+   Subcondition ( 1,   4) of least squares part  0.909D+02
+
+   Sensitivity ( lsq )  0.109D+05
+
+
+
+
+          under the assumptions of the classical linear model:
+                                                               
+
+
+
+
+   Best unbiased estimate of variance and standard deviation of residuals:
+   -----------------------------------------------------------------------
+
+   sigma2 = 0.198D+02     sigma = 0.445D+01
+
+
+
+   Covariance matrix of parameters
+   -----------------
+
+         1         2         3         4
+   1  0.51D-03
+   2  0.32D-04  0.27D-05
+   3 -0.80D-03 -0.53D-04  0.14D-02
+   4 -0.24D-04 -0.16D-05  0.37D-04  0.13D-05
+
+
+
+   Correlation coefficients
+   ------------------------
+
+         1      2      3      4
+   1   1.00
+   2   0.87   1.00
+   3  -0.95  -0.88   1.00
+   4  -0.92  -0.86   0.87   1.00
+
+
+
+   Standard deviation of parameters
+   --------------------------------
+     No.  Estimate           sigma(X)
+      1   0.548D+00   +/-   0.226D-01     =    4.13 %
+      2   0.281D-01   +/-   0.164D-02     =    5.84 %
+      3   0.843D+00   +/-   0.370D-01     =    4.39 %
+      4   0.266D-01   +/-   0.114D-02     =    4.29 %
+
+
+
+   Independent confidence intervals
+   --------------------------------
+      (on 95%-probability level using F-distribution  F(alfa,1,m-n)=  4.10)
+
+      1  (  0.502D+00 ,  0.593D+00 )
+      2  (  0.248D-01 ,  0.314D-01 )
+      3  (  0.768D+00 ,  0.918D+00 )
+      4  (  0.242D-01 ,  0.289D-01 )
+
+   ******  Statistics * NLSCON   *******
+   ***  Gauss-Newton iter.:       8  ***
+   ***  Corrector steps   :       0  ***
+   ***  Rejected rk-1 st. :       0  ***
+   ***  Jacobian eval.    :       9  ***
+   ***  Function eval.    :      10  ***
+   ***  ...  for Jacobian :      36  ***
+   *************************************
+
+    8
+ 
+                  alpha         beta        gamma        delta
+                ----------   ----------   ----------   ----------
+ confid_lower:   0.501796     0.024792     0.768163     0.024248
+  *p_estim*  :   0.547534     0.028119     0.843175     0.026558
+ confid_upper:   0.593272     0.031447     0.918186     0.028867
+ 
+incomp. kappa:        2.9798e-02
+achieved rtol:        2.7305e-07
+
+ 
+

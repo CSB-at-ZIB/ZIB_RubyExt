@@ -1,0 +1,562 @@
+      subroutine ydot_LIMEX ( n, nz, t, y_state, dy, b, ir, ic, info )
+c
+      implicit none
+c
+c-----------------------------------------------------------------------
+c
+      integer             j, n, nz, info
+c
+      integer             ir(*), ic(*)
+c
+      double precision    t, y_state(n), dy(n), b(*), one, zero
+c
+      parameter           ( one = 1.0D0, zero = 0.0D0 )
+c
+c-----------------------------------------------------------------------
+c
+      nz = n
+c
+      do j = 1, nz
+c
+         ir(j) = j
+         ic(j) = j
+         b(j) = one
+c
+      end do
+c
+c#for_all(j in algebraic)
+      b(%d) = zero
+c
+c-----------------------------------------------------------------------
+c
+      call ydot ( n, t, y_state, dy, info )
+c
+c-----------------------------------------------------------------------
+c
+      return
+      end subroutine ydot_LIMEX
+c
+c=======================================================================
+c
+      subroutine ydot ( n, t, y_state, dy, info )
+c
+      implicit none
+c
+c-----------------------------------------------------------------------
+c
+      integer             j, n, info
+c
+      double precision    t, y_state(n), dy(n), zero
+c
+c#comment compartments
+c     com(%3d)  :         %-42s
+c
+c#comment species
+c     spe(%3d)  :         %-42s
+c
+c#comment parameters
+c     par(%3d)  :         %-42s
+c
+c#compartments
+      double precision    com(%d)
+c#species
+      double precision    spe(%d)
+c#parameters
+      double precision    par(%d)
+c#rules
+      double precision    rul(%d)
+c#reactions
+      double precision    rea(%d)
+c#events
+      logical             eve(%d)
+c
+      common              /SBMLVARIABLES/ com, spe, par, rul, rea, eve
+c
+c
+c#for_all(j in functions)
+      double precision    fun%d
+c#for_all(j in pieces)
+      double precision    piecewise%d
+      double precision    abs
+      double precision    acos, arccos, acosh, arccosh
+      double precision    acot, arccot, acoth, arccoth
+      double precision    acsc, arccsc, acsch, arccsch
+      double precision    asec, arcsec, asech, arcsech
+      double precision    asin, arcsin, asinh, arcsinh
+      double precision    atan, arctan, atanh, arctanh
+      double precision    ceil, ceiling, floor, factorial
+      double precision    cos, cosh, cot, coth, csc, csch
+      double precision    exp, ln, log, log10
+      double precision    pow, power, root, sqr, sqrt
+      double precision    sec, sech, sin, sinh, tan, tanh
+      logical             and, or, not
+      logical             eq, neq, gt, geq, lt, leq
+c
+      parameter           ( zero = 0.0D0 )
+c
+c-----------------------------------------------------------------------
+c
+      info = 0
+c
+c-----------------------------------------------------------------------
+c
+      do j = 1, n
+c
+         spe(j) = y_state(j)
+c
+         dy(j) = zero
+c
+      end do
+c
+c-----------------------------------------------------------------------
+c
+c#events
+      call check_events(t, %d, eve)
+c
+c-----------------------------------------------------------------------
+c
+c#for_all(j in assignments)
+      rul(%d) = %s
+c-----------------------------------------------------------------------
+c
+c#events
+      call check_events(t, %d, eve)
+c
+c-----------------------------------------------------------------------
+c
+c#for_all(j in reactions)
+      rea(%d) = %s
+c-----------------------------------------------------------------------
+c
+c#events
+      call check_events(t, %d, eve)
+c
+c-----------------------------------------------------------------------
+c
+c#for_all(j in rates)
+      dy(%d) = %s
+c-----------------------------------------------------------------------
+c
+      return
+      end subroutine ydot
+c
+c=======================================================================
+c
+      subroutine check_events ( t, n, ev )
+c
+      implicit none
+c
+c-----------------------------------------------------------------------
+c
+      double precision    t
+c
+      integer             n
+c
+      logical             ev(n)
+c
+c#compartments
+      double precision    com(%d)
+c#species
+      double precision    spe(%d)
+c#parameters
+      double precision    par(%d)
+c#rules
+      double precision    rul(%d)
+c#reactions
+      double precision    rea(%d)
+c#events
+      logical             eve(%d)
+c
+      common              /SBMLVARIABLES/ com, spe, par, rul, rea, eve
+c
+c
+c#for_all(j in functions)
+      double precision    fun%d
+c#for_all(j in pieces)
+      double precision    piecewise%d
+      double precision    abs
+      double precision    acos, arccos, acosh, arccosh
+      double precision    acot, arccot, acoth, arccoth
+      double precision    acsc, arccsc, acsch, arccsch
+      double precision    asec, arcsec, asech, arcsech
+      double precision    asin, arcsin, asinh, arcsinh
+      double precision    atan, arctan, atanh, arctanh
+      double precision    ceil, ceiling, floor, factorial
+      double precision    cos, cosh, cot, coth, csc, csch
+      double precision    exp, ln, log, log10
+      double precision    pow, power, root, sqr, sqrt
+      double precision    sec, sech, sin, sinh, tan, tanh
+      logical             and, or, not
+      logical             eq, neq, gt, geq, lt, leq
+c
+c-----------------------------------------------------------------------
+c
+c#block_for_all(j in events)
+c
+c#trigs
+      ev(%d) = %s
+c#if_trig
+      if ( ev(%d) ) then
+c
+c#for_all(j in eventassignments)
+         %s = %s
+      end if
+c
+c#end_block
+c-----------------------------------------------------------------------
+c
+      return
+      end subroutine check_events
+c
+c=======================================================================
+c
+      subroutine init_ode ( c, ic, lc ,  s, is, ls ,  p, ip, lp )
+c
+      implicit none
+c
+c-----------------------------------------------------------------------
+c
+c#comment compartments
+c     com(%3d)  :         %-42s
+c
+c#comment species
+c     spe(%3d)  :         %-42s
+c
+c#comment parameters
+c     par(%3d)  :         %-42s
+c
+c-----------------------------------------------------------------------
+c
+c#compartments
+      double precision    com(%d)
+c#species
+      double precision    spe(%d)
+c#parameters
+      double precision    par(%d)
+c#rules
+      double precision    rul(%d)
+c#reactions
+      double precision    rea(%d)
+c#events
+      logical             eve(%d)
+c
+      common              /SBMLVARIABLES/ com, spe, par, rul, rea, eve
+c
+      double precision    c(*), s(*), p(*)
+c
+      integer             ic(*), is(*), ip(*), lc, ls, lp
+c
+      integer             mc, ms, mp, j
+c
+c-----------------------------------------------------------------------
+c
+c#for_all(j in compartments)
+      com(%3d) = %E
+c
+c#for_all(j in species)
+      spe(%3d) = %E
+c
+c#for_all(j in parameters)
+      par(%3d) = %E
+c
+c#for_all(j in rulex)
+      rul(%3d) = %E
+c
+c-----------------------------------------------------------------------
+c
+c#compartments
+      mc = min0(%d,lc)
+c
+      if ( ic(1).eq.0 ) then
+c
+         do j = 1, mc
+c
+            com( j ) = c(j)
+c
+         end do
+c
+      else
+c
+         do j = 1, mc
+c
+            com( ic(j) ) = c(j)
+c
+         end do
+c
+      end if
+c
+c
+      if ( lc.eq.0 ) then
+c
+c#compartments
+         lc = %d
+c
+      end if
+c
+c-----------------------------------------------------------------------
+c
+c#species
+      ms = min0(%d,ls)
+c
+      if ( is(1).eq.0 ) then
+c
+         do j = 1, ms
+c
+            spe( j ) = s(j)
+c
+         end do
+c
+      else
+c
+         do j = 1, ms
+c
+            spe( is(j) ) = s(j)
+c
+         end do
+c
+      end if
+c
+c
+      if ( ls.eq.0 ) then
+c
+c#species
+         ls = %d
+c
+      end if
+c
+c-----------------------------------------------------------------------
+c
+c#parameters
+      mp = min0(%d,lp)
+c
+      if ( ip(1).eq.0 ) then
+c
+         do j = 1, mp
+c
+            par( j ) = p(j)
+c
+         end do
+c
+      else
+c
+         do j = 1, mp
+c
+            par( ip(j) ) = p(j)
+c
+         end do
+c
+      end if
+c
+c
+      if ( lp.eq.0 ) then
+c
+c#parameters
+         lp = %d
+c
+      end if
+c
+c-----------------------------------------------------------------------
+c
+      return
+      end subroutine init_ode
+c
+c=======================================================================
+c
+      subroutine get_compartment_ids ( idc, ncom )
+c
+      implicit none
+c
+c-----------------------------------------------------------------------
+c
+c#compartments
+      character           idc(%d)*(*)
+c
+      integer             ncom
+c
+c-----------------------------------------------------------------------
+c
+c#compartments
+      ncom = %d
+c#comment compartments
+      idc(%3d) = '%s'//char(0)
+c
+c-----------------------------------------------------------------------
+c
+      return
+      end subroutine get_compartment_ids
+c
+c=======================================================================
+c
+      subroutine get_species_ids ( ids, nspe )
+c
+      implicit none
+c
+c-----------------------------------------------------------------------
+c
+c#species
+      character           ids(%d)*(*)
+c
+      integer             j, nspe
+c
+c-----------------------------------------------------------------------
+c
+c#species
+      nspe = %d
+c     ---
+      do j = 1, nspe
+c
+        ids(j) = char(0)
+c
+      end do
+c#comment species
+      ids(%3d) = '%s'//char(0)
+c
+c-----------------------------------------------------------------------
+c
+      return
+      end subroutine get_species_ids
+c
+c=======================================================================
+c
+      subroutine get_parameter_ids ( idp, npar )
+c
+      implicit none
+c
+c-----------------------------------------------------------------------
+c
+c#parameters
+      character           idp(%d)*(*)
+c
+      integer             j, npar
+c
+c-----------------------------------------------------------------------
+c
+c#parameters
+      npar = %d
+c     ---
+      do j = 1, npar
+c
+        idp(j) = char(0)
+c
+      end do
+c#comment parameters
+      idp(%3d) = '%s'//char(0)
+c
+c-----------------------------------------------------------------------
+c
+      return
+      end subroutine get_parameter_ids
+c
+c=======================================================================
+c
+      subroutine get_model_ids ( idm, nid )
+c
+      implicit none
+c
+c-----------------------------------------------------------------------
+c
+c#modelids
+      character           idm(%d)*(*)
+c
+      integer             j, nid
+c
+c-----------------------------------------------------------------------
+c
+c#modelids
+      nid = %d
+c     ---
+      do j = 1, nid
+c
+        idm(j) = char(0)
+c
+      end do
+c#comment modelids
+      idm(%3d) = '%s'//char(0)
+c
+c-----------------------------------------------------------------------
+c
+      return
+      end subroutine get_model_ids
+c
+c=======================================================================
+c
+c#block_for_all(j in functions)
+c=======================================================================
+c
+c#args
+      double precision function fun%d %s
+      implicit none
+c
+c-----------------------------------------------------------------------
+c
+c#for_all(j in decls)
+      double precision    %s
+      double precision    abs
+      double precision    acos, arccos, acosh, arccosh
+      double precision    acot, arccot, acoth, arccoth
+      double precision    acsc, arccsc, acsch, arccsch
+      double precision    asec, arcsec, asech, arcsech
+      double precision    asin, arcsin, asinh, arcsinh
+      double precision    atan, arctan, atanh, arctanh
+      double precision    ceil, ceiling, floor, factorial
+      double precision    cos, cosh, cot, coth, csc, csch
+      double precision    exp, ln, log, log10
+      double precision    pow, power, root, sqr, sqrt
+      double precision    sec, sech, sin, sinh, tan, tanh
+c
+      double precision    pi
+      double precision    eul
+c
+      parameter           ( pi  = 3.141592653589793238462643383276D0 )
+      parameter           ( eul = 2.718281828459045235360287471352D0 )
+c
+c-----------------------------------------------------------------------
+c
+c#impls
+      fun%d = %s
+c-----------------------------------------------------------------------
+c
+      return
+c#funcs
+      end function fun%d
+c
+c#end_block
+c
+c#block_for_all(j in pieces)
+c=======================================================================
+c
+c#args
+      double precision function piecewise%d %s
+      implicit none
+c
+c-----------------------------------------------------------------------
+c
+c#for_all(j in dbledecls)
+      double precision    %s
+c#for_all(j in logicdecls)
+      logical             %s
+c-----------------------------------------------------------------------
+c
+c#3lines_first_case
+      if ( %s ) then
+c
+         piecewise%d = %s
+c#for_all_3lines(j in remaining_cases)
+      else if ( %s ) then
+c
+         piecewise%d = %s
+c#3lines_default
+      else
+c
+         piecewise%d = %s
+c
+      end if
+c
+c-----------------------------------------------------------------------
+c
+      return
+c#funcs
+      end function piecewise%d
+c
+c#end_block
+c

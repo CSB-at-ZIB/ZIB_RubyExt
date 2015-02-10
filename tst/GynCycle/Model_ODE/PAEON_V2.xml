@@ -1,0 +1,1476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model id="PAEON_V2">
+    <listOfFunctionDefinitions>
+      <functionDefinition id="Hplus">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> y </ci>
+            </bvar>
+            <bvar>
+              <ci> thrs </ci>
+            </bvar>
+            <bvar>
+              <ci> n </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <apply>
+                <power/>
+                <apply>
+                  <divide/>
+                  <ci> y </ci>
+                  <ci> thrs </ci>
+                </apply>
+                <ci> n </ci>
+              </apply>
+              <apply>
+                <plus/>
+                <cn> 1 </cn>
+                <apply>
+                  <power/>
+                  <apply>
+                    <divide/>
+                    <ci> y </ci>
+                    <ci> thrs </ci>
+                  </apply>
+                  <ci> n </ci>
+                </apply>
+              </apply>
+            </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="Hminus">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> y </ci>
+            </bvar>
+            <bvar>
+              <ci> thrs </ci>
+            </bvar>
+            <bvar>
+              <ci> n </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <cn> 1 </cn>
+              <apply>
+                <plus/>
+                <cn> 1 </cn>
+                <apply>
+                  <power/>
+                  <apply>
+                    <divide/>
+                    <ci> y </ci>
+                    <ci> thrs </ci>
+                  </apply>
+                  <ci> n </ci>
+                </apply>
+              </apply>
+            </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+    </listOfFunctionDefinitions>
+    <listOfCompartments>
+      <compartment id="default" name="body (volume?)" size="1" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="LH_pit" name="LH in the pituitary" compartment="default" initialConcentration="259696" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="LH_blood" name="LH in the blood" compartment="default" initialConcentration="2.71" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="R_LH" name="Receptors LH" compartment="default" initialConcentration="8.398" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="LH_R" name="LH-receptor-complex" compartment="default" initialConcentration="0.266" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="R_LH_des" name="Receptors LH internalised" compartment="default" initialConcentration="0.71" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="FSH_pit" name="FSH in the pituitary" compartment="default" initialConcentration="59734" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="FSH_blood" name="FSH in the blood" compartment="default" initialConcentration="5.28" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="R_FSH" name="Receptors FSH" compartment="default" initialConcentration="5.903" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="FSH_R" name="FSH-receptor-complex" compartment="default" initialConcentration="0.796" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="R_FSH_des" name="Receptors FSH internalised" compartment="default" initialConcentration="1.8" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="S_foll" name="Follicular sensitivity to LH" compartment="default" initialConcentration="0.156" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="AF1" name="Antral follicle develop. stage 1" compartment="default" initialConcentration="2.593" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="AF2" name="Antral follicle develop. stage 2" compartment="default" initialConcentration="23.14" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="AF3" name="Antral follicle develop. stage 3" compartment="default" initialConcentration="0.492" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="AF4" name="Antral follicle develop. stage 4" compartment="default" initialConcentration="1.61e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="PrF" name="Pre-ovulatory follicle stage" compartment="default" initialConcentration="0.2449" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="OvF" name="Ovulatory follicle stage" compartment="default" initialConcentration="0" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Sc1" name="Ovulatory scar 1" compartment="default" initialConcentration="1e-08" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Sc2" name="Ovulatory scar 2" compartment="default" initialConcentration="2e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Lut1" name="Corpus luteum develop. stage 1" compartment="default" initialConcentration="2e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Lut2" name="Corpus luteum develop. stage 2" compartment="default" initialConcentration="0.0003" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Lut3" name="Corpus luteum develop. stage 3" compartment="default" initialConcentration="0.003" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Lut4" name="Corpus luteum develop. stage 4" compartment="default" initialConcentration="0.011" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="E2" name="Estradiol" compartment="default" initialConcentration="41.36" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="P4" name="Progesterone" compartment="default" initialConcentration="1.978" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="InhA" name="Inhibin A" compartment="default" initialConcentration="0.93" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="InhB" name="Inhibin B" compartment="default" initialConcentration="60.53" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="InhA_tau" name="Inhibin A delay component" compartment="default" initialConcentration="71.14" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="GnRH_G" name="GnRH" compartment="default" initialConcentration="0.0152" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="R_GnRH_a" name="active Receptors GnRH" compartment="default" initialConcentration="0.009" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="R_GnRH_i" name="inactive Receptors GnRH" compartment="default" initialConcentration="0.00096" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="GnRH_R_a" name="active GnRH-receptor-complex" compartment="default" initialConcentration="6.5e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="GnRH_R_i" name="inactive GnRH-receptor-complex" compartment="default" initialConcentration="5.9e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="p_001_001" name="basal LH synthesis rate constant" value="7309.92" constant="true"/>
+      <parameter id="p_001_002" name="E2 promoted LH synthesis rate constant" value="7309.92" constant="true"/>
+      <parameter id="p_001_003" name="threshold of E2 on LH synthesis" value="192.2" constant="true"/>
+      <parameter id="p_001_004" name="Hill exponent" value="10" constant="true"/>
+      <parameter id="p_001_005" name="threshold of P4 on LH synthesis" value="2.371" constant="true"/>
+      <parameter id="p_001_006" name="Hill exponent" value="1" constant="true"/>
+      <parameter id="p_001_007" name="basal LH release rate constant" value="0.00476" constant="true"/>
+      <parameter id="p_001_008" name="GnRH_R_a promoted LH release rate constant" value="0.1904" constant="true"/>
+      <parameter id="p_001_009" name="threshold of GnRH_R_a on LH release" value="0.0003" constant="true"/>
+      <parameter id="p_001_010" name="Hill exponent" value="5" constant="true"/>
+      <parameter id="p_002_001" name="blood volume" value="5" constant="true"/>
+      <parameter id="p_002_002" name="binding rate of LH to its receptor" value="2.143" constant="true"/>
+      <parameter id="p_002_003" name="clearance rate of LH from the blood" value="74.851" constant="true"/>
+      <parameter id="p_003_001" name="formation rate of free LH receptors" value="68.949" constant="true"/>
+      <parameter id="p_004_001" name="desensitisation rate of LH receptor complex" value="183.36" constant="true"/>
+      <parameter id="p_006_001" name="basal FSH synthesis rate constant" value="22130" constant="true"/>
+      <parameter id="p_006_002" name="threshold of InhA_tau in FSH synthesis" value="95.81" constant="true"/>
+      <parameter id="p_006_003" name="Hill exponent" value="5" constant="true"/>
+      <parameter id="p_006_004" name="threshold of InhB in FSH synthesis" value="70" constant="true"/>
+      <parameter id="p_006_005" name="Hill exponent" value="3" constant="true"/>
+      <parameter id="p_006_006" name="threshold of GnRH frequency in FSH synthesis" value="10" constant="true"/>
+      <parameter id="p_006_007" name="Hill exponent" value="3" constant="true"/>
+      <parameter id="p_006_008" name="basal FSH release rate constant" value="0.057" constant="true"/>
+      <parameter id="p_006_009" name="stimulation of FSH release by GnRH rec." value="0.272" constant="true"/>
+      <parameter id="p_006_010" name="threshold of GnRH on FSH release" value="0.0003" constant="true"/>
+      <parameter id="p_006_011" name="Hill exponent" value="3" constant="true"/>
+      <parameter id="p_007_001" name="binding rate of FSH to its receptor" value="3.529" constant="true"/>
+      <parameter id="p_007_002" name="clearance rate of FSH from blood" value="114.25" constant="true"/>
+      <parameter id="p_008_001" name="formation rate of free FSH receptors" value="61.029" constant="true"/>
+      <parameter id="p_009_001" name="desensitisation rate of FSH receptos complex" value="138.3" constant="true"/>
+      <parameter id="p_011_001" name="synth. rate const. of FSH_blood to S_foll" value="0.219" constant="true"/>
+      <parameter id="p_011_002" name="threshold of FSH_blood to stimulate S_foll" value="3" constant="true"/>
+      <parameter id="p_011_003" name="Hill exponent" value="5" constant="true"/>
+      <parameter id="p_011_004" name="S_foll clearance rate constant" value="1.343" constant="true"/>
+      <parameter id="p_011_005" name="threshold of P4 on clearance of S_foll" value="1.235" constant="true"/>
+      <parameter id="p_011_006" name="Hill exponent" value="5" constant="true"/>
+      <parameter id="p_011_007" name="additional clearance rate" value="0.2" constant="true"/>
+      <parameter id="p_012_001" name="growth rate of AF1" value="3.663" constant="true"/>
+      <parameter id="p_012_002" name="threshold of FSH_R for stimul. of AF1" value="0.608" constant="true"/>
+      <parameter id="p_012_003" name="Hill exponent" value="3" constant="true"/>
+      <parameter id="p_012_004" name="transition rate constant from AF1 to AF2" value="1.221" constant="true"/>
+      <parameter id="p_013_001" name="transition rate constant from AF2 to AF3" value="4.882" constant="true"/>
+      <parameter id="p_013_002" name="scaling of LH receptor complex" value="2.726" constant="true"/>
+      <parameter id="p_013_003" name="Hill exponent" value="3.689" constant="true"/>
+      <parameter id="p_014_001" name="self growth rate of AF3" value="0.122" constant="true"/>
+      <parameter id="p_014_002" name="maximum size of AF3 and AF4" value="10" constant="true"/>
+      <parameter id="p_014_003" name="transition rate constant from AF3 to AF4" value="122.06" constant="true"/>
+      <parameter id="p_014_004" name="Hill exponent" value="5" constant="true"/>
+      <parameter id="p_015_001" name="self growth rate of AF4" value="12.206" constant="true"/>
+      <parameter id="p_015_002" name="Hill exponent" value="2" constant="true"/>
+      <parameter id="p_015_003" name="transition rate constant from AF4 to PrF" value="332.75" constant="true"/>
+      <parameter id="p_016_001" name="elimination rate of PrF" value="122.06" constant="true"/>
+      <parameter id="p_016_002" name="Hill exponent" value="6" constant="true"/>
+      <parameter id="p_017_001" name="growth rate of OvF" value="7.984" constant="true"/>
+      <parameter id="p_017_002" name="threshold of PrF for OvF formation" value="3" constant="true"/>
+      <parameter id="p_017_003" name="Hill exponent" value="10" constant="true"/>
+      <parameter id="p_017_004" name="elimination rate constant of OvF" value="12.206" constant="true"/>
+      <parameter id="p_018_001" name="growth rate of Sc1 stimulated by OvF" value="1.208" constant="true"/>
+      <parameter id="p_018_002" name="threshold of OvF to form Sc1" value="0.02" constant="true"/>
+      <parameter id="p_018_003" name="Hill exponent" value="10" constant="true"/>
+      <parameter id="p_018_004" name="transition rate constant from Sc1 to Sc2" value="1.221" constant="true"/>
+      <parameter id="p_019_001" name="transition rate from Sc2 to Lut1" value="0.958" constant="true"/>
+      <parameter id="p_020_001" name="transition rate constant from Lut1 to Lut2" value="0.925" constant="true"/>
+      <parameter id="p_020_002" name="rate of GnRH_R_a to the luteal development" value="20" constant="true"/>
+      <parameter id="p_020_003" name="threshold of GnRH_R_a to the luteal development" value="0.0008" constant="true"/>
+      <parameter id="p_020_004" name="Hill exponent" value="5" constant="true"/>
+      <parameter id="p_021_001" name="transition rate constant from Lut2 to Lut3" value="0.7567" constant="true"/>
+      <parameter id="p_022_001" name="transition rate constant from Lut3 to Lut4" value="0.61" constant="true"/>
+      <parameter id="p_023_001" name="clearance rate constant of Lut4" value="0.543" constant="true"/>
+      <parameter id="p_024_001" name="basal E2 production" value="51.558" constant="true"/>
+      <parameter id="p_024_002" name="production of E2 by AF2" value="2.0945" constant="true"/>
+      <parameter id="p_024_003" name="production of E2 by LH and AF3" value="9.28" constant="true"/>
+      <parameter id="p_024_004" name="production of E2 by AF4" value="3480.27" constant="true"/>
+      <parameter id="p_024_005" name="production of E2 by LH and PrF" value="0.972" constant="true"/>
+      <parameter id="p_024_006" name="production of E2 by Lut1" value="1713.71" constant="true"/>
+      <parameter id="p_024_007" name="production of E2 by Lut4" value="8675.14" constant="true"/>
+      <parameter id="p_024_008" name="E2 clearance rate constant" value="5.235" constant="true"/>
+      <parameter id="p_025_001" name="basal P4 production" value="0.943" constant="true"/>
+      <parameter id="p_025_002" name="production of P4 by Lut4" value="761.64" constant="true"/>
+      <parameter id="p_025_003" name="P4 clearance rate constant" value="5.13" constant="true"/>
+      <parameter id="p_026_001" name="basal InhA production" value="1.445" constant="true"/>
+      <parameter id="p_026_002" name="production of InhA by PrF" value="2.285" constant="true"/>
+      <parameter id="p_026_003" name="production of InhA by Sc1" value="60" constant="true"/>
+      <parameter id="p_026_004" name="production of InhA by Lut1" value="180" constant="true"/>
+      <parameter id="p_026_005" name="production of InhA by Lut2" value="28.211" constant="true"/>
+      <parameter id="p_026_006" name="production of InhA by Lut3" value="194.07" constant="true"/>
+      <parameter id="p_026_007" name="production of InhA by Lut4" value="114.25" constant="true"/>
+      <parameter id="p_026_008" name="InhA clearance rate constant" value="4.287" constant="true"/>
+      <parameter id="p_027_001" name="basal InhB production" value="89.943" constant="true"/>
+      <parameter id="p_027_002" name="production of InhB by AF2" value="447.47" constant="true"/>
+      <parameter id="p_027_003" name="production of InhB by AF3" value="132240.2" constant="true"/>
+      <parameter id="p_027_004" name="InhB clearance rate constant" value="172.45" constant="true"/>
+      <parameter id="p_028_001" name="clearance of InhA in delayed compartment" value="0.199" constant="true"/>
+      <parameter id="p_029_001" name="mean GnRH_G frequency" value="16" constant="true"/>
+      <parameter id="p_029_002" name="threshold of P4 for inhibition of GnRH_G frequency" value="3" constant="true"/>
+      <parameter id="p_029_003" name="Hill exponent" value="2" constant="true"/>
+      <parameter id="p_029_004" name="factor for stimulation by E2" value="1" constant="true"/>
+      <parameter id="p_029_005" name="threshold of E2 for stimulation of GnRH_G frequency" value="220" constant="true"/>
+      <parameter id="p_029_006" name="Hill exponent" value="10" constant="true"/>
+      <parameter id="p_030_001" name="amount of GnRH released by one puls at E2 level height" value="0.005593" constant="true"/>
+      <parameter id="p_030_002" name="threshold of E2 for stimulation of GnRH mass" value="220" constant="true"/>
+      <parameter id="p_030_003" name="Hill exponent" value="2" constant="true"/>
+      <parameter id="p_030_004" name="threshold of E2 for inhibition of GnRH mass" value="9.6" constant="true"/>
+      <parameter id="p_030_005" name="Hill exponent" value="1" constant="true"/>
+      <parameter id="p_031_001" name="binding rate of GnRH_G to its receptor" value="322.18" constant="true"/>
+      <parameter id="p_031_002" name="breakup rate of GnRH-receptor-complex" value="644.35" constant="true"/>
+      <parameter id="p_031_003" name="degradation rate of GnRH_G" value="0.447" constant="true"/>
+      <parameter id="p_032_001" name="rate of receptor inactivation" value="3.222" constant="true"/>
+      <parameter id="p_032_002" name="rate of receptor activation" value="32.218" constant="true"/>
+      <parameter id="p_033_001" name="synthesis rate of inactive receptors" value="8.949e-05" constant="true"/>
+      <parameter id="p_033_002" name="dissociation rate of inactive receptor-complex" value="32.218" constant="true"/>
+      <parameter id="p_033_003" name="degradation rate of inactive receptors" value="0.0895" constant="true"/>
+      <parameter id="p_034_001" name="rate of receptor-complex inactivation" value="32.218" constant="true"/>
+      <parameter id="p_034_002" name="rate of receptor-complex activation" value="3.222" constant="true"/>
+      <parameter id="p_035_001" name="degradation rate of inactive receptor-complex" value="0.00895" constant="true"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="freq">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> p_029_001 </ci>
+            <apply>
+              <ci> Hminus </ci>
+              <ci> P4 </ci>
+              <ci> p_029_002 </ci>
+              <ci> p_029_003 </ci>
+            </apply>
+            <apply>
+              <plus/>
+              <cn> 1 </cn>
+              <apply>
+                <times/>
+                <ci> p_029_004 </ci>
+                <apply>
+                  <ci> Hplus </ci>
+                  <ci> E2 </ci>
+                  <ci> p_029_005 </ci>
+                  <ci> p_029_006 </ci>
+                </apply>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="mass">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> p_030_001 </ci>
+            <apply>
+              <plus/>
+              <apply>
+                <ci> Hplus </ci>
+                <ci> E2 </ci>
+                <ci> p_030_002 </ci>
+                <ci> p_030_003 </ci>
+              </apply>
+              <apply>
+                <ci> Hminus </ci>
+                <ci> E2 </ci>
+                <ci> p_030_004 </ci>
+                <ci> p_030_005 </ci>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+    <listOfReactions>
+      <reaction id="re001" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="LH_pit" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> p_001_001 </ci>
+                <apply>
+                  <times/>
+                  <ci> p_001_002 </ci>
+                  <apply>
+                    <ci> Hplus </ci>
+                    <ci> E2 </ci>
+                    <ci> p_001_003 </ci>
+                    <ci> p_001_004 </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <apply>
+                <ci> Hminus </ci>
+                <ci> P4 </ci>
+                <ci> p_001_005 </ci>
+                <ci> p_001_006 </ci>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re002" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="LH_pit" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> p_001_007 </ci>
+                <apply>
+                  <times/>
+                  <ci> p_001_008 </ci>
+                  <apply>
+                    <ci> Hplus </ci>
+                    <ci> GnRH_R_a </ci>
+                    <ci> p_001_009 </ci>
+                    <ci> p_001_010 </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> LH_pit </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re003" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="LH_blood" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <apply>
+                  <plus/>
+                  <ci> p_001_007 </ci>
+                  <apply>
+                    <times/>
+                    <ci> p_001_008 </ci>
+                    <apply>
+                      <ci> Hplus </ci>
+                      <ci> GnRH_R_a </ci>
+                      <ci> p_001_009 </ci>
+                      <ci> p_001_010 </ci>
+                    </apply>
+                  </apply>
+                </apply>
+                <ci> LH_pit </ci>
+              </apply>
+              <ci> p_002_001 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re004" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="LH_blood" stoichiometry="1" constant="false"/>
+          <speciesReference species="R_LH" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="LH_R" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_002_002 </ci>
+              <ci> LH_blood </ci>
+              <ci> R_LH </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re005" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="LH_blood" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_002_003 </ci>
+              <ci> LH_blood </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re006" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="R_LH_des" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="R_LH" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_003_001 </ci>
+              <ci> R_LH_des </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re007" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="LH_R" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="R_LH_des" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_004_001 </ci>
+              <ci> LH_R </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re008" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="FSH_pit" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <divide/>
+                <ci> p_006_001 </ci>
+                <apply>
+                  <plus/>
+                  <cn> 1 </cn>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <divide/>
+                      <ci> InhA_tau </ci>
+                      <ci> p_006_002 </ci>
+                    </apply>
+                    <ci> p_006_003 </ci>
+                  </apply>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <divide/>
+                      <ci> InhB </ci>
+                      <ci> p_006_004 </ci>
+                    </apply>
+                    <ci> p_006_005 </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <apply>
+                <ci> Hminus </ci>
+                <ci> freq </ci>
+                <ci> p_006_006 </ci>
+                <ci> p_006_007 </ci>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re009" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="FSH_pit" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> p_006_008 </ci>
+                <apply>
+                  <times/>
+                  <ci> p_006_009 </ci>
+                  <apply>
+                    <ci> Hplus </ci>
+                    <ci> GnRH_R_a </ci>
+                    <ci> p_006_010 </ci>
+                    <ci> p_006_011 </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> FSH_pit </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re010" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="FSH_blood" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <apply>
+                  <plus/>
+                  <ci> p_006_008 </ci>
+                  <apply>
+                    <times/>
+                    <ci> p_006_009 </ci>
+                    <apply>
+                      <ci> Hplus </ci>
+                      <ci> GnRH_R_a </ci>
+                      <ci> p_006_010 </ci>
+                      <ci> p_006_011 </ci>
+                    </apply>
+                  </apply>
+                </apply>
+                <ci> FSH_pit </ci>
+              </apply>
+              <ci> p_002_001 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re011" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="FSH_blood" stoichiometry="1" constant="false"/>
+          <speciesReference species="R_FSH" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="FSH_R" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_007_001 </ci>
+              <ci> R_FSH </ci>
+              <ci> FSH_blood </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re012" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="FSH_blood" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_007_002 </ci>
+              <ci> FSH_blood </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re013" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="R_FSH_des" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="R_FSH" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_008_001 </ci>
+              <ci> R_FSH_des </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re014" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="FSH_R" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="R_FSH_des" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_009_001 </ci>
+              <ci> FSH_R </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re015" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="S_foll" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_011_001 </ci>
+              <apply>
+                <ci> Hplus </ci>
+                <ci> FSH_blood </ci>
+                <ci> p_011_002 </ci>
+                <ci> p_011_003 </ci>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re016" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="S_foll" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_011_004 </ci>
+              <apply>
+                <ci> Hplus </ci>
+                <ci> P4 </ci>
+                <ci> p_011_005 </ci>
+                <ci> p_011_006 </ci>
+              </apply>
+              <ci> S_foll </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re017" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="AF1" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_012_001 </ci>
+              <apply>
+                <ci> Hplus </ci>
+                <ci> FSH_R </ci>
+                <ci> p_012_002 </ci>
+                <ci> p_012_003 </ci>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re018" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="AF1" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="AF2" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_012_004 </ci>
+              <ci> FSH_R </ci>
+              <ci> AF1 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re019" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="AF2" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="AF3" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_013_001 </ci>
+              <apply>
+                <power/>
+                <apply>
+                  <divide/>
+                  <ci> LH_R </ci>
+                  <ci> p_013_002 </ci>
+                </apply>
+                <ci> p_013_003 </ci>
+              </apply>
+              <ci> S_foll </ci>
+              <ci> AF2 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re020" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="AF3" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_014_001 </ci>
+              <ci> FSH_R </ci>
+              <ci> AF3 </ci>
+              <apply>
+                <minus/>
+                <cn> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> AF3 </ci>
+                  <ci> p_014_002 </ci>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re021" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="AF3" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="AF4" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_014_003 </ci>
+              <apply>
+                <power/>
+                <apply>
+                  <divide/>
+                  <ci> LH_R </ci>
+                  <ci> p_013_002 </ci>
+                </apply>
+                <ci> p_014_004 </ci>
+              </apply>
+              <ci> S_foll </ci>
+              <ci> AF3 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re022" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="AF4" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_015_001 </ci>
+              <apply>
+                <power/>
+                <apply>
+                  <divide/>
+                  <ci> LH_R </ci>
+                  <ci> p_013_002 </ci>
+                </apply>
+                <ci> p_015_002 </ci>
+              </apply>
+              <ci> AF4 </ci>
+              <apply>
+                <minus/>
+                <cn> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> AF4 </ci>
+                  <ci> p_014_002 </ci>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re023" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="AF4" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="PrF" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_015_003 </ci>
+              <apply>
+                <divide/>
+                <ci> LH_R </ci>
+                <ci> p_013_002 </ci>
+              </apply>
+              <ci> S_foll </ci>
+              <ci> AF4 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re024" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="PrF" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_016_001 </ci>
+              <apply>
+                <power/>
+                <apply>
+                  <divide/>
+                  <ci> LH_R </ci>
+                  <ci> p_013_002 </ci>
+                </apply>
+                <ci> p_016_002 </ci>
+              </apply>
+              <ci> S_foll </ci>
+              <ci> PrF </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re025" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="OvF" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_017_001 </ci>
+              <apply>
+                <power/>
+                <apply>
+                  <divide/>
+                  <ci> LH_R </ci>
+                  <ci> p_013_002 </ci>
+                </apply>
+                <ci> p_016_002 </ci>
+              </apply>
+              <ci> S_foll </ci>
+              <apply>
+                <ci> Hplus </ci>
+                <ci> PrF </ci>
+                <ci> p_017_002 </ci>
+                <ci> p_017_003 </ci>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re026" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="OvF" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_017_004 </ci>
+              <ci> OvF </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re027" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="Sc1" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_018_001 </ci>
+              <apply>
+                <ci> Hplus </ci>
+                <ci> OvF </ci>
+                <ci> p_018_002 </ci>
+                <ci> p_018_003 </ci>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re028" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Sc1" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Sc2" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_018_004 </ci>
+              <ci> Sc1 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re029" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Sc2" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Lut1" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_019_001 </ci>
+              <ci> Sc2 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re030" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Lut1" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Lut2" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_020_001 </ci>
+              <ci> Lut1 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re031" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Lut1" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_020_001 </ci>
+              <ci> p_020_002 </ci>
+              <apply>
+                <ci> Hplus </ci>
+                <ci> GnRH_R_a </ci>
+                <ci> p_020_003 </ci>
+                <ci> p_020_004 </ci>
+              </apply>
+              <ci> Lut1 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re032" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Lut2" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Lut3" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_021_001 </ci>
+              <ci> Lut2 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re033" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Lut2" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_021_001 </ci>
+              <ci> p_020_002 </ci>
+              <apply>
+                <ci> Hplus </ci>
+                <ci> GnRH_R_a </ci>
+                <ci> p_020_003 </ci>
+                <ci> p_020_004 </ci>
+              </apply>
+              <ci> Lut2 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re034" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Lut3" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Lut4" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_022_001 </ci>
+              <ci> Lut3 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re035" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Lut3" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_022_001 </ci>
+              <ci> p_020_002 </ci>
+              <apply>
+                <ci> Hplus </ci>
+                <ci> GnRH_R_a </ci>
+                <ci> p_020_003 </ci>
+                <ci> p_020_004 </ci>
+              </apply>
+              <ci> Lut3 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re036" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Lut4" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_023_001 </ci>
+              <apply>
+                <plus/>
+                <cn> 1 </cn>
+                <apply>
+                  <times/>
+                  <ci> p_020_002 </ci>
+                  <apply>
+                    <ci> Hplus </ci>
+                    <ci> GnRH_R_a </ci>
+                    <ci> p_020_003 </ci>
+                    <ci> p_020_004 </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> Lut4 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re037" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="E2" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <ci> p_024_001 </ci>
+              <apply>
+                <times/>
+                <ci> p_024_002 </ci>
+                <ci> AF2 </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> p_024_003 </ci>
+                <ci> LH_blood </ci>
+                <ci> AF3 </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> p_024_004 </ci>
+                <ci> AF4 </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> p_024_005 </ci>
+                <ci> LH_blood </ci>
+                <ci> PrF </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> p_024_006 </ci>
+                <ci> Lut1 </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> p_024_007 </ci>
+                <ci> Lut4 </ci>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re038" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="E2" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_024_008 </ci>
+              <ci> E2 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re039" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="P4" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <ci> p_025_001 </ci>
+              <apply>
+                <times/>
+                <ci> p_025_002 </ci>
+                <ci> Lut4 </ci>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re040" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="P4" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_025_003 </ci>
+              <ci> P4 </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re041" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="InhA" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <ci> p_026_001 </ci>
+              <apply>
+                <times/>
+                <ci> p_026_002 </ci>
+                <ci> PrF </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> p_026_003 </ci>
+                <ci> Sc1 </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> p_026_004 </ci>
+                <ci> Lut1 </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> p_026_005 </ci>
+                <ci> Lut2 </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> p_026_006 </ci>
+                <ci> Lut3 </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> p_026_007 </ci>
+                <ci> Lut4 </ci>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re042" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="InhA" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="InhA_tau" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_026_008 </ci>
+              <ci> InhA </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re043" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="InhB" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <ci> p_027_001 </ci>
+              <apply>
+                <times/>
+                <ci> p_027_002 </ci>
+                <ci> AF2 </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> p_027_003 </ci>
+                <ci> Sc2 </ci>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re044" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="InhB" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_027_004 </ci>
+              <ci> InhB </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re045" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="InhA_tau" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_028_001 </ci>
+              <ci> InhA_tau </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re046" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="GnRH_G" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> mass </ci>
+              <ci> freq </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re047" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="GnRH_G" stoichiometry="1" constant="false"/>
+          <speciesReference species="R_GnRH_a" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="GnRH_R_a" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_031_001 </ci>
+              <ci> R_GnRH_a </ci>
+              <ci> GnRH_G </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re048" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="GnRH_R_a" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="GnRH_G" stoichiometry="1" constant="false"/>
+          <speciesReference species="R_GnRH_a" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_031_002 </ci>
+              <ci> GnRH_R_a </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re049" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="GnRH_G" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_031_003 </ci>
+              <ci> GnRH_G </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re050" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="R_GnRH_a" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="R_GnRH_i" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_032_001 </ci>
+              <ci> R_GnRH_a </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re051" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="R_GnRH_i" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="R_GnRH_a" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_032_002 </ci>
+              <ci> R_GnRH_i </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re052" reversible="false" fast="false">
+        <listOfProducts>
+          <speciesReference species="R_GnRH_i" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <ci> p_033_001 </ci>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re053" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="GnRH_R_i" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="R_GnRH_i" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_033_002 </ci>
+              <ci> GnRH_R_i </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re054" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="R_GnRH_i" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_033_003 </ci>
+              <ci> R_GnRH_i </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re055" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="GnRH_R_a" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="GnRH_R_i" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_034_001 </ci>
+              <ci> GnRH_R_a </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re056" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="GnRH_R_i" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="GnRH_R_a" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_034_002 </ci>
+              <ci> GnRH_R_i </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re057" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="GnRH_R_i" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p_035_001 </ci>
+              <ci> GnRH_R_i </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

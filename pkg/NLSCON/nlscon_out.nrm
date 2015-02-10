@@ -1,0 +1,188 @@
+
+ Simulated  experimential  data  :
+  60.6476258
+  72.6240332
+  83.5171408
+  92.3190858
+  98.0172436
+  99.9969519
+  98.0276062
+  92.3016958
+  83.5359611
+  72.6098401
+  60.6526235
+
+
+
+    N L S C O N  *****  V e r s i o n  2 . 3 . 2 ***
+
+ Gauss-Newton-Method for the solution of nonlinear least squares problems
+
+
+ Real    Workspace declared as       400 is used up to       285 ( 71.2 percent)
+
+ Integer Workspace declared as        60 is used up to        50 ( 83.3 percent)
+
+
+
+ Number of parameters to be estimated (N) :    3
+ Number of data to fitted, e.g. observations (MFIT) :   11
+ Number of equality constraints (MCON) :    1
+
+ Prescribed relative precision (RTOL) :   0.10E-03
+
+ The Jacobian is supplied by a user subroutine
+ Automatic row scaling of the Jacobian is allowed
+
+ Rank-1 updates are inhibited
+ Problem is specified as being highly nonlinear
+ Bounded damping strategy is off
+ Maximum permitted number of iteration steps :    200
+
+
+ Internal parameters:
+
+ Starting value for damping factor FCSTART =  0.10E-01
+ Minimum allowed damping factor FCMIN =  0.10E-01
+ Rank-1 updates decision parameter SIGMA =  0.10E+04
+ Initial Jacobian pseudo-rank IRANK =     3
+ Maximum permitted subcondition COND =  0.10E+17
+
+
+
+  **************************************************************************
+
+        It       Normf               Normx       Damp.Fct.   New      Rank
+         0      0.8309901E+02       0.699E+02                0         3
+         1      0.8233416E+02    *  0.691E+02      0.010
+ Returned from call    1 of NLSCON
+         1      0.8233416E+02       0.439E+02                0         3
+         2      0.8147258E+02    *  0.433E+02      0.014
+ Returned from call    2 of NLSCON
+         2      0.8147258E+02       0.244E+02                0         3
+         3      0.7847902E+02    *  0.231E+02      0.052
+ Returned from call    3 of NLSCON
+         3      0.7847902E+02       0.981E+01                0         3
+         4      0.4619915E+02    *  0.561E+01      0.392
+ Returned from call    4 of NLSCON
+         4      0.4619915E+02       0.119E+01                0         3
+         5      0.5595064E+01    *  0.170E+00      1.000
+ Returned from call    5 of NLSCON
+         5      0.5595064E+01       0.620E-01                0         3
+         6      0.4334862E+00    *  0.356E-02      1.000
+ Returned from call    6 of NLSCON
+         6      0.4334862E+00       0.314E-02                0         3
+         7      0.6815157E-02    *  0.889E-05      1.000
+ Returned from call    7 of NLSCON
+         7      0.6815157E-02       0.895E-05                0         3
+         8      0.6742030E-02    *  0.114E-09      1.000
+
+
+
+ Solution of nonlinear least squares problem obtained within   8 iteration steps
+
+ Incompatibility factor kappa 0.276E-02
+
+
+ Achieved relative accuracy  0.248E-07
+
+
+   Subcondition ( 1,   1) of constrained part  0.100E+01
+
+   Subcondition (    2,   3) of least squares part  0.154E+01
+
+   Sensitivity ( lsq )  0.289E+03
+
+
+
+
+          under the assumptions of the classical linear model:
+                                                               
+
+
+
+
+   Best unbiased estimate of variance and standard deviation of residuals:
+   -----------------------------------------------------------------------
+
+   sigma2 = 0.606E-04     sigma = 0.779E-02
+
+
+
+   Covariance matrix of parameters
+   -----------------
+
+         1         2         3
+   1  0.76E-05
+   2 -0.23E-06  0.17E-06
+   3  0.61E-06 -0.18E-06  0.22E-06
+
+
+
+   Correlation coefficients
+   ------------------------
+
+         1      2      3
+   1   1.00
+   2  -0.20   1.00
+   3   0.48  -0.96   1.00
+
+
+
+   Standard deviation of parameters
+   --------------------------------
+     No.  Estimate           sigma(X)
+      1   0.100E+03   +/-   0.275E-02     =    0.00 %
+      2   0.100E+02   +/-   0.416E-03     =    0.00 %
+      3   0.100E+02   +/-   0.464E-03     =    0.00 %
+
+
+
+   Independent confidence intervals
+   --------------------------------
+      (on 95%-probability level using F-distribution  F(alfa,1,m-n)=  5.12)
+
+      1  (  0.100E+03 ,  0.100E+03 )
+      2  (  0.100E+02 ,  0.100E+02 )
+      3  (  0.100E+02 ,  0.100E+02 )
+
+
+
+
+ #############################################################################
+ #                                                                           #
+ #                                                                           #
+ #     Results from time monitor program for:   NLSCON                       #
+ #                                                                           #
+ #   Total time:      0.000     Sum of parts:      0.000                     #
+ #                                                                           #
+ #     Name              Calls       Time    Av-time    % Total      % Sum   #
+ #   NLSCON                  1      0.000     0.0000       0.00              #
+ #   FCN                    10      0.000     0.0000       0.00       0.00   #
+ #   Jacobi                  9      0.000     0.0000       0.00       0.00   #
+ #   Lin-Fact                9      0.000     0.0000       0.00       0.00   #
+ #   Lin-Sol                16      0.000     0.0000       0.00       0.00   #
+ #   Output                 25      0.000     0.0000       0.00       0.00   #
+ #                                                                           #
+ #############################################################################
+
+
+
+
+
+   ******  Statistics * NLSCON   *******
+   ***  Gauss-Newton iter.:       8  ***
+   ***  Corrector steps   :       0  ***
+   ***  Rejected rk-1 st. :       0  ***
+   ***  Jacobian eval.    :       9  ***
+   ***  Function eval.    :      10  ***
+   ***  ...  for Jacobian :       0  ***
+   *************************************
+
+ Returned from call    8 of NLSCON
+
+
+ Time used =    0.000 Sec
+
+******************************************************************
+

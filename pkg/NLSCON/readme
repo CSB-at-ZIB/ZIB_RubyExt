@@ -1,0 +1,100 @@
+NLSCON package - release 2.3 at January 3, 1992
+
+Description of the package:
+---------------------------
+
+The NLSCON package consists of the files listed and briefly described
+below:
+
+filename    contents of file
+
+nlscon.f    NLSCON standard user interface and internal subroutines,
+
+wnorm.f     Norm computation subroutine used for termination criteria.
+
+main_nlscon.f    An example main program illustrating the usage of NLSCON.
+
+linalg_nlscon.f Linear algebra routines (deccon,solcon).
+
+zibmon.f    Monitor.
+
+zibsec.f    Time routine ZIBSEC.
+
+zibconst.f   Machine constants ZIBCONST.
+
+makefile    An input file to the UNIX make utility containing informa-
+            tion how to build the executable program nlscon.
+
+readme      This information.
+
+nlscon_out.nrm  Example monitor output of program run of nlscon.
+
+nlscon_out.nrm  Example data output of program run of nlscon.
+
+
+To build the executable test program, you need to compile and to link:
+
+main_nlscon.f, nlscon.f, linalg_nlscon.f, zibmon.f, zibsec.f, and
+   zibconst.f.
+
+Under UNIX with the make-utility, for example simply type in:
+make         -   to build program nlscon.
+
+Note that a few adaptations may be necessary to utilize the code for
+your computer at hand. Please examine the two subroutines ZIBCONST and
+ZIBSEC. Probably, you need to adapt ZIBCONST to correspond to the arithmetic 
+of your computer. If you want to obtain time measurements from the time
+monitor, you must supply a "time stamp", measured in seconds, through the 
+argument of the subroutine zibsec.
+If you replace version 2.2 with the new one and if you examine the
+output values from RWK (e.g. CONV, SUMX, DLEVF), please notice that
+the positions of some RWK output values have been changed.
+
+What is new within the current release?
+---------------------------------------
+
+An optionally callable a posteriori statistical analysis routine has
+been included within release 2.3.2. For the estimated parameters,
+the covariance matrix and confidence intervals are computed and stored 
+to the workspace array. Optionally, these data may be also "pretty printed"
+out - together with additionally the correlation coefficients and standard
+deviation of the parameters.
+
+A lot of improvements have been included within release 2.3 of NLSCON
+since the previous release 2.2. They are shortly summarized below:
+
+- The time monitor, which can be used to measure the performance
+  of the package and of the users problem subroutines -
+  see IOPT(19), IOPT(20) and subroutine ZIBSEC
+- An optionally selectable bounded damping strategy which can be helpful
+  for solving extremely nonlinear problems -
+  see IOPT(38) (also IOPT(31)) and RWK(20)
+- If the user problem function FCN returns IERR=1, indicating that
+  F(X1) cannot be evaluated for the given X1, a damping factor reduction
+  is done and F is tried to be evaluated again with a different argument
+  X2. The degree of reduction of the damping factor may be also
+  controlled by the user - see description of FCN
+- Certain characteristic internal parameters of the numerical approxi-
+  mation subroutines may be altered now easily by the user -
+  see RWK(26), RWK(27), RWK(28), RWK(29)
+- The computation of the norm which is used in connection with the
+  convergence termination criterion, is now separated in the function
+  subroutine WNORM and may be easily exchanged.
+- The estimates of the incompatibility factor kappa and the achieved
+  relative accuracy may now be examined by the calling program -
+  see RWK(31), RWK(32).
+
+Further minor changes:
+
+- The default value for IOPT(3) (JACGEN) is now 2 (Jacobian by numerical
+  approximation  w i t h o u t  feedback device).
+- RWK positions, which have been changed:
+  name     new   old
+  CONV     17    24
+  SUMX     18    26
+  DLEVF    19    27
+  SIGMA2   24    28
+
+
+
+ 
