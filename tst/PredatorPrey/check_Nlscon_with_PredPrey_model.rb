@@ -148,7 +148,7 @@ puts " "
 # ---------------------------------------------------------------------
 # Sensitivity Matrix Output (w.r.t. initial guess)
 
-sens = nlscon.compute_l2sensitivity id_task, "l2"
+sens = nlscon.compute_sensitivity id_task, "l2"
 
 
 # puts "sens['pidx'] = #{sens["pidx"]}"
