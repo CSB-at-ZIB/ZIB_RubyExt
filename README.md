@@ -1,5 +1,5 @@
 # ZIB_RubyExt
-## Wrapping ancient FORTRAN routines to Ruby via Ruby Extensions
+## Wrapping ancient FORTRAN routines to Ruby
 
 The package ZIB_RubyExt offers a really simple and down-to-earth approach to make use of ancient FORTRAN routines in Ruby.  Currently, an error-oriented, globalised Gauss-Newton algorithm (with possible nonlinear constraints treatment), and a linearly-implicit ODE solver with extrapolation, NLSCON and LIMEX, respectively, are provided as FORTRAN examples.  These Ruby Extension classes are used as base classes for derived Ruby classes to solve parameter estimation/identification problems in ODE systems, as they appear often in systems biology.
 
