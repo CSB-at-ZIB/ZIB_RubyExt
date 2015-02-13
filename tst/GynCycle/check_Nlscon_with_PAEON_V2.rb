@@ -31,7 +31,7 @@ puts "#{model.version}" # see at the end of this script
 # ---------------------------------------------------------------------
 # Measurement/Experiment Data
 
-fname = "rb_prepare_data_data.dat"
+fname = "rb_Nlscon_with_PAEON_V2_data.dat"
 
 data = Experiment.new 
 data.load_data fname
@@ -121,7 +121,7 @@ current_task = { model: model, data: data,  guess: pIniGuess }
                 # pidx: pidx, guess: guess, pscal: pscal }
 
 estim = {}         
-### estim = nlscon.identify_par current_task 
+estim = nlscon.identify_par current_task 
 
 # ---------------------------------------------------------------------
 # Result Output
