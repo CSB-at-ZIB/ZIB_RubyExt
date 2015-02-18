@@ -704,8 +704,8 @@ void Init_LimexDL()
   rb_define_method(cLimexDL, "par", limex_dl_par, 0);
   rb_define_method(cLimexDL, "par=", limex_dl_par_eq, 1);
   rb_define_method(cLimexDL, "pId", limex_dl_pId, 0);
-  rb_define_method(cLimexDL, "rtol=", limex_dl_atol_eq, 1);
-  rb_define_method(cLimexDL, "atol=", limex_dl_rtol_eq, 1);
+  rb_define_method(cLimexDL, "rtol=", limex_dl_rtol_eq, 1);
+  rb_define_method(cLimexDL, "atol=", limex_dl_atol_eq, 1);
   rb_define_method(cLimexDL, "hmax", limex_dl_hmax, 0);
   rb_define_method(cLimexDL, "hmax=", limex_dl_hmax_eq, 1);
   rb_define_method(cLimexDL, "inistep", limex_dl_inistep, 0);
