@@ -2632,7 +2632,7 @@ C     ------------------------------------------------------------
 C*    End Prologue
       EXTERNAL DECCON
       INTRINSIC DABS
-      INTEGER IREPET, MPRERR, LUERR, MPRMON, LUMON, J
+      INTEGER IREPET, MPRERR, LUERR
       DOUBLE PRECISION ZERO, ONE
       PARAMETER (ZERO=0.0D0, ONE=1.0D0)
 C*    Begin
@@ -2666,18 +2666,6 @@ C*    Begin
         IF (LRWK.LT.LARWK.AND.MPRERR.GT.0) 
      $    WRITE(LUERR,10002) 'Double',LARWK-LRWK
       ENDIF
-C
-      MPRMON=IOPT(13)
-      LUMON=IOPT(14)
-10003 FORMAT(1X,'---',/,'PERM:',25(5I12,/,'PERM:'))
-10004 FORMAT(/,'DIAG:',25(5D12.3,/,'DIAG:'))
-10005 FORMAT(1X,'---',/)
-      IF (IFAIL.EQ.0 .AND. MPRMON.GT.4) THEN
-        WRITE(LUMON,10003) ( IWK(2+J), J=1,N )
-        WRITE(LUMON,10004) ( RWK(1+J), J=1,IRANK )
-        WRITE(LUMON,10005) 
-      ENDIF
-C
       RETURN
       END
 C
