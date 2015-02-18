@@ -570,8 +570,8 @@ void Init_Limex()
   rb_define_method(cLimex, "run", limex_run, 1);
   rb_define_method(cLimex, "y0", limex_y0, 0);
   rb_define_method(cLimex, "y0=", limex_y0_eq, 1);
-  rb_define_method(cLimex, "rtol=", limex_atol_eq, 1);
-  rb_define_method(cLimex, "atol=", limex_rtol_eq, 1);
+  rb_define_method(cLimex, "rtol=", limex_rtol_eq, 1);
+  rb_define_method(cLimex, "atol=", limex_atol_eq, 1);
   rb_define_method(cLimex, "hmax", limex_hmax, 0);
   rb_define_method(cLimex, "hmax=", limex_hmax_eq, 1);
   rb_define_method(cLimex, "inistep", limex_inistep, 0);
