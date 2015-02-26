@@ -62,12 +62,14 @@ class SysBioFit < Nlscon
           fout.printf("%c", "+") if @pidx.count(idx+1) != 0
         end
       end
+      fout.printf("\t%-12s", "SKAP")
       fout.printf("\t%-12s", "DLEVF")
       fout.printf("\n")
     end
     
     fout.printf(" %6d     ", iter)
     par.each { |val| fout.printf("\t%.6e", val) }
+    fout.printf("\t%.6e", (iter > 0) ? self.rwk["skap"] : 0.0)
     fout.printf("\t%.6e", (iter > 0) ? self.rwk["dlevf"] : 0.0)
     fout.printf("\n") 
   end

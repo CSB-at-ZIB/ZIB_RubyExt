@@ -1,7 +1,7 @@
 c-----
 c SBML Model : PAEON_V2                                               
 c              ~~~~~~~~
-c       Date : Mon Feb  2 18:21:20 2015
+c       Date : Tue Feb 17 13:22:53 2015
 c              
 c     Author : automated transcription by 'sbml2fortran'
 c              
@@ -1141,8 +1141,8 @@ c
       end do
 c     ---
       idm(  1) = 'PAEON_V2'//char(0)
-      idm(  2) = 'Mon Feb  2 18:21:20 2015'//char(0)
-      idm(  3) = '001422897680'//char(0)
+      idm(  2) = 'Tue Feb 17 13:22:53 2015'//char(0)
+      idm(  3) = '001424175773'//char(0)
       idm(  4) = 'PAEON_V2.xml'//char(0)
 c     ---
 c

@@ -10,8 +10,8 @@ require_relative '../../lib/ModelDL'
 $dpath = "./Data/PharmaCompany"
 
 $data = { 
-            "P4"         =>  "#{$dpath}/Hormones-Progesterone.csv" ,
             "E2"         =>  "#{$dpath}/Hormones-Estradiol.csv" ,
+            "P4"         =>  "#{$dpath}/Hormones-Progesterone.csv" ,
             "LH_blood"   =>  "#{$dpath}/Hormones-LH.csv" ,
             "FSH_blood"  =>  "#{$dpath}/Hormones-FSH.csv"
         }

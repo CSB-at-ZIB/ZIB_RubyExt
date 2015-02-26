@@ -113,7 +113,7 @@ nlscon.pfname = "rb_Nlscon_with_PAEON_V2_parameter.dat"
 nlscon.sfname = "rb_Nlscon_with_PAEON_V2_solution.dat"
 #nlscon.nitmodulo = 5 # every nitmodulo-th solution is written to sfname 
 nlscon.nitmax = 45
-nlscon.nonlin = 4
+nlscon.nonlin = 3
 nlscon.rwk = { "cond" => 1.0e+9 } 
 
 

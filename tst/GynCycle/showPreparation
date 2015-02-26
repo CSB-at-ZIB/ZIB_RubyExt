@@ -5,33 +5,37 @@
 #
 #killall /usr/bin/gnuplot 2>/dev/null
 
+fsol="./rb_prepare_data_solution.dat"
+fdat="./rb_Nlscon_with_PAEON_V2_data.dat"
+# fdat="./rb_prepare_data_data.dat"
+
 /usr/bin/gnuplot -p << EOF
 set term wxt 0
 set grid
 set xlabel "Time [d]"
 set ylabel "Conc. [pg/ml]"
 a="E2"
-plot 'rb_prepare_data_solution.dat' u 1:a w l, 'rb_prepare_data_data.dat' u 1:a w p
+plot '${fsol}' u 1:a w l, '${fdat}' u 1:a w p
 #
 set term wxt 1
 set grid
 set xlabel "Time [d]"
 set ylabel "Conc. [ng/ml]"
 a="P4"
-plot 'rb_prepare_data_solution.dat' u 1:a w l, 'rb_prepare_data_data.dat' u 1:a w p
+plot '${fsol}' u 1:a w l, '${fdat}' u 1:a w p
 #
 set term wxt 2
 set grid
 set xlabel "Time [d]"
 set ylabel "Conc. [mIU/ml]"
 a="FSH_blood"
-plot 'rb_prepare_data_solution.dat' u 1:a w l, 'rb_prepare_data_data.dat' u 1:a w p
+plot '${fsol}' u 1:a w l, '${fdat}' u 1:a w p
 #
 set term wxt 3 
 set grid
 set xlabel "Time [d]"
 set ylabel "Conc. [mIU/ml]"
 a="LH_blood"
-plot 'rb_prepare_data_solution.dat' u 1:a w l, 'rb_prepare_data_data.dat' u 1:a w p
+plot '${fsol}' u 1:a w l, '${fdat}' u 1:a w p
 EOF
 
