@@ -10,12 +10,12 @@ require_relative '../ext/Nlscon/Nlscon'
 class SysBioFit < Nlscon
 
   attr_accessor :pidx, :pguess, :pscal, :parub, :parlb
-  attr_accessor :nitmax, :nonlin, :arrhenius, :printlevel
+  attr_accessor :nitmax, :nonlin, :arrhenius, :printlevel, :jacgen
   attr_accessor :nitmodulo, :sfname, :pfname
 
   def initialize( ary, pidx = [], pguess = [], pscal = [], 
                   parub = [], parlb = [], ptol = 1.0e-3, 
-                  nitmax = 35, nonlin = 3, printlevel = 0)
+                  nitmax = 35, nonlin = 3, jacgen = 3, printlevel = 0)
     super(ary)
     @pidx = pidx
     @pguess = pguess
@@ -24,6 +24,7 @@ class SysBioFit < Nlscon
     @parlb = parlb
     @nitmax = nitmax
     @nonlin = nonlin
+    @jacgen = jacgen
     # @arrhenius = arrhenius
     @printlevel = printlevel
     @sfname = nil
@@ -201,7 +202,7 @@ class SysBioFit < Nlscon
     # self.df = method(:gn_jac)
 
     self.iopt = { "mprmon" => @printlevel, "mprstat" => 1, "mprerr" => [@printlevel,3].min, 
-                  "jacgen" => 3, "nonlin" => @nonlin, "qstat" => 1 }
+                  "jacgen" => @jacgen, "nonlin" => @nonlin, "qstat" => 1 }
     self.iwk = { "nitmax" => @nitmax }
 
     tinterval = [@tspan[0],@tspan[-1]]

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Zuse Institute Berlin
+ * Copyright (C) 2014 - 2015 Zuse Institute Berlin
  *
  * @file    SbmlModel.h
  *
@@ -20,6 +20,8 @@
 #include <map>
 #include <sbml/SBMLTypes.h>
 
+#include "myTypes.h"
+#include "SbmlJacobian.h"
 
 //
 
@@ -30,7 +32,7 @@ LIBSBML_CPP_NAMESPACE_USE
 
 //
 
-
+/*
 typedef  map< unsigned, string >              ListIndex;
 typedef  map< string, unsigned >              IndexList;
 typedef  map< string, double >                ValueList;
@@ -47,19 +49,24 @@ typedef  map< string, vector<string> >        FunctionDefList;
 // // typedef  map< string, vector<string> >        EventMathList;
 typedef  map< string, vector<string> >        EventAssignList;
 typedef  map< string, vector<int> >           StoichiometryMat;
-
+*/
 
 //
 
 
 class SbmlModel
 {
+
     public:
         /// SbmlModel()  { }
         SbmlModel(Model const* m, string const& fname);
         SbmlModel(Model const* m, string const& fname, bool fortran);
 
-        ~SbmlModel() { }
+        ~SbmlModel();
+
+        SbmlModel(SbmlModel const& other);
+
+        ///
 
         string const& getName() const;
 
@@ -97,12 +104,16 @@ class SbmlModel
                                               "YDOT_LIMEX_TEMPLATE.txt");
 
     private:
+        SbmlModel const& operator= (SbmlModel const) { }
+        void initModel(Model const* m);
+
         void doEventBlock(ifstream& infile);
         void doFunctionBlock(ifstream& infile);
         void doPiecewiseBlock(ifstream& infile);
         void doMultiLine(string const& str);
     
     private:
+        SbmlJacobian*    _jac;
         ostringstream    _outs;
         bool             _fortran;
         string           _sbmlfile;
@@ -120,7 +131,6 @@ class SbmlModel
         ListIndex        _vrule, _vreac;    // , _vrate;
         ListIndex        _vtrig; // , _vemth;
 	IndexList        _piece;
-
 
     public:
         friend ostream& operator<< (ostream& os, SbmlModel const& model);

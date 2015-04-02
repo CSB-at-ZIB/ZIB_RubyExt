@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2014 Zuse Institute Berlin
+ * Copyright (C) 2014 - 2015 Zuse Institute Berlin
  *
  * @file    SbmlModel.cpp
  *
@@ -23,28 +23,80 @@
 //=========================================================================
 
 SbmlModel::SbmlModel(Model const* m, string const& fname) :
-   _fortran(true), 
-   _sbmlfile(fname),
-   _modelname( m->getId() )
+    _jac(new SbmlJacobian()),
+    _fortran(true), 
+    _sbmlfile(fname),
+    _modelname( m->getId() )
 {
-   _piece.clear();
-
-   setModelIDs(m);
-   setCompart(m);
-   setSpecies(m);
-   setParameter(m);
-   setFunctionDef(m);
-   setAssignRule(m);
-   setReaction(m);
-   setEvent(m);
-   setRateOde(m);
+   // cerr << "c'tor SbmlModel " << this << endl;
+ 
+   initModel(m);
 }  
 
 SbmlModel::SbmlModel(Model const* m, string const& fname, bool fortran) :
+    _jac(new SbmlJacobian()),
     _fortran(fortran),
     _sbmlfile(fname),
     _modelname( m->getId() )
 {
+   // cerr << "c'tor SbmlModel " << this << endl;
+
+   initModel(m);
+}
+
+SbmlModel::~SbmlModel()
+{
+   delete _jac;
+
+   // cerr << "d'tor SbmlModel " << this << endl;
+}
+
+SbmlModel::SbmlModel(SbmlModel const& other)
+{
+  _jac = new SbmlJacobian();
+
+  *_jac = *(other._jac);
+  _outs.str( string() );
+  _outs.clear();
+
+  _fortran = other._fortran;
+  _sbmlfile = other._sbmlfile;
+  _modelname = other._modelname;
+
+  _comp = other._comp; 
+  _spec = other._spec; 
+  _parm = other._parm;
+  _func = other._func;
+  _rule = other._rule; 
+  _reac = other._reac; 
+  _rate = other._rate;
+  _trig = other._trig;
+  _emth = other._emth;
+
+  _icomp = other._icomp; 
+  _ispec = other._ispec; 
+  _iparm = other._iparm;
+  _ifunc = other._ifunc;
+  _irule = other._irule; 
+  _ireac = other._ireac; 
+  _itrig = other._itrig;
+
+  _vcomp = other._vcomp; 
+  _vspec = other._vspec; 
+  _vparm = other._vparm;
+  _vfunc = other._vfunc;
+  _vrule = other._vrule; 
+  _vreac = other._vreac; 
+  _vtrig = other._vtrig;
+
+  _piece = other._piece;
+}
+
+//=========================================================================
+
+void 
+SbmlModel::initModel(Model const* m)
+{
    _piece.clear();
 
    setModelIDs(m);
@@ -56,6 +108,18 @@ SbmlModel::SbmlModel(Model const* m, string const& fname, bool fortran) :
    setReaction(m);
    setEvent(m);
    setRateOde(m);
+
+   if ( _jac != 0 )
+   {
+      _jac -> set_druledy(_rule,_irule,_ispec);
+      _jac -> set_druledp(_rule,_irule,_iparm);
+
+      _jac -> set_dreacdy(_reac,_ireac,_ispec);
+      _jac -> set_dreacdp(_reac,_ireac,_iparm);
+
+      _jac -> set_dfdy(_rate,_ispec);
+      _jac -> set_dfdp(_rate,_ispec,_iparm);
+   }
 }
 
 //=========================================================================
@@ -715,8 +779,8 @@ SbmlModel::setRateOde(Model const* m)
       //
 
       for (StringList::const_iterator it = _rule.begin();
-                                       it != _rule.end();
-                                     ++it)
+                                      it != _rule.end();
+                                    ++it)
       {
           if (_fortran)
           {
@@ -851,17 +915,17 @@ SbmlModel::translateFormulaString(string& str, string const& rId)
          sprintf(toF, "fun%d", _ifunc[w]);
          pos = replaceSingle(str, w, toF, pos);
       }
-      else if ( _iparm.count(lw) > 0 )
+      else if ( _iparm.count(lw) > 0 )  //first, check purely local parameters
       {
          sprintf(toF, "par(%d)", _iparm[lw]);
          pos = replaceSingle(str, w, toF, pos);
       }
-      else if ( _iparm.count(rw) > 0 )
+      else if ( _iparm.count(rw) > 0 )  // then, parameters based on reactions
       {
          sprintf(toF, "par(%d)", _iparm[rw]);
          pos = replaceSingle(str, w, toF, pos);
       }
-      else if ( _iparm.count(ww) > 0 )
+      else if ( _iparm.count(ww) > 0 )  // finally, global parameters
       {
          sprintf(toF, "par(%d)", _iparm[ww]);
          pos = replaceSingle(str, w, toF, pos);
@@ -1801,7 +1865,36 @@ ostream& operator<< (ostream& os, SbmlModel const& model)
 
       // os << model._rate;
       os << pair<StringList,ListIndex>( model._rate, model._vspec );
-      // os << endl;
+      os << endl;
+ 
+      //
+
+      os << pair<StringArray,ArrayIndex>( model._jac->get_druledy(),
+                                          model._jac->get_vdruledy()
+                                        );
+      os << endl;
+      os << pair<StringArray,ArrayIndex>( model._jac->get_druledp(),
+                                          model._jac->get_vdruledp()
+                                        );
+      os << endl;
+      os << pair<StringArray,ArrayIndex>( model._jac->get_dreacdy(),
+                                          model._jac->get_vdreacdy()
+                                        );
+      os << endl;
+      os << pair<StringArray,ArrayIndex>( model._jac->get_dreacdp(),
+                                          model._jac->get_vdreacdp()
+                                        );
+/*
+      os << endl;
+      // since model const, wrong here: model._jac->set_dfdy(model._rate);
+      os << pair<StringArray,ArrayIndex>( model._jac->get_dfdy(),
+                                          model._jac->get_vdfdy()
+                                        );
+      os << endl;
+      os << pair<StringArray,ArrayIndex>( model._jac->get_dfdp(), 
+                                          model._jac->get_vdfdp()
+                                        );
+*/
    }
 
    return os;

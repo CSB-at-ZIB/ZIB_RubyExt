@@ -9,6 +9,9 @@ CXXFLAGS = -I../include -O3
 FC = gfortran
 FFLAGS = -O3
 
+OBJS = sbml2fortran.o SbmlModel.o SbmlJacobian.o \
+       Parser.o Expression.o ExprNode.o
+
 all : ../lib/libsbml.so sbml2fortran chk_ydot
 
 ../lib/libsbml.so : 
@@ -19,12 +22,19 @@ all : ../lib/libsbml.so sbml2fortran chk_ydot
 	./configure --prefix=$(bpath) --disable-static && \
 	$(MAKE) install
 
-sbml2fortran : sbml2fortran.o SbmlModel.o
-	$(CXX) -I../include -o sbml2fortran sbml2fortran.o SbmlModel.o -L../lib -lsbml -Wl,-rpath=$(rpath)
+sbml2fortran : $(OBJS)
+	$(CXX) -I../include -o sbml2fortran $(OBJS) -L../lib -lsbml -Wl,-rpath=$(rpath)
 	cp sbml2fortran YDOT_LIMEX_TEMPLATE.txt ../../bin/
 
-SbmlModel.o : SbmlModel.cpp SbmlModel.h
+SbmlModel.o : SbmlModel.cpp SbmlModel.h myTypes.h
 
+SbmlJacobian.o : SbmlJacobian.cpp SbmlJacobian.h myTypes.h
+
+Parser.o : Parser.cpp Parser.h Expression.h myTypes.h
+
+Expression.o : Expression.cpp Expression.h myTypes.h
+
+ExprNode.o : ExprNode.cpp ExprNode.h Expression.h myTypes.h
 
 chk_ydot : chk_ydot.o sbml_mathfuns.o ydot_LIMEX.o ydot_LIMEX.h
 	$(CXX) -o chk_ydot chk_ydot.o sbml_mathfuns.o ydot_LIMEX.o
