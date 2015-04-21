@@ -7,6 +7,34 @@ require_relative '../../lib/Experiment'
 require_relative '../../lib/SysBioFit'
 
 # ---------------------------------------------------------------------
+# Command line
+
+$rtol = 1.0e-8
+$atol = 1.0e-9
+
+$ptol = 1.0e-2
+$eta = Math::sqrt(10.0*$rtol)
+
+if ARGV.length > 0 then
+  $ptol = Float(ARGV[0]) rescue 0.0
+  if ARGV.length > 1 then
+    $eta = Float(ARGV[1]) rescue 0.0
+  end
+else
+  puts " "
+  puts "Usage: ./#{File.basename(__FILE__)} ptol [eta]"
+  puts " "
+  puts "         Default values"
+  puts "         --------------"
+  puts "          * ptol = 1.0e-2"
+  puts "          * eta = sqrt(10.0*rtol) ; rtol = #{'%.1e' % $rtol}"
+  puts " "
+  exit -1
+end
+$ptol = 1.0e-2 if $ptol <= 0.0
+$eta = Math::sqrt(10.0*$rtol) if $ptol <= 0.0
+
+# ---------------------------------------------------------------------
 # ODE system
 
 def abc(t,y,par)
@@ -74,6 +102,10 @@ initvals = {
            }
 
 model = Model.new :abc, initvals    # t0, y0, par, plabel
+model.hmax = 0.0
+model.inistep = 1.0e-4
+model.rtol = $rtol
+model.atol = $atol
 
 # puts "#{model.version}"
 
@@ -89,8 +121,8 @@ data.load_csv fname
 # Parameter Estimation/Identification
 
 pIniGuess = {
-               "k2" => [ 3.5 , 1.0 ],
-               "k1" => [ 0.3 , 1.0 ]
+               "k2" => [ 3.5 , 0.0 ],
+               "k1" => [ 0.3 , 0.0 ]
             }
 
 nPar = 0
@@ -107,11 +139,14 @@ mTotal = data.mdata.flatten.length
 mFit   = mTotal - data.mweight.count(0.0)
 
 fit = SysBioFit.new [nPar,mTotal,mFit]
-fit.rtol = 1.0e-5
-fit.printlevel = 2
+fit.rtol = $ptol
+fit.printlevel = 3
 fit.pfname = "rb_Nlscon_with_ABC_parameter.dat"
 fit.sfname = "rb_Nlscon_with_ABC_solution.dat"
-# fit.nonlin = 2
+fit.nitmax = 195
+fit.nonlin = 3
+fit.jacgen = 2
+fit.rwk = { "ajdel" => $eta } 
 # fit.rwk = { "cond" => 1.0e-3 } 
 
 id_task = { model: model, data: data,  guess: pIniGuess }

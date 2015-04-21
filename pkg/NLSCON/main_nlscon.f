@@ -58,12 +58,13 @@ C       term )
       DO 81 I=1,M-1
         H =(2.0D0*(DBLE(I)-1.0D0)-X(3))/X(2)
         FOBS(I)=X(1)*DEXP(-H*H/2.0D0)+DSIN(10.0D0*I)*1.0D-2
-        WRITE(9,*)FOBS(I)
+        H =DSIN(10.0D0*I)*1.0D-2/(X(1)*DEXP(-H*H/2.0D0))
+        WRITE(9,*)FOBS(I),H
 81    CONTINUE
 82    FORMAT(//)
       WRITE(9,82)
 C
-      EPS = 1.0D-4
+      EPS = 1.0D-6
       DO 710 I=1,50
         IOPT(I)=0
 710    CONTINUE
@@ -79,7 +80,7 @@ C       Jacobian: 0=(same as value 3)
 C                 1=supplied by user routine JAC
 C                 2=computed by numerical differentation (no feedback) 
 C                 3=computed by numerical differentation (with feedback)
-      IOPT(3)=1
+      IOPT(3)=2
 C     A posteriori statistical analysis: 0 = no, 1 = yes
       IOPT(21)=1
 C     Broyden updates: 0 = inhibit, 1=allow
@@ -116,7 +117,7 @@ C     RW(22)=1.0D-3
 C     Override rank1-decision parameter SIGMA:
 C     RW(23)=2.0D0
 C     Override maximum permitted subcondition for DECCON:
-      RW(25)= 1.0D+16
+C     RW(25)= 1.0D+16
 C     Initial guess of parameters to be estimated
       X(1)=1.0D0
       X(2)=2.0D0

@@ -9,7 +9,7 @@ libNLSCON.so: $(OBJS)
 	# cp $@ ..
 
 nlscon: main_nlscon.o $(OBJS)
-	$(FC) $(DFLAGS) main_nlscon.o $(OBJS) -o nlscon
+	$(FC) $(FFLAGS) main_nlscon.o $(OBJS) -o nlscon
 
 clean:
 	/bin/rm -f *.o *.so nlscon

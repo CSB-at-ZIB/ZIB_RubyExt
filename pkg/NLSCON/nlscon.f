@@ -30,7 +30,7 @@ C*  Keywords          Nonlinear least squares problems,
 C                     Gauss-Newton methods
 C*  Version           2.3.3
 C*  Revision          December 1993
-C*  Latest Change     June 2011
+C*  Latest Change     April 2015
 C*  Library           CodeLib
 C*  Code              Fortran 77, Double Precision
 C*  Environment       Standard Fortran 77 environment on PC's,
@@ -657,6 +657,7 @@ C                           which has been computed by NLSCON.
 C            00, July   12  RTOL output-value bug fixed
 C            05, Sept.  12  FCREDU setting bug near 3.6.1 fixed
 C     2.3.3  11, June   27  Added NONLIN option 4 as already documented
+C            15, April  21  Taken out a square root in routine NCJCF.
 C 
 C     ------------------------------------------------------------
 C
@@ -3053,7 +3054,10 @@ C           Exit, If ...
             QFINE = .TRUE.
             IF (SUMD .NE. ZERO .AND. IS .EQ. 0)THEN
                ETA(K) = DMIN1 (ETAMAX,
-     $              DMAX1 (ETAMIN, DSQRT (ETADIF / SUMD)*ETA(K)))
+     $              DMAX1 (ETAMIN, (ETADIF / SUMD)*ETA(K)))
+Ctd  $              DMAX1 (ETAMIN, DSQRT (ETADIF / SUMD)*ETA(K)))
+Ctd  21.04.2015: Deleted the square root due to Appendix A.5 in 
+Ctd              Deuflhard/Roeblitz: Practical Guide Num.Mod.Sys.Biol. 
                IS = 1
                QFINE = CONV .LT. SMALL2 .OR. SUMD .GE. ETAMIN
             ENDIF

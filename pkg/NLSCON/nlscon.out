@@ -1,16 +1,16 @@
 
  Simulated  experimential  data  :
-   60.647625760154448     
-   72.624033159876376     
-   83.517140824886269     
-   92.319085770268373     
-   98.017243582138491     
-   99.996951893788975     
-   98.027606237491099     
-   92.301695752124346     
-   83.535961107763200     
-   72.609840050957999     
-   60.652623544482495     
+   60.647625760154448       -8.9693917723321703E-005
+   72.624033159876376        1.2572422520956678E-004
+   83.517140824886269       -1.1828886156774156E-004
+   92.319085770268373        8.0717145070169466E-005
+   98.017243582138491       -2.6767517733807218E-005
+   99.996951893788975       -3.0481062110221668E-005
+   98.027606237491099        7.8952431035957793E-005
+   92.301695752124346       -1.0766667255040649E-004
+   83.535961107763200        1.0703083282355559E-004
+   72.609840050957999       -6.9733018327802578E-005
+   60.652623544482495       -7.2943844431594916E-006
 
 
 
@@ -19,7 +19,7 @@
  Gauss-Newton-Method for the solution of nonlinear least squares problems
 
 
- Real    Workspace declared as       400 is used up to       285 ( 71.3 percent)
+ Real    Workspace declared as       400 is used up to       285 ( 71.2 percent)
 
  Integer Workspace declared as        60 is used up to        50 ( 83.3 percent)
 
@@ -29,9 +29,9 @@
  Number of data to fitted, e.g. observations (MFIT) :   11
  Number of equality constraints (MCON) :    1
 
- Prescribed relative precision (RTOL) :   0.10D-03
+ Prescribed relative precision (RTOL) :   0.10D-05
 
- The Jacobian is supplied by a user subroutine
+ The Jacobian is supplied by numerical differentiation (without feedback strategy)
  Automatic row scaling of the Jacobian is allowed
 
  Rank-1 updates are inhibited
@@ -46,7 +46,7 @@
  Minimum allowed damping factor FCMIN =  0.10D-01
  Rank-1 updates decision parameter SIGMA =  0.10D+04
  Initial Jacobian pseudo-rank IRANK =     3
- Maximum permitted subcondition COND =  0.10D+17
+ Maximum permitted subcondition COND =  0.45D+16
 
 
 
@@ -63,18 +63,18 @@
          3      0.7847902D+02    *  0.231D+02      0.052
  Returned from call    3 of NLSCON
          3      0.7847902D+02       0.981D+01                0         3
-         4      0.4619915D+02    *  0.561D+01      0.392
+         4      0.4619917D+02    *  0.561D+01      0.392
  Returned from call    4 of NLSCON
-         4      0.4619915D+02       0.119D+01                0         3
-         5      0.5595064D+01    *  0.170D+00      1.000
+         4      0.4619917D+02       0.119D+01                0         3
+         5      0.5595086D+01    *  0.170D+00      1.000
  Returned from call    5 of NLSCON
-         5      0.5595064D+01       0.620D-01                0         3
-         6      0.4334862D+00    *  0.356D-02      1.000
+         5      0.5595086D+01       0.620D-01                0         3
+         6      0.4334899D+00    *  0.356D-02      1.000
  Returned from call    6 of NLSCON
-         6      0.4334862D+00       0.314D-02                0         3
-         7      0.6815157D-02    *  0.889D-05      1.000
+         6      0.4334899D+00       0.314D-02                0         3
+         7      0.6815160D-02    *  0.889D-05      1.000
  Returned from call    7 of NLSCON
-         7      0.6815157D-02       0.895D-05                0         3
+         7      0.6815160D-02       0.895D-05                0         3
          8      0.6742030D-02    *  0.114D-09      1.000
 
 
@@ -154,10 +154,10 @@
  #                                                                           #
  #     Results from time monitor program for:   NLSCON                       #
  #                                                                           #
- #   Total time:      0.000     Sum of parts:      0.000                     #
+ #   Total time:      0.004     Sum of parts:      0.000                     #
  #                                                                           #
  #     Name              Calls       Time    Av-time    % Total      % Sum   #
- #   NLSCON                  1      0.000     0.0000       0.00              #
+ #   NLSCON                  1      0.004     0.0040     100.00              #
  #   FCN                    10      0.000     0.0000       0.00       0.00   #
  #   Jacobi                  9      0.000     0.0000       0.00       0.00   #
  #   Lin-Fact                9      0.000     0.0000       0.00       0.00   #
@@ -176,7 +176,7 @@
    ***  Rejected rk-1 st. :       0  ***
    ***  Jacobian eval.    :       9  ***
    ***  Function eval.    :      10  ***
-   ***  ...  for Jacobian :       0  ***
+   ***  ...  for Jacobian :      27  ***
    *************************************
 
  Returned from call    8 of NLSCON
