@@ -658,6 +658,8 @@ C            00, July   12  RTOL output-value bug fixed
 C            05, Sept.  12  FCREDU setting bug near 3.6.1 fixed
 C     2.3.3  11, June   27  Added NONLIN option 4 as already documented
 C            15, April  21  Taken out a square root in routine NCJCF.
+C            15, April  23  Undo of last change of Apr 21: 
+C                           The square root *is* correct, indeed!
 C 
 C     ------------------------------------------------------------
 C
@@ -3054,10 +3056,17 @@ C           Exit, If ...
             QFINE = .TRUE.
             IF (SUMD .NE. ZERO .AND. IS .EQ. 0)THEN
                ETA(K) = DMIN1 (ETAMAX,
-     $              DMAX1 (ETAMIN, (ETADIF / SUMD)*ETA(K)))
-Ctd  $              DMAX1 (ETAMIN, DSQRT (ETADIF / SUMD)*ETA(K)))
+     $              DMAX1 (ETAMIN, DSQRT (ETADIF / SUMD)*ETA(K)))
+C
+Ctd  23.04.2015: The previously deleted square root *is* correct:
+Ctd               SUMD is an l2 (lower l2 !) mean over eta_i per one 
+Ctd               column of the Jacobian A.  See also the Appendix in
+Ctd              Deuflhard/Roeblitz: Practical Guide Num.Mod.Sys.Biol.
+C 
+Ctd  $              DMAX1 (ETAMIN, (ETADIF / SUMD)*ETA(K)))
 Ctd  21.04.2015: Deleted the square root due to Appendix A.5 in 
-Ctd              Deuflhard/Roeblitz: Practical Guide Num.Mod.Sys.Biol. 
+Ctd              Deuflhard/Roeblitz: Practical Guide Num.Mod.Sys.Biol.
+C 
                IS = 1
                QFINE = CONV .LT. SMALL2 .OR. SUMD .GE. ETAMIN
             ENDIF
