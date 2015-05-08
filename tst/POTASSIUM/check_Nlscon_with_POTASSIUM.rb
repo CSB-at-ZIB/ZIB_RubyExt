@@ -19,11 +19,11 @@ model = ModelDL.new
 model.t0 = 5.0
 model.hmax = 0.0
 model.inistep = 1.0e-4
-model.rtol = 1.0e-9
+model.rtol = 1.0e-8
 model.atol = 1.0e-9
 # model.monitor = 1
 # puts "#{model.inspect}"
-# puts "#{model.version}" # see at the end of this script
+puts "#{model.version}" # see at the end of this script
 
 
 
@@ -74,28 +74,30 @@ printf("\n\n\n")
 # ---------------------------------------------------------------------
 # Parameter Estimation/Identification
 
+dp = Float::EPSILON # or = 0.0
+
 pIniGuess = {
-                "global_p2"   =>  [ 34.0   ,  0.0 ],   #  par(2)
-                "global_p4"   =>  [  0.0002,  0.0 ],   #  par(4)
-                "global_p5"   =>  [ 14.04  ,  0.0 ],   #  par(5)
-                "global_p6"   =>  [  0.05  ,  0.0 ],   #  par(6)
-                "global_p8"   =>  [ 14.91  ,  0.0 ],   #  par(8)
-                "global_p9"   =>  [  9.99  ,  0.0 ],   #  par(9)
-                "global_p13"  =>  [  6.01  ,  0.0 ],   #  par(13)
-                "global_p16"  =>  [  3.0   ,  0.0 ],   #  par(16)
-                "global_p18"  =>  [  0.08  ,  0.0 ],   #  par(18)
-                "global_p19"  =>  [  0.1373,  0.0 ],   #  par(19)
-                "global_p21"  =>  [  0.1085,  0.0 ],   #  par(21)
-                "global_p25"  =>  [  0.2898,  0.0 ],   #  par(25)
-                "global_p26"  =>  [  2.15  ,  0.0 ],   #  par(26)
+                "global_p2"   =>  [ 34.0   ,  dp ],   #  par(2)
+                "global_p4"   =>  [  0.0002,  dp ],   #  par(4)
+                "global_p5"   =>  [ 14.04  ,  dp ],   #  par(5)
+                "global_p6"   =>  [  0.05  ,  dp ],   #  par(6)
+                "global_p8"   =>  [ 14.91  ,  dp ],   #  par(8)
+                "global_p9"   =>  [  9.99  ,  dp ],   #  par(9)
+                "global_p13"  =>  [  6.01  ,  dp ],   #  par(13)
+                "global_p16"  =>  [  3.0   ,  dp ],   #  par(16)
+                "global_p18"  =>  [  0.08  ,  dp ],   #  par(18)
+                "global_p19"  =>  [  0.1373,  dp ],   #  par(19)
+                "global_p21"  =>  [  0.1085,  dp ],   #  par(21)
+                "global_p25"  =>  [  0.2898,  dp ],   #  par(25)
+                "global_p26"  =>  [  2.15  ,  dp ],   #  par(26)
  
-                "global_p44"  =>  [  1.2   ,  0.0 ],   #  par(42)
-                "global_p45"  =>  [  3.0   ,  0.0 ],   #  par(43)
-                "global_p46"  =>  [  0.0854,  0.0 ],   #  par(44)
-                "global_p47"  =>  [  1.0   ,  0.0 ],   #  par(45)
-                "global_p48"  =>  [  0.015 ,  0.0 ],   #  par(46)
-                "global_p49"  =>  [  0.985 ,  0.0 ],   #  par(47)
-                "global_p50"  =>  [  7.0   ,  0.0 ]    #  par(48)
+                "global_p44"  =>  [  1.2   ,  dp ],   #  par(42)
+                "global_p45"  =>  [  3.0   ,  dp ],   #  par(43)
+                "global_p46"  =>  [  0.0854,  dp ],   #  par(44)
+                "global_p47"  =>  [  1.0   ,  dp ],   #  par(45)
+                "global_p48"  =>  [  0.015 ,  dp ],   #  par(46)
+                "global_p49"  =>  [  0.985 ,  dp ],   #  par(47)
+                "global_p50"  =>  [  7.0   ,  dp ]    #  par(48)
             }
 
 
@@ -117,7 +119,7 @@ fit.sfname = "rb_Nlscon_with_POTASSIUM_solution.dat"
 #fit.nitmodulo = 5 # every nitmodulo-th solution is written to sfname 
 fit.nitmax = 30
 fit.nonlin = 4
-fit.rwk = { "cond" => 5.0e+5 } 
+fit.rwk = { "cond" => 1.0e+2 } 
 
 
 id_task = { model: model, data: data,  guess: pIniGuess }
