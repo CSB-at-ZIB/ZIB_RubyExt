@@ -23,7 +23,7 @@ all : ../lib/libsbml.so sbml2fortran chk_ydot
 	$(MAKE) install
 
 sbml2fortran : $(OBJS)
-	$(CXX) -I../include -o sbml2fortran $(OBJS) -L../lib -lsbml -Wl,-rpath $(rpath)
+	$(CXX) -I../include -o sbml2fortran $(OBJS) -L../lib -lsbml -Wl,-rpath,$(rpath)
 	cp sbml2fortran YDOT_LIMEX_TEMPLATE.txt ../../bin/
 
 SbmlModel.o : SbmlModel.cpp SbmlModel.h myTypes.h
