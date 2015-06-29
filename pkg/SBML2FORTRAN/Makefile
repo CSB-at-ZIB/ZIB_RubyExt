@@ -9,10 +9,19 @@ CXXFLAGS = -I../include -O3
 FC = gfortran
 FFLAGS = -O3
 
-OBJS = sbml2fortran.o SbmlModel.o SbmlJacobian.o \
-       Parser.o Expression.o ExprNode.o
+OBJS = sbml2fortran.o SbmlModel.o 
+# OBJS = sbml2fortran.o SbmlModel.o SbmlJacobian.o \
+#        Parser.o Expression.o ExprNode.o
 
 all : ../lib/libsbml.so sbml2fortran chk_ydot
+# all : ../lib/liblepton.so ../lib/libsbml.so sbml2fortran chk_ydot
+
+../lib/liblepton.so :
+	cd .. && \
+	/bin/rm -rf liblepton-1.3 && \
+	tar xf libLepton-1.3-src.tar.gz && \
+	cd liblepton-1.3 && \
+	$(MAKE) install prefix=$(bpath)
 
 ../lib/libsbml.so : 
 	cd .. && \
@@ -40,11 +49,16 @@ chk_ydot : chk_ydot.o sbml_mathfuns.o ydot_LIMEX.o ydot_LIMEX.h
 	$(CXX) -o chk_ydot chk_ydot.o sbml_mathfuns.o ydot_LIMEX.o
 
 clean:
-	# /bin/rm -rf ../lib/libsbml.*
+	# # /bin/rm -rf ../lib/liblepton.*
+	# # /bin/rm -rf ../lib/libsbml.*
+	# /bin/rm -rf ../liblepton-1.3
 	/bin/rm -rf ../libsbml-4.3.1 
 	/bin/rm -f *.o sbml2fortran chk_ydot
 
 mclean:
+	# /bin/rm -rf ../lib/liblepton.*
+	# /bin/rm -rf ../liblepton-1.3
 	/bin/rm -rf ../lib/libsbml.*
 	/bin/rm -rf ../libsbml-4.3.1 
 	/bin/rm -f *.o sbml2fortran chk_ydot
+

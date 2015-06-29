@@ -50,6 +50,10 @@ class SbmlJacobian
 {
     public:
         SbmlJacobian();
+	SbmlJacobian(IndexList const& ispec,
+	             IndexList const& iparm,
+	             IndexList const& ifunc,
+	             IndexList const& irule);
         /// SbmlJacobian(Model const* m);
 
         ~SbmlJacobian();
@@ -97,11 +101,15 @@ class SbmlJacobian
         SbmlJacobian const& toFortran(string const& fname =
                                           "JAC_LIMEX_TEMPLATE.txt");
     private:
+	void initJacobian();
+	void analyseFormula(string const& str, string const rId = "");
         string get_pId(string const& tok, 
                        string const& rId,
                        IndexList const& iparm) const;
 
     private:
+	IndexList    _ispec, _iparm, _ifunc, _irule;
+
 	StringArray  _druledy;
         StringArray  _druledp;
 

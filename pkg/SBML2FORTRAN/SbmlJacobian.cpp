@@ -22,10 +22,48 @@
 
 //=========================================================================
 
-SbmlJacobian::SbmlJacobian() 
+SbmlJacobian::SbmlJacobian() :
+   _ispec(),
+   _iparm(),
+   _ifunc(),
+   _irule()
 {
    // cerr << "c'tor SbmlJacobian " << this << endl;
 
+   initJacobian();
+}
+
+SbmlJacobian::SbmlJacobian(IndexList const& ispec,
+                           IndexList const& iparm,
+                           IndexList const& ifunc,
+                           IndexList const& irule) :
+   _ispec(ispec),
+   _iparm(iparm),
+   _ifunc(ifunc),
+   _irule(irule)
+{
+   // cerr << "c'tor SbmlJacobian " << this << endl;
+
+   initJacobian();
+}
+
+/*
+SbmlJacobian::SbmlJacobian(Model const* m) 
+{
+}  
+*/
+
+//-------------------------------------------------------------------------
+
+SbmlJacobian::~SbmlJacobian()
+{
+   // cerr << "d'tor SbmlJacobian " << this << endl;
+}
+
+//-------------------------------------------------------------------------
+
+Sbml::Jacobian::initJacobian()
+{
    _druledy.clear();
    _druledp.clear();
 
@@ -45,25 +83,62 @@ SbmlJacobian::SbmlJacobian()
    _vdfdp.clear();
 }
 
-/*
-SbmlJacobian::SbmlJacobian(Model const* m) 
-{
-}  
-*/
+//=========================================================================
 
-//-------------------------------------------------------------------------
-
-SbmlJacobian::~SbmlJacobian()
+void
+SbmlJacobian::analyseFormula(string const& str, 
+                             string const& rId, unsigned rIdx,
+                             ArrayIndex& vdy, ArrayIndex& vdp)
 {
-   // cerr << "d'tor SbmlJacobian " << this << endl;
+   size_t         pos = 0;
+   vector<string> tok = split(str);
+
+   for (unsigned n = 0; n < tok.size(); ++n)
+   {
+      char   toF[64];
+      string w = tok[n];
+      string ww = "global_" + w;
+      string rw = rId + "_" + w;
+      string lw = rId + "_local_" + w;
+
+      char*  pEnd = &w[0];
+      double val = strtod(w.c_str(), &pEnd);
+
+      if ( *pEnd == '\0' )
+      {
+         // no action for numbers
+      }
+      else if ( _irule.count(w) > 0 )
+      {
+         // no action for rules
+      }
+      else if ( _ifunc.count(w) > 0 )
+      {
+         // no action for function defs
+      }
+      else if ( _iparm.count(lw) > 0 )
+      {
+         vdp[UnsignedPair(rIdx,_iparm[lw])] = StringPair(rId,lw);
+      }
+      else if ( _iparm.count(rw) > 0 )
+      {
+         vdp[UnsignedPair(rIdx,_iparm[rw])] = StringPair(rId,rw);
+      }
+      else if ( _iparm.count(ww) > 0 )
+      {
+         vdp[UnsignedPair(rIdx,_iparm[ww])] = StringPair(rId,ww);
+      }
+      else if ( _ispec.count(w) > 0 )
+      {
+         vdy[UnsignedPair(rIdx,_ispec[w])] = StringPair(rId,w);
+      }
+   }
 }
 
 //=========================================================================
 
 void
-SbmlJacobian::set_druledy(StringList&      rule, 
-                          IndexList const& irule,
-                          IndexList const& ispec)
+SbmlJacobian::set_drule(StringList const& rule)
 {
    PARKIN::Parser p;
    ostringstream  outs;
@@ -72,6 +147,22 @@ SbmlJacobian::set_druledy(StringList&      rule,
 
    _druledy.clear();
    _vdruledy.clear();
+   _druledp.clear();
+   _vdruledp.clear();
+
+   for (StringList::const_iterator it = rule.begin();
+                                   it != rule.end();
+                                 ++it)
+   {
+      string rId = it->first;
+      string rul = it->second;
+
+      analyseFormula( rul,rId,_irule[rId], _vdruledy,_vdruledp );
+
+      //_vdruledy[UnsignedPair(_irule[rId],_ispec[sId])] = StringPair(rId,sId);
+      //_vdruledp[UnsignedPair(_irule[rId],_iparm[pId])] = StringPair(rId,pId);
+   }
+
 
    for (IndexList::const_iterator it1 = irule.begin();
                                   it1 != irule.end();
