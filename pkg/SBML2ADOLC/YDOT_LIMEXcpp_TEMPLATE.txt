@@ -8,8 +8,15 @@ c
 c#comment parameters
 c  par[%3d]  :   %-42s
 */
+#include <cmath>
+#include <cstring>
+#include <algorithm>
 // #include "ydot_LIMEXcpp.h"
+/**/
 #define MAXIDSTRLEN 64
+
+/**/
+using namespace std;
 
 /**/
 static struct
@@ -31,7 +38,7 @@ c#events
 
 //=======================================================================
       void ydot ( int, double, double*, double*, int* );
-      void check_events ( double, int, double* ); 
+      void check_events ( double, int, int* ); 
 //-----------------------------------------------------------------------
 c#block_for_all(j in functions)
 c#args
@@ -89,7 +96,7 @@ c#for_all(j in pieces)
 
    *info = 0;
 
-   for (int j = 0; j < *n; ++j)
+   for (int j = 0; j < n; ++j)
    {
       spe[j] = y_state[j];
        dy[j] = zero;
@@ -195,7 +202,7 @@ c#compartments
 //-----------------------------------------------------------------------
 
 c#species
-   int ms = std::min(%d,ls);
+   int ms = std::min(%d,*ls);
 
    if ( is[0] == 0 )
    {
@@ -252,7 +259,7 @@ void get_compartment_ids_ ( char (*idc)[MAXIDSTRLEN], int* ncom, int _len)
 c#compartments
    *ncom = %d;
 c#comment compartments
-   idc[%3d] = "%s";
+   strncpy(idc[%3d],"%s\0",_len);
 }
 
 //=======================================================================
@@ -264,11 +271,11 @@ c#species
 
    for (int j = 0; j < *nspe; ++j)
    {
-      ids[j] = "\0";
+      strncpy(ids[j],"\0",_len);
    }
 
 c#comment species
-   ids[%3d] = "%s";
+   strncpy(ids[%3d],"%s\0",_len);
 }
 
 //=======================================================================
@@ -279,11 +286,11 @@ c#parameters
    *npar = %d;
    for (int j = 0; j < *npar; ++j)
    {
-      idp[j] = "\0";
+      strncpy(idp[j],"\0",_len);
    }
 
 c#comment parameters
-   idp[%3d] = "%s";
+   strncpy(idp[%3d],"%s\0",_len);
 }
 
 //=======================================================================
@@ -295,11 +302,11 @@ c#modelids
 
    for (int j = 0; j < *nid; ++j)
    {
-      idm[j] = "\0";
+      strncpy(idm[j],"\0",_len);
    }
 
 c#comment modelids
-   idm[%3d] = "%s";
+   strncpy(idm[%3d],"%s\0",_len);
 }
 
 //=======================================================================
