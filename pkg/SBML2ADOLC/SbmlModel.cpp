@@ -8,7 +8,7 @@
  *
  * @author  Thomas Dierkes (dierkes at zib dot de)
  * 
- * @date    20.05.2014
+ * @date    30.06.2015
  *
  */
 
@@ -24,7 +24,7 @@
 
 SbmlModel::SbmlModel(Model const* m, string const& fname) :
     // _jac(new SbmlJacobian()),
-    _fortran(true), 
+    _adolc(true), 
     _sbmlfile(fname),
     _modelname( m->getId() )
 {
@@ -33,9 +33,9 @@ SbmlModel::SbmlModel(Model const* m, string const& fname) :
    initModel(m);
 }  
 
-SbmlModel::SbmlModel(Model const* m, string const& fname, bool fortran) :
+SbmlModel::SbmlModel(Model const* m, string const& fname, bool adolc) :
     // _jac(new SbmlJacobian()),
-    _fortran(fortran),
+    _adolc(adolc),
     _sbmlfile(fname),
     _modelname( m->getId() )
 {
@@ -59,7 +59,7 @@ SbmlModel::SbmlModel(SbmlModel const& other)
   _outs.str( string() );
   _outs.clear();
 
-  _fortran = other._fortran;
+  _adolc = other._adolc;
   _sbmlfile = other._sbmlfile;
   _modelname = other._modelname;
 
@@ -108,20 +108,6 @@ SbmlModel::initModel(Model const* m)
    setReaction(m);
    setEvent(m);
    setRateOde(m);
-
-   /*
-   if ( _jac != 0 )
-   {
-      _jac -> set_druledy(_rule,_irule,_ispec);
-      _jac -> set_druledp(_rule,_irule,_iparm);
-
-      _jac -> set_dreacdy(_reac,_ireac,_ispec);
-      _jac -> set_dreacdp(_reac,_ireac,_iparm);
-
-      _jac -> set_dfdy(_rate,_ispec);
-      _jac -> set_dfdp(_rate,_ispec,_iparm);
-   }
-   */
 }
 
 //=========================================================================
@@ -161,10 +147,10 @@ SbmlModel::setModelIDs(Model const* m)
 
     str2[strlen(str2)-1] = '\0';
 
-    _vmodel[1] = str1;
-    _vmodel[2] = str2;
-    _vmodel[3] = str3;
-    _vmodel[4] = str4;
+    _vmodel[0] = str1;
+    _vmodel[1] = str2;
+    _vmodel[2] = str3;
+    _vmodel[3] = str4;
   }
 }
 
@@ -183,7 +169,8 @@ SbmlModel::setCompart(Model const* m)
       for (unsigned n = 0; n < nCompart; ++n)
       {
          c = m->getCompartment(n);
-         setCompart(c,n+1);
+         setCompart(c,n);
+         // setCompart(c,n+1);
       }
    }
 }
@@ -219,7 +206,8 @@ SbmlModel::setSpecies(Model const* m)
       for (unsigned n = 0; n < nSpecies; ++n)
       {
          s = m->getSpecies(n);
-         setSpecies(s,n+1);
+         setSpecies(s,n);
+         // setSpecies(s,n+1);
       } 
    }
 }
@@ -332,7 +320,8 @@ SbmlModel::setParameter(Parameter const* p, string const& prefix)
 {
    if (p != 0)
    {
-      unsigned n = _iparm.size() + 1;
+      unsigned n = _iparm.size();
+      // unsigned n = _iparm.size() + 1;
       string   pId = prefix + "_" + p->getId();
 
       if (_iparm.count(pId) <= 0)
@@ -360,7 +349,8 @@ SbmlModel::setFunctionDef(Model const* m)
       for (unsigned n = 0; n < nFunction; ++n)
       {
          fd = m->getFunctionDefinition(n);
-         setFunctionDef(fd,n+1);
+         setFunctionDef(fd,n);
+         // setFunctionDef(fd,n+1);
       }
    }
 }
@@ -404,7 +394,7 @@ SbmlModel::setFunctionDef(FunctionDefinition const* fd, unsigned n)
       _ifunc[fId] = n;
       _vfunc[n] = fId;
 
-      if (_fortran)
+      if (_adolc)
       {
          translateFunctionDefVector(vec);
       }
@@ -428,7 +418,8 @@ SbmlModel::setAssignRule(Model const* m)
       for (unsigned n = 0; n < nRule; ++n)
       {
          r = m->getRule(n);
-         setAssignRule(r,n+1);
+         setAssignRule(r,n);
+         // setAssignRule(r,n+1);
       }
    }
 }
@@ -453,7 +444,8 @@ SbmlModel::setAssignRule(Rule const* r, unsigned n)
          {
             char str[64];
 
-            sprintf(str, "zerorule%u", (unsigned)(_rule.size()+1));
+            sprintf(str, "zerorule%u", (unsigned)(_rule.size()));
+            // sprintf(str, "zerorule%u", (unsigned)(_rule.size()+1));
             rId = str;
          }
 
@@ -465,7 +457,7 @@ SbmlModel::setAssignRule(Rule const* r, unsigned n)
          free(formula);
       }
 
-      if (_fortran)
+      if (_adolc)
       {
          translateFormulaString(_rule[rId]);
       }
@@ -487,7 +479,8 @@ SbmlModel::setReaction(Model const* m)
       for (unsigned n = 0; n < nReaction; ++n)
       {
          r = m->getReaction(n);
-         setReaction(r,n+1);
+         setReaction(r,n);
+         // setReaction(r,n+1);
       }
    }
 }
@@ -525,7 +518,7 @@ SbmlModel::setReaction(Reaction const* r, unsigned n)
          }
       }
 
-      if (_fortran)
+      if (_adolc)
       {
          translateFormulaString(_reac[rId], rId);
       }
@@ -547,7 +540,8 @@ SbmlModel::setEvent(Model const* m)
       for (unsigned n = 0; n < nEvent; ++n)
       {
          e = m->getEvent(n);
-         setEvent(e,n+1);
+         setEvent(e,n);
+         // setEvent(e,n+1);
       }
    }
 }
@@ -570,7 +564,8 @@ SbmlModel::setEvent(Event const* e, unsigned n)
       {
          char str[64];
    
-         sprintf(str, "event%u", (unsigned)(_trig.size()+1));
+         sprintf(str, "event%u", (unsigned)(_trig.size()));
+         // sprintf(str, "event%u", (unsigned)(_trig.size()+1));
 
          eId = str;
       }
@@ -591,7 +586,7 @@ SbmlModel::setEvent(Event const* e, unsigned n)
       _itrig[eId] = n;
       _vtrig[n] = eId;
 
-      _trig[eId] = ".false.";
+      _trig[eId] = "0"; // ".false.";
 
       if ( e->isSetTrigger() )
       {
@@ -627,7 +622,7 @@ SbmlModel::setEvent(Event const* e, unsigned n)
          }
       }
 
-      if (_fortran)
+      if (_adolc)
       {
          translateFormulaString(_trig[eId]);
 
@@ -708,7 +703,7 @@ SbmlModel::setRateOde(Model const* m)
           cId = (m->getSpecies(it->first))->getCompartment();
           eqn.clear();
 
-          if (!_fortran)
+          if (!_adolc)
           {
              for (unsigned n = 0; n < nReaction; ++n)
              {
@@ -751,19 +746,19 @@ SbmlModel::setRateOde(Model const* m)
                 {
                     if (j == 1)
                     {
-                       sprintf(str, " + rea(%d)", 
+                       sprintf(str, " + rea[%d]", 
                                _ireac[(m->getReaction(n))->getId()] );
                     }
                     else if (j == -1)
                     {
-                       sprintf(str, " - rea(%d)", 
+                       sprintf(str, " - rea[%d]", 
                                _ireac[(m->getReaction(n))->getId()] );
                     }
                     else
                     {
                        char sign = (j < 0) ? '-' : '+';
    
-                       sprintf(str, " %c (%d) * rea(%d)", 
+                       sprintf(str, " %c (%d) * rea[%d]", 
                                sign, abs(j), 
                                _ireac[(m->getReaction(n))->getId()] );
                     }
@@ -772,7 +767,7 @@ SbmlModel::setRateOde(Model const* m)
                 }
              }
 
-             sprintf(str, "(%s ) / com(%d)", eqn.c_str(), _icomp[cId] );
+             sprintf(str, "(%s ) / com[%d]", eqn.c_str(), _icomp[cId] );
           }
 
           _rate[it->first] = str;
@@ -784,13 +779,13 @@ SbmlModel::setRateOde(Model const* m)
                                       it != _rule.end();
                                     ++it)
       {
-          if (_fortran)
+          if (_adolc)
           {
              char str[4096];
 
              if ( _ispec.count(it->first) > 0 )
              {
-                 sprintf(str, " + rul(%d) - spe(%d)", 
+                 sprintf(str, " + rul[%d] - spe[%d]", 
                          _irule[it->first], _ispec[it->first]);
 
                  _rate[_vspec[_ispec[it->first]]] = str;
@@ -835,7 +830,7 @@ SbmlModel::translateFunctionDefVector(vector<string>& vec)
 
       for (unsigned n = 0; n < tok.size(); ++n)
       {
-         char   toF[64];
+         char   toC[64];
          string w = tok[n];
 
          char*  pEnd = &w[0];
@@ -845,28 +840,28 @@ SbmlModel::translateFunctionDefVector(vector<string>& vec)
          {
             if (val < 0.0)
             {
-              sprintf(toF, "(%E)", val);
+              sprintf(toC, "(%e)", val);
             }
             else
             {
-              sprintf(toF, "%E", val);
+              sprintf(toC, "%e", val);
             }
-            pEnd = strchr(toF, 'E');
-            *pEnd = 'D';
-            pos = replaceSingle(fun, w, toF, pos);
+            // pEnd = strchr(toC, 'E');
+            // *pEnd = 'D';
+            pos = replaceSingle(fun, w, toC, pos);
          }
          else if ( vargs.count(w) > 0 )
          {
-             sprintf(toF, "x%d", vargs[w]);
-             pos = replaceSingle(fun, w, toF, pos);
+             sprintf(toC, "x%d", vargs[w]);
+             pos = replaceSingle(fun, w, toC, pos);
          }
       }
 
       for (unsigned n = 0; n < vec.size()-1; ++n)
       {
-         char toF[64];
-         sprintf(toF, "x%d", n+1);
-         vec[n] = toF;
+         char toC[64];
+         sprintf(toC, "x%d", n+1);
+         vec[n] = toC;
       }
 
       vec.pop_back();
@@ -884,7 +879,7 @@ SbmlModel::translateFormulaString(string& str, string const& rId)
 
    for (unsigned n = 0; n < tok.size(); ++n)
    {
-      char   toF[64];
+      char   toC[64];
       string w = tok[n];
       string ww = "global_" + w;
       string rw = rId + "_" + w;
@@ -897,55 +892,55 @@ SbmlModel::translateFormulaString(string& str, string const& rId)
       {
          if (val < 0.0)
          {
-           sprintf(toF, "(%E)", val);
+           sprintf(toC, "(%e)", val);
          }
          else
          {
-           sprintf(toF, "%E", val);
+           sprintf(toC, "%e", val);
          }
-         pEnd = strchr(toF, 'E');
-         *pEnd = 'D';
-         pos = replaceSingle(str, w, toF, pos);
+         // pEnd = strchr(toC, 'E');
+         // *pEnd = 'D';
+         pos = replaceSingle(str, w, toC, pos);
       }
       else if ( _irule.count(w) > 0 )
       {
-         sprintf(toF, "rul(%d)", _irule[w]);
-         pos = replaceSingle(str, w, toF, pos);
+         sprintf(toC, "rul[%d]", _irule[w]);
+         pos = replaceSingle(str, w, toC, pos);
       }
       else if ( _ifunc.count(w) > 0 )
       {
-         sprintf(toF, "fun%d", _ifunc[w]);
-         pos = replaceSingle(str, w, toF, pos);
+         sprintf(toC, "fun%d", _ifunc[w]);
+         pos = replaceSingle(str, w, toC, pos);
       }
       else if ( _iparm.count(lw) > 0 )  //first, check purely local parameters
       {
-         sprintf(toF, "par(%d)", _iparm[lw]);
-         pos = replaceSingle(str, w, toF, pos);
+         sprintf(toC, "par[%d]", _iparm[lw]);
+         pos = replaceSingle(str, w, toC, pos);
       }
       else if ( _iparm.count(rw) > 0 )  // then, parameters based on reactions
       {
-         sprintf(toF, "par(%d)", _iparm[rw]);
-         pos = replaceSingle(str, w, toF, pos);
+         sprintf(toC, "par[%d]", _iparm[rw]);
+         pos = replaceSingle(str, w, toC, pos);
       }
       else if ( _iparm.count(ww) > 0 )  // finally, global parameters
       {
-         sprintf(toF, "par(%d)", _iparm[ww]);
-         pos = replaceSingle(str, w, toF, pos);
+         sprintf(toC, "par[%d]", _iparm[ww]);
+         pos = replaceSingle(str, w, toC, pos);
       }
       else if ( _ispec.count(w) > 0 )
       {
-         sprintf(toF, "spe(%d)", _ispec[w]);
-         pos = replaceSingle(str, w, toF, pos);
+         sprintf(toC, "spe[%d]", _ispec[w]);
+         pos = replaceSingle(str, w, toC, pos);
       }
       else if ( _icomp.count(w) > 0 )
       {
-         sprintf(toF, "com(%d)", _icomp[w]);
-         pos = replaceSingle(str, w, toF, pos);
+         sprintf(toC, "com[%d]", _icomp[w]);
+         pos = replaceSingle(str, w, toC, pos);
       }
       else if ( w.compare("time") == 0 )
       {
-         sprintf(toF, "t");
-         pos = replaceSingle(str, w, toF, pos);
+         sprintf(toC, "t");
+         pos = replaceSingle(str, w, toC, pos);
       }
    }
 
@@ -956,7 +951,7 @@ SbmlModel::translateFormulaString(string& str, string const& rId)
       size_t cur = pos+8;
       int    level = 0;
       int    nargs = 0;
-      char   ch, toF[64];
+      char   ch, toC[64];
 
       while ( 
               ( cur < str.size() ) && 
@@ -978,9 +973,9 @@ SbmlModel::translateFormulaString(string& str, string const& rId)
          }
       }
 
-      sprintf(toF, "piecewise%d", nargs);
-      _piece[toF] = unsigned(nargs);
-      pos = replaceSingle(str, "piecewise", toF, pos);
+      sprintf(toC, "piecewise%d", nargs);
+      _piece[toC] = unsigned(nargs);
+      pos = replaceSingle(str, "piecewise", toC, pos);
       pos = str.find("piecewise",pos);
    }
 }
@@ -988,7 +983,7 @@ SbmlModel::translateFormulaString(string& str, string const& rId)
 //-------------------------------------------------------------------------
 
 SbmlModel const& 
-SbmlModel::toFortran(string const& fname)
+SbmlModel::toAdolC(string const& fname)
 {
    ifstream infile;
    string   line;
@@ -1025,7 +1020,7 @@ SbmlModel::toFortran(string const& fname)
                {
                   doEventBlock( infile );
                }
-               line = "c ";
+               line = " ";
             }
             else if ( line.find("c#comment") != string::npos )
             {
@@ -1055,7 +1050,7 @@ SbmlModel::toFortran(string const& fname)
 
                getline( infile, line );
 
-               _outs << "c     ---" << endl;
+               _outs << "   ///" << endl;
 
                for (ListIndex::const_iterator it = lBeg;
                                               it != lEnd;
@@ -1067,7 +1062,7 @@ SbmlModel::toFortran(string const& fname)
                    _outs << str << endl;
                }
 
-               line = "c     ---";
+               line = "   ///";
             }
             else if ( line.compare("c#modelids") == 0 )
             {
@@ -1075,7 +1070,7 @@ SbmlModel::toFortran(string const& fname)
                if ( !_vmodel.empty() )
                {
                   sprintf( str, line.c_str(), 
-                           (_vmodel.rbegin())->first );
+                           1+(_vmodel.rbegin())->first );
                }
                else
                {
@@ -1089,7 +1084,7 @@ SbmlModel::toFortran(string const& fname)
                if ( !_vcomp.empty() )
                {
                   sprintf( str, line.c_str(), 
-                           (_vcomp.rbegin())->first );
+                           1+(_vcomp.rbegin())->first );
                }
                else
                {
@@ -1103,7 +1098,7 @@ SbmlModel::toFortran(string const& fname)
                if ( !_vspec.empty() )
                {
                   sprintf( str, line.c_str(), 
-                           (_vspec.rbegin())->first );
+                           1+(_vspec.rbegin())->first );
                }
                else
                {
@@ -1117,7 +1112,7 @@ SbmlModel::toFortran(string const& fname)
                if ( !_vparm.empty() )
                {
                   sprintf( str, line.c_str(), 
-                           (_vparm.rbegin())->first );
+                           1+(_vparm.rbegin())->first );
                }
                else
                {
@@ -1131,7 +1126,7 @@ SbmlModel::toFortran(string const& fname)
                if ( !_vrule.empty() )
                {
                   sprintf( str, line.c_str(), 
-                           (_vrule.rbegin())->first );
+                           1+(_vrule.rbegin())->first );
                }
                else
                {
@@ -1145,7 +1140,7 @@ SbmlModel::toFortran(string const& fname)
                if ( !_vreac.empty() )
                {
                   sprintf( str, line.c_str(), 
-                           (_vreac.rbegin())->first );
+                           1+(_vreac.rbegin())->first );
                }
                else
                {
@@ -1159,7 +1154,7 @@ SbmlModel::toFortran(string const& fname)
                if ( !_vtrig.empty() )
                {
                   sprintf( str, line.c_str(), 
-                           (_vtrig.rbegin())->first );
+                           1+(_vtrig.rbegin())->first );
                }
                else
                {
@@ -1290,8 +1285,8 @@ SbmlModel::toFortran(string const& fname)
                      {
                          sprintf( str, line.c_str(), 
                                   it->first, val[it->second] );
-                         char* pEnd = strchr(str, 'E');
-                         *pEnd = 'D';
+                         // char* pEnd = strchr(str, 'E');
+                         // *pEnd = 'D';
                          _outs << str << endl;
                      }
                      break;
@@ -1374,7 +1369,7 @@ SbmlModel::toFortran(string const& fname)
                      break;
                }
 
-               line = "c ";
+               line = " ";
             }
          }
 
@@ -1437,7 +1432,7 @@ SbmlModel::doEventBlock(ifstream& infile)
 
             doMultiLine( str );
 
-            line = "c ";
+            line = " ";
          }
          else if ( line.compare("c#if_trig") == 0 )
          {
@@ -1459,7 +1454,7 @@ SbmlModel::doEventBlock(ifstream& infile)
                 doMultiLine( str );
             }
 
-            line = "c ";
+            line = " ";
          }
 
          _outs << line << endl;
@@ -1512,10 +1507,10 @@ SbmlModel::doFunctionBlock(ifstream& infile)
 
                if ( vec.size() > 1 )
                {
-                   arg = "( " + vec[0];
+                   arg = "( double " + vec[0];
                    for (unsigned j = 1; j < vec.size()-1; ++j)
                    { 
-                       arg += ", " + vec[j];
+                       arg += ", double " + vec[j];
                    }
                    arg += " )";
                }
@@ -1527,7 +1522,7 @@ SbmlModel::doFunctionBlock(ifstream& infile)
 
                doMultiLine( str );
 
-               line = "c ";
+               line = " ";
            }
            else if ( line.find("c#for_all") != string::npos )
            {
@@ -1540,7 +1535,7 @@ SbmlModel::doFunctionBlock(ifstream& infile)
                    _outs << str << endl;
                }
 
-               line = "c ";
+               line = " ";
            }
            else if ( line.compare("c#impls") == 0 )
            {
@@ -1551,7 +1546,7 @@ SbmlModel::doFunctionBlock(ifstream& infile)
 
                doMultiLine( str );
 
-               line = "c ";
+               line = " ";
            }
            else if ( line.compare("c#funcs") == 0 )
            {
@@ -1614,10 +1609,10 @@ SbmlModel::doPiecewiseBlock(ifstream& infile)
                    arg = "( ";
                    for (unsigned j = 0; j < narg/2; ++j)
                    {
-                       sprintf(str, "val%d, cond%d, ", j+1, j+1);
+                       sprintf(str, "double val%d, int cond%d, ", j+1, j+1);
                        arg += str;
                    }
-                   arg += "dflt )";
+                   arg += "double dflt )";
                }
 
                line = block[++n];
@@ -1627,7 +1622,7 @@ SbmlModel::doPiecewiseBlock(ifstream& infile)
 
                doMultiLine( str );
 
-               line = "c ";
+               line = " ";
          }
          else if ( line.find("c#for_all") != string::npos )
          {
@@ -1677,7 +1672,7 @@ SbmlModel::doPiecewiseBlock(ifstream& infile)
 
                            if ( j > 1 ) 
                            {
-                              _outs << "c " << endl;
+                              _outs << " " << endl;
                            }
                            line = block[n+1];
                            sprintf(arg, "cond%d", j+1);
@@ -1702,14 +1697,14 @@ SbmlModel::doPiecewiseBlock(ifstream& infile)
                   ++n;
                }
 
-               line = "c ";
+               line = " ";
          }
          else if ( line.compare("c#3lines_first_case") == 0 )
          {
             line = block[n+1];
 
             sprintf( str, line.c_str(), 
-                     ((narg > 1) ? "cond1" : ".false.") );
+                     ((narg > 1) ? "cond1" : "0") );
 
             _outs << str << endl;
             _outs << block[n+2] << endl;
@@ -1717,13 +1712,13 @@ SbmlModel::doPiecewiseBlock(ifstream& infile)
             line = block[n+3];
 
             sprintf( str, line.c_str(), 
-                     narg, ((narg > 1) ? "val1" : "0.0D0") );
+                     narg, ((narg > 1) ? "val1" : "0.0e0") );
  
             _outs << str << endl;
 
             n += 3;
 
-            line = "c ";
+            line = " ";
          }
          else if ( line.compare("c#3lines_default") == 0 )
          {
@@ -1788,8 +1783,9 @@ SbmlModel::doMultiLine(string const& str)
              firstline = false;
           }
           else
-          {  //        123456789012345
-             _outs << "     &         ";
+          {  // //        123456789012345
+             // _outs << "     &         ";
+             _outs << "               ";
           }
 
           _outs << ostr.str() << endl;
@@ -1811,8 +1807,9 @@ SbmlModel::doMultiLine(string const& str)
           _outs << "     ";
        }
        else
-       {  //        123456789012345
-          _outs << "     &         ";
+       {  // //        123456789012345
+          // _outs << "     &         ";
+          _outs << "               ";
        }
 
        _outs << ostr.str() << endl;
@@ -1827,8 +1824,9 @@ ostream& operator<< (ostream& os, SbmlModel const& model)
 {
    time_t now = time(0);
 
-   if (model._fortran)
+   if (model._adolc)
    {
+      os << "/*" << endl;
       os << "c-----" << endl;
       os << "c SBML Model : " << setw(55) << left 
                               << model.getName() 
@@ -1837,13 +1835,13 @@ ostream& operator<< (ostream& os, SbmlModel const& model)
                               << setfill('~') << "~" << endl; 
       os << "c       Date : " << ctime(&now);
       os << "c              " << endl;
-      os << "c     Author : " << "automated transcription by 'sbml2fortran'"
+      os << "c     Author : " << "automated transcription by 'sbml2adolc'"
                               << endl;
       os << "c              " << endl;
       os << "c Copyright (C) Zuse Institute Berlin, CSB Group" 
          << endl;
       os << "c-----" << endl;
-      os << "c" << endl;
+      os << "*/" << endl;
       os << model._outs.str();
    }
    else
@@ -1868,37 +1866,6 @@ ostream& operator<< (ostream& os, SbmlModel const& model)
       // os << model._rate;
       os << pair<StringList,ListIndex>( model._rate, model._vspec );
       os << endl;
- 
-      //
-
-      /*
-      os << pair<StringArray,ArrayIndex>( model._jac->get_druledy(),
-                                          model._jac->get_vdruledy()
-                                        );
-      os << endl;
-      os << pair<StringArray,ArrayIndex>( model._jac->get_druledp(),
-                                          model._jac->get_vdruledp()
-                                        );
-      os << endl;
-      os << pair<StringArray,ArrayIndex>( model._jac->get_dreacdy(),
-                                          model._jac->get_vdreacdy()
-                                        );
-      os << endl;
-      os << pair<StringArray,ArrayIndex>( model._jac->get_dreacdp(),
-                                          model._jac->get_vdreacdp()
-                                        );
-      */
-/*
-      os << endl;
-      // since model const, wrong here: model._jac->set_dfdy(model._rate);
-      os << pair<StringArray,ArrayIndex>( model._jac->get_dfdy(),
-                                          model._jac->get_vdfdy()
-                                        );
-      os << endl;
-      os << pair<StringArray,ArrayIndex>( model._jac->get_dfdp(), 
-                                          model._jac->get_vdfdp()
-                                        );
-*/
    }
 
    return os;

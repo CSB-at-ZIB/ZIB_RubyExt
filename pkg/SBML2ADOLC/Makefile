@@ -11,12 +11,13 @@ FFLAGS = -O3
 
 OBJS = sbml2adolc.o SbmlModel.o 
 
-all : ../lib/libadolc.so ../lib/libsbml.so sbml2adolc chk_ydot
+all : ../lib/libadolc.so ../lib/libsbml.so sbml2adolc
+# all : ../lib/libadolc.so ../lib/libsbml.so sbml2adolc chk_ydot
 
 ../lib/libadolc.so :
 	cd .. && \
 	/bin/rm -rf ADOL-C-2.5.2 && \
-	tar xf libADOLC-2.5.2-src.tar.gz \
+	tar xf libADOLC-2.5.2-src.tar.gz && \
 	cd ADOL-C-2.5.2 && \
 	./configure --prefix=$(bpath) --enable-atrig-erf --enable-tserrno --disable-static && \
 	$(MAKE) install

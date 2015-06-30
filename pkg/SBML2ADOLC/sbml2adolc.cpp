@@ -1,21 +1,21 @@
 /**
- * Copyright (C) 2014 Zuse Institute Berlin
+ * Copyright (C) 2015 Zuse Institute Berlin
  *
- * @file    sbml2fortran.cpp
+ * @file    sbml2adolc.cpp
  *
- * @brief   Translate an SBML file/model to FORTRAN code representing 
+ * @brief   Translate an SBML file/model to C/C++ code representing 
  *          the underlying ODE structure: Rule, Reaction, and Event 
  *          formulas in the given SBML Document
  *
  *          Compile with (see `Makefile´ !!)
- *             'g++ -O3 -c -o sbml2fortran.o sbml2fortran.cpp'
+ *             'g++ -O3 -c -o sbml2adolc.o sbml2adolc.cpp'
  *             'g++ -O3 -c -o SbmlModel.o SbmlModel.cpp'
- *             'g++ -o sbml2fortran sbml2fortran.o SbmlModel.o -lsbml' 
- *          (only if libsbml is installed, of course!)
+ *             'g++ -o sbml2adolc sbml2adolc.o SbmlModel.o -lsbml -ladolc' 
+ *          (only if libsbml *and* libadolc is installed, of course!)
  *
  * @author  Thomas Dierkes (dierkes at zib dot de)
  * 
- * @date    21.05.2014
+ * @date    30.06.2015
  *
  */
 
@@ -34,7 +34,7 @@ main (int argc, char* argv[])
   string              prgpath = argv[0];
   string              filename;
   long unsigned       pos = prgpath.rfind("/");
-  bool                fort = true;
+  bool                adolc = true;
 
   if ( pos != string::npos )
   {
@@ -60,13 +60,13 @@ main (int argc, char* argv[])
             && (hopt.compare(argv[1]) == 0 || txtopt.compare(argv[1]) == 0)
           )
   {
-    cerr << endl << "Usage: ./sbml2fortran [-h|-txt] filename{.xml|.sbml| }" << endl;
+    cerr << endl << "Usage: ./sbml2adolc [-h|-txt] filename{.xml|.sbml| }" << endl;
     cerr << endl;
     return 1;
   }
   else if ( (argc > 2) && (txtopt.compare(argv[1]) == 0) )
   {
-    fort     = false;
+    adolc    = false;
     filename = argv[2];
     sbmldoc  = readSBML(filename.c_str());
   }
@@ -104,12 +104,12 @@ main (int argc, char* argv[])
        filename.erase(filename.begin(),filename.begin()+pos+1);
     }
 
-    SbmlModel model(m, filename, fort);
+    SbmlModel model(m, filename, adolc);
 
 
-    if ( fort )
+    if ( adolc )
     {
-      cout << model.toFortran( prgpath + "/YDOT_LIMEX_TEMPLATE.txt" ) << endl;
+      cout << model.toAdolC( prgpath + "/YDOT_LIMEXcpp_TEMPLATE.txt" ) << endl;
     }
     else
     {

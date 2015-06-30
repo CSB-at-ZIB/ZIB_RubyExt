@@ -1,11 +1,11 @@
-// Copyright (C) 2010 - 2014
+// Copyright (C) 2010 - 2015
 // ZIB - Zuse Institute Berlin, Germany
 //
-// first added : 2014-07-22 td
+// first added : 2015-06-30 td
 // last changed:
 //
-#ifndef __YDOT_LIMEX_H
-#define __YDOT_LIMEX_H
+#ifndef __YDOT_LIMEX_CPP_H
+#define __YDOT_LIMEX_CPP_H
 
 /*
 c
@@ -13,20 +13,20 @@ c-----------------------------------------------------------------------
 c
 c            *************************************************
 c            **                                             **
-c            **                ydot_LIMEX                   **
+c            **                ydot_LIMEXcpp                **
 c            **                                             **
 c            *************************************************
 c
-c     ydot_LIMEX is an abstract interface
+c     ydot_LIMEXcpp is an abstract interface
 c
 c
 c-----------------------------------------------------------------------
 c
-c     Copyright (C) 2010 - 2014,
+c     Copyright (C) 2010 - 2015,
 c     Zuse Institute Berlin (ZIB)
 c     ALL RIGHTS RESERVED
 c
-c     Written by: automated transcription of 'sbml2fortran'
+c     Written by: automated transcription of 'sbml2adolc'
 c
 c     Zuse Institute Berlin (ZIB)
 c     Takustrasse 7
@@ -39,10 +39,14 @@ c
 */
 #define MAXIDSTRLEN 64
 
-extern struct
+
+extern "C" 
 {
-    double start;
-} sbmlvariables_;
+  extern struct
+  {
+      double start;
+  } sbmlvariables_;
+}
 
 
 extern void get_species_ids_ ( char (*ids)[MAXIDSTRLEN], int* nspe, 
@@ -87,4 +91,4 @@ extern void ydot_limex_ (
              );
 
 
-#endif // __YDOT_LIMEX_H
+#endif // __YDOT_LIMEX_CPP_H

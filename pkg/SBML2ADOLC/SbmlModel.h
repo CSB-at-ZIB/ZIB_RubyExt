@@ -8,7 +8,7 @@
  *
  * @author  Thomas Dierkes (dierkes at zib dot de)
  * 
- * @date    20.05.2014
+ * @date    30.06.2015
  *
  */
 #ifndef __SBML_MODEL_H
@@ -60,7 +60,7 @@ class SbmlModel
     public:
         /// SbmlModel()  { }
         SbmlModel(Model const* m, string const& fname);
-        SbmlModel(Model const* m, string const& fname, bool fortran);
+        SbmlModel(Model const* m, string const& fname, bool adolc);
 
         ~SbmlModel();
 
@@ -100,8 +100,8 @@ class SbmlModel
         void translateEventAssignVector(vector<string>& vec);
         void translateFunctionDefVector(vector<string>& vec);
         void translateFormulaString(string& str, string const& rId = ""); 
-        SbmlModel const& toFortran(string const& fname = 
-                                              "YDOT_LIMEX_TEMPLATE.txt");
+        SbmlModel const& toAdolC(string const& fname = 
+                                           "YDOT_LIMEXcpp_TEMPLATE.txt");
 
     private:
         SbmlModel const& operator= (SbmlModel const) { }
@@ -115,7 +115,7 @@ class SbmlModel
     private:
         // SbmlJacobian*    _jac;
         ostringstream    _outs;
-        bool             _fortran;
+        bool             _adolc;
         string           _sbmlfile;
         string           _modelname;
         ValueList        _comp, _spec, _parm;
