@@ -95,10 +95,12 @@ end
 initvals = {
                    t0:  0.0 , 
                    y0: [ 1.0  , 0.0  , 0.0  ] ,
-              y0label: [ "A0" , "B0" , "C0" ],
+              y0label: [ "A0" , "B0" , "C0" ] ,
 
                   par: [  2.0 ,  1.0  ] ,
-               plabel: [  "k1",  "k2" ]
+               plabel: [  "k1",  "k2" ] ,
+
+                  jac: :jacobian
            }
 
 model = Model.new :abc, initvals    # t0, y0, par, plabel
