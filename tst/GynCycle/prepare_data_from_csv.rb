@@ -106,3 +106,5 @@ fout = File.open("rb_prepare_data_solution.dat", "w")
 model.save_current_solution(fout)
 fout.close
 
+puts "#{model.version}"
+

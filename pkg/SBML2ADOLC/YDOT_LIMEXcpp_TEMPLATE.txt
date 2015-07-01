@@ -18,8 +18,11 @@ c  par[%3d]  :   %-42s
 /**/
 using namespace std;
 
-/**/
-static struct
+//=======================================================================
+extern "C" {
+//=======================================================================
+
+struct
 {
 c#compartments
       double  com[%d];
@@ -37,6 +40,19 @@ c#events
 } sbmlvariables_;
 
 //=======================================================================
+
+#define  zero  0.0e0
+#define  one   1.0e0
+#define  pi    3.141592653589793238462643383276e0
+#define  eul   2.718281828459045235360287471352e0
+#define  com   sbmlvariables_.com
+#define  spe   sbmlvariables_.spe
+#define  par   sbmlvariables_.par
+#define  rul   sbmlvariables_.rul
+#define  rea   sbmlvariables_.rea
+#define  eve   sbmlvariables_.eve
+
+//=======================================================================
       void ydot ( int, double, double*, double*, int* );
       void check_events ( double, int, int* ); 
 //-----------------------------------------------------------------------
@@ -49,19 +65,6 @@ c#block_for_all(j in pieces)
 c#args
       double piecewise%d %s;
 c#end_block
-
-//=======================================================================
-
-#define  zero  0.0e0
-#define  one   1.0e0
-#define  pi    3.141592653589793238462643383276e0
-#define  eul   2.718281828459045235360287471352e0
-#define  com   sbmlvariables_.com
-#define  spe   sbmlvariables_.spe
-#define  par   sbmlvariables_.par
-#define  rul   sbmlvariables_.rul
-#define  rea   sbmlvariables_.rea
-#define  eve   sbmlvariables_.eve
 
 //=======================================================================
 
@@ -131,7 +134,7 @@ c#for_all(j in rates)
 
 //=======================================================================
 
-void check_events ( double t, int n, double* ev )
+void check_events ( double t, int n, int* ev )
 {
 /*
 c#for_all(j in functions)
@@ -362,3 +365,6 @@ c#funcs
 }
 c#end_block
 
+//=======================================================================
+};
+//=======================================================================
