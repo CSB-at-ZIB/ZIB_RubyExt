@@ -1166,7 +1166,7 @@ extern void limdherm_(
 // (and, of course, extrapolation entry if iOpt(32)==1)
 // Note: there is ***NO*** checking if sens. part makes really sense...
 */
-/*
+
 extern void slimdherm_(
             int*      nDAE,
             int*      n,
@@ -1187,7 +1187,7 @@ extern void slimdherm_(
             double*   Dense,        // returns the comp_herm_() output array 'Dense' in this special version of LIMEX
             double*   t1,
             double*   t2);
-*/
+
 /*
 extern void eval_herm_(
             int*      n,

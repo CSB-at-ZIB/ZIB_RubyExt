@@ -139,7 +139,7 @@ SbmlModel::setModelIDs(Model const* m)
 {
   if (m != 0)
   {
-    char   str1[64],str2[64],str3[64],str4[64];
+    char   str1[64],str2[64],str3[64],str4[64],str5[64];
     time_t now = time(0);
     string mId = m->getId();
     string fn = _sbmlfile;
@@ -158,6 +158,7 @@ SbmlModel::setModelIDs(Model const* m)
     sprintf( str2, "%s", ctime(&now) );
     sprintf( str3, "%012lu", (unsigned long) now );
     sprintf( str4, "%s", fn.c_str() );
+    sprintf( str5, "%s", "no vareq");
 
     str2[strlen(str2)-1] = '\0';
 
@@ -165,6 +166,7 @@ SbmlModel::setModelIDs(Model const* m)
     _vmodel[2] = str2;
     _vmodel[3] = str3;
     _vmodel[4] = str4;
+    _vmodel[5] = str5;
   }
 }
 

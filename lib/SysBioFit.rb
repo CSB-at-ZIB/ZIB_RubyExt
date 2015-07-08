@@ -37,9 +37,11 @@ class SysBioFit < Nlscon
     @mdata = nil
     @nitmodulo = 5
     self.rtol = ptol
-    self.iopt = { "mprmon" => 0, "mprerr" => 0, "mprsta" => 0, "qstat" => 1,
-                  "qrank1" => 0, "nonlin" => 0, "jacgen" => 3, "qnscal" => 0 }
-    self.iwk = { "nitmax" => 35 }
+    self.iopt = { "mprmon" => printlevel, "mprerr" => [printlevel,3].min, 
+                  "mprsta" => 1, "qstat" => 1, 
+                  "nonlin" => nonlin, "jacgen" => jacgen, 
+                  "qrank1" => 0, "qnscal" => 0 }
+    self.iwk = { "nitmax" => nitmax }
     # self.rwk = { "cond" => 1.0e+16 }
   end
 
@@ -85,6 +87,36 @@ class SysBioFit < Nlscon
        y0[-j-1] = x[idx] if j < 0
     end
     [y0, p]
+  end
+
+  
+  def gn_jac(n, m, mcon, x)
+    #
+    y0, par = set_current_par(x)
+
+    t, sol = @model.solve_var(@tspan, y0, par, @pidx)
+
+    dfdx = []
+    return if sol==nil
+
+    nDAE = y0.length
+
+    @mtime.length.times do |k|
+      next if @midx[k]==[]
+      z = sol[ @mtime[k] ]
+
+      @midx[k].each_with_index do |j,idx|
+        kk = dfdx.length
+        dfdx << []
+        n.times do |ell|
+          # puts "sens = #{z[j]}       meas = #{@mdata[k][idx]}"
+          dfdx[kk] << z[nDAE*(ell+1) + j] unless j==nil
+        end
+      end
+    end
+    
+    dfdx
+    #
   end
 
 
@@ -199,7 +231,7 @@ class SysBioFit < Nlscon
     set_task(task)
 
     self.f = method(:gn_fcn)
-    # self.df = method(:gn_jac)
+    self.df = method(:gn_jac) if task[:model].version[4]=="with vareq"
 
     self.iopt = { "mprmon" => @printlevel, "mprstat" => 1, "mprerr" => [@printlevel,3].min, 
                   "jacgen" => @jacgen, "nonlin" => @nonlin, "qstat" => 1 }

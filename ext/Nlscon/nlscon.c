@@ -162,6 +162,7 @@ void jac_cb(int *n, int *m, int *mcon,
             double *x, double *dfdx, int *ifail)
 {
   *ifail = -987;
+
   {
     int j,k;
     VALUE arr;

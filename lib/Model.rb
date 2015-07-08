@@ -8,12 +8,10 @@ class Model < Limex
 
   attr_accessor :t0, :y0ode, :y0Id, :par0
   attr_accessor :yId, :pId, :par, :version
-  # attr_accessor :dfdp, :dfdy
   # attr_accessor :rtol, :atol, :inistep, :hmax
   # attr_accessor :y0, :rtol, :atol, :inistep, :hmax
 
   def initialize( odefcn = nil, initvals = {},
-                  dfdp = nil, dfdy = nil,
                   rtol = 1.0e-9, atol = 1.0e-9, 
                   inistep = 0.0, maxstep = 0.0 )
 
@@ -23,6 +21,7 @@ class Model < Limex
     par = initvals.has_key?(:par) ? initvals[:par] : []
 
     super(y0)
+    @odejac = nil
     @odefcn = odefcn.is_a?(Symbol) ? method(odefcn) : nil
     @y0ode = y0
     @version = ["#{modelname}", "#{now.asctime}", "#{now.to_i}", "n/a"]
@@ -56,8 +55,17 @@ class Model < Limex
 
     @t0 = initvals.has_key?(:t0) ? initvals[:t0] : 0.0
 
-    @dfdp = dfdp
-    @dfdy = dfdy
+    if initvals.has_key?(:jac) and
+       initvals[:jac].is_a?(Symbol)
+    then
+      @odejac = method(initvals[:jac])
+    end
+
+    if @odejac.nil? then
+      @version << "no vareq"
+    else
+      @version << "with vareq"
+    end
 
     # @rtol = rtol
     # @atol = atol
@@ -73,6 +81,23 @@ class Model < Limex
   def odefcn=(fcn)
     @odefcn = fcn.is_a?(Symbol) ? method(fcn) : nil
   end
+
+  def odejac=(jac)
+    @odejac = jac.is_a?(Symbol) ? method(jac) : nil
+  end
+
+
+  def solve_var(tspan, y0=[], par=[], pidx=[])
+  #
+    self.y0 = y0 if y0.compact != []
+    self.par = par if par.compact != []
+    return [nil,nil] if @odejac.nil? or pidx.compact == []
+    ifail = self.srun(tspan.sort, pidx) { |t,y| @odejac.call(t,y,par,pidx) }
+    return [nil,nil] unless ifail.is_a?(Array) and ifail[0] == 0
+    [ self.steps, self.solution ]
+  #
+  end
+
 
   def solve_ode(tspan, y0=[], par=[])
   #

@@ -95,6 +95,269 @@ void fcn(int *n, int *nz,
 
 
 static
+VALUE limex_srun(VALUE self, VALUE tspan, VALUE pidx)
+{
+  Check_Type(tspan, T_ARRAY);
+  Check_Type(pidx, T_ARRAY);
+
+  int     j, k, n, nDAE, nTp;
+  double  t0, T;
+  double  *tp, *z, *dz;
+  double  rTol, aTol;
+  double  h, hMax, hInit;
+  int     debug, nDense;
+  int     iOpt[32];
+  double  rOpt[5];
+  int     *iPos, iFail[3];
+  int     kOrder;
+  double  dense[MAX_NO_EQNS*(2 + MAX_ROW_TAB*(MAX_ROW_TAB+1)/2)];
+  double  t1, t2;
+  double  *y;
+
+  VALUE y0;
+  VALUE steps;
+  VALUE solution;
+
+  nTp = RARRAY_LEN(tspan);
+
+  if ( nTp < 2 )
+  {
+    rb_raise(rb_eArgError, "tspan array length wrong (must be 2, at least).");
+    return Qnil;
+  }
+
+  // rb_iv_set(self, "@t0", tStart);
+  nDAE = NUM2INT( rb_iv_get(self, "@dim") );
+  n    = nDAE*(1 + RARRAY_LEN(pidx));
+  // t0 = NUM2DBL(tStart);
+  // T  = NUM2DBL(tEnd);
+
+
+  y0 = rb_iv_get(self, "@y0");
+
+  tp = (double *) ALLOCA_N(double, nTp);
+  y  = (double *) ALLOCA_N(double, n);
+  z  = (double *) ALLOCA_N(double, n);
+  dz = (double *) ALLOCA_N(double, n);
+
+  for (k = 0; k < nTp; ++k)
+  {
+    tp[k] = NUM2DBL( rb_ary_entry(tspan, (long)k) );
+  }
+  t0 = tp[0];
+  T = tp[nTp-1];
+
+  for (j = 0; j < n; ++j)
+  {
+     z[j] = (j < nDAE) ? NUM2DBL( rb_ary_entry(y0, (long)j) ) : 0.0;
+    dz[j] = 0.0;
+  }
+
+  rTol = NUM2DBL( rb_iv_get(self, "@rtol") );
+  aTol = NUM2DBL( rb_iv_get(self, "@atol") );
+  hMax = NUM2DBL( rb_iv_get(self, "@hmax") );
+  hInit = NUM2DBL( rb_iv_get(self, "@inistep") );
+  h = hInit /* rTol */;
+
+  debug = NUM2INT( rb_iv_get(self, "@monitor") );
+  nDense = NUM2INT( rb_iv_get(self, "@dense") );
+
+  iOpt[0]  =  debug;    // Integration monitoring: 0 no output, 1 standard, 2 additional
+  iOpt[1]  =  0;        // Unit number for monitor ( == 6 if iOpt[0] > 0 )
+  iOpt[2]  =  0;        // Solution output: 0 no output, 1 initial&final vaules, 2 additional
+  iOpt[3]  =  0;        // Unit number for solution ( == 6 if iOpt[2] > 0 )
+  iOpt[4]  =  1;        // Singular or non-singualar matrix B: 0 sing, 1 non-sing
+  iOpt[5]  =  0;        // Determination of consistent initial values (CIV): 0 no, 1 determ
+  iOpt[6]  =  0;        // Numerical or analytical Jacobian: 0 num diff approx, 1 analytical
+
+  iOpt[7]  =  n;        // Lower bandwidth of Jacobian: 0 <= iOpt[7] <= n <= Max_Lower_Diags
+  iOpt[8]  =  n;        // Upper bandwidth of Jacobian: 0 <= iOpt[8] <= n <= Max_Upper_Diags
+
+  iOpt[9]  =  1;        // Re-use of Jacobian: 0 no re-use, 1 re-use of Jacobian in the following steps
+  iOpt[10] =  0;        // Switch for error tolerances: 0 rTol&aTol scalar, 1 rTol&aTol are vectors
+  iOpt[11] =  1;        // Switch for one step mode: 0 off, 1 return from each step, 2 return only from prescribed steps
+
+  iOpt[12] =  0;        // Dense output option: 0 off, 1 on equidist pts within interval, 2 on equidist pts within step (# in iOpt[13]), 3 on additional pts
+  iOpt[13] =  0;        // Number of equidistant points if iOpt[12] == 1 or 2
+  iOpt[14] =  0;        // Unit number for dense output (iOpt[14] == 0 suppresses dense output)
+
+  iOpt[15] =  0;        // Type of call, may be modified! 0 initial call, 1 successive call
+
+  iOpt[16] =  0;        // Behaviour at t_End: 0 stop exactly at t_End, 1 may compute/use values also for t > t_End
+  iOpt[17] =  0;        // PostScript plot of Jacobian: 0 no plot, j plot at j-th step, -1 plot for initial step (step 0)
+
+  iOpt[18] =
+  iOpt[19] =
+  iOpt[20] =
+  iOpt[21] =
+  iOpt[22] = -1;        // Not used in LIMEX_A (relevant in LIMEX_B, sparse Jacobians)
+
+  iOpt[23] =            // on return: Number of function evaluations
+  iOpt[24] =            // on return: Number of fcn evaltions for Jacobian computation
+  iOpt[25] =            // on return: Number of LU decompositions
+  iOpt[26] =            // on return: Number of back-substitions
+  iOpt[27] =            // on return: Number of integration steps
+  iOpt[28] =  0;        // on return: Number of Jacobian evaluations
+
+  iOpt[29] = -1;        // Not used in LIMEX_A (relevant in LIMEX_B, sparse Jacobians)
+
+  iOpt[30] = -1;        // !!! Only available in LIMD !!!
+                        // Type of left-hand side B: 0 B=id, 1 B=const., 2 variable B
+  iOpt[31] = -1;        // !!! Only available in (s)LIMDHERM !!!
+                        // Interpolation mode: 0 no additional output, 1 give additional output (switched on)
+
+  if ( (nTp == 2) && (nDense > 0) )
+  {
+    iOpt[11] = 2;
+
+    iOpt[12] = 1;
+    iOpt[13] = nDense;
+  }
+
+  rOpt[0] = rOpt[1] = rOpt[2] /* = rOpt[3] = rOpt[4] */ = 0.0;
+  rOpt[0] = hMax;
+
+  iPos = (int *) ALLOCA_N(int, n);
+
+  for (j = 0; j < n; ++j)
+  {
+    iPos[j] = 0;
+  }
+
+  iFail[0] = iFail[1] = iFail[2] = 0;
+
+  VALUE tmparr;
+
+  tmparr = rb_ary_new2(n);
+  steps = rb_ary_new();
+  solution = rb_hash_new();
+
+
+  for (j = 0; j < n; ++j)
+  {
+    rb_ary_push( tmparr, rb_float_new(z[j]) ); // z is loaded with (y0,0...0)
+  }
+
+  rb_ary_push( steps, rb_float_new(t0) );
+  rb_hash_aset( solution, rb_float_new(t0), tmparr ); 
+
+
+  // Finally, here starts the central 
+  //      *single step w/hermite* sLIMDHERM loop (iOpt[31]==1)
+  //  or  *single step*           sLIMDHERM loop (iOpt[11]==1)
+  //  or  *dense output*          sLIMDHERM loop (iOpt[11]==2, iOpt[13]==nDense)
+
+  if ( nTp > 2 )
+  {
+    iOpt[31] = 1;  // switch on interpolation mode in sLIMDHERM
+
+    k = 1;
+
+      while ( (iFail[0] == 0) && (t0 < T) )
+      {
+        slimdherm_( &nDAE, &n, fcn, 0, &t0, &T, z, dz, 
+                    &rTol, &aTol, &h, iOpt, rOpt, iPos, 
+                    iFail, &kOrder, dense, &t1, &t2
+                  );
+
+        // fprintf(stderr,"k=%d, t0=%f, t1=%f, t2=%f, tp[k]=%f\n",k,t0,t1,t2,tp[k]);
+
+        if (t0 <= T)
+        {
+          if (t1 == t2)
+          {
+            while ( (k < nTp) && (tp[k] <= t2) )
+            {
+              VALUE stp;
+              VALUE arr;
+
+              stp = rb_float_new(tp[k]);
+              arr = rb_ary_new2(n);
+
+              rb_ary_push( steps, stp );
+
+              for (j = 0; j < n; ++j)
+              {
+                rb_ary_push( arr, rb_float_new(z[j]) );
+              }
+
+              rb_hash_aset( solution, stp, arr );
+
+              ++k;
+            }
+          }
+          else
+          {
+            while ( (k < nTp) && (tp[k] <= t2) )
+            {
+              VALUE stp;
+              VALUE arr;
+
+              stp = rb_float_new(tp[k]);
+              arr = rb_ary_new2(n);
+
+              rb_ary_push( steps, stp );
+
+              eval_hermite(n, tp[k], y, kOrder, dense, t1, t2);
+
+              for (j = 0; j < n; ++j)
+              {
+                rb_ary_push( arr, rb_float_new(y[j]) );
+              }
+
+              rb_hash_aset( solution, stp, arr );
+
+              ++k;
+            }
+          }
+        }
+      }
+  }
+  else
+  {
+    while ( (iFail[0] == 0) && (t0 < T) )
+    {
+      slimdherm_( &nDAE, &n, fcn, 0, &t0, &T, z, dz, 
+                  &rTol, &aTol, &h, iOpt, rOpt, iPos, 
+                  iFail, &kOrder, dense, &t1, &t2
+                );
+
+      if (t0 <= T)
+      {
+        VALUE stp;
+        VALUE arr;
+
+        stp = rb_float_new(t0);
+        arr = rb_ary_new2(n);
+
+        rb_ary_push( steps, stp );
+
+        for (j = 0; j < n; ++j)
+        {
+          rb_ary_push( arr, rb_float_new(z[j]) );
+        }
+
+        rb_hash_aset( solution, stp, arr );
+      }
+    }
+  }
+
+  rb_iv_set(self, "@t0", rb_float_new(tp[0]));
+  rb_iv_set(self, "@T", rb_float_new(tp[nTp-1]));
+  rb_iv_set(self, "@steps", steps);
+  rb_iv_set(self, "@solution", solution);
+
+  VALUE arr;
+  arr = rb_ary_new();
+  rb_ary_push( arr, INT2NUM(iFail[0]) );
+  rb_ary_push( arr, INT2NUM(iFail[1]) );
+  rb_ary_push( arr, INT2NUM(iFail[2]) );
+
+  return arr;
+}
+
+
+static
 VALUE limex_run(VALUE self, VALUE tspan)
 {
   Check_Type(tspan, T_ARRAY);
@@ -568,6 +831,7 @@ void Init_Limex()
   /* rb_define_singleton_method(cLimex, "new", limex_new, 1); */
   rb_define_method(cLimex, "initialize", limex_init, 1);
   rb_define_method(cLimex, "run", limex_run, 1);
+  rb_define_method(cLimex, "srun", limex_srun, 2);
   rb_define_method(cLimex, "y0", limex_y0, 0);
   rb_define_method(cLimex, "y0=", limex_y0_eq, 1);
   rb_define_method(cLimex, "rtol=", limex_rtol_eq, 1);

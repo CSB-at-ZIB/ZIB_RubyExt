@@ -14,7 +14,7 @@
 #
 #     LIMEX4_3_Auxiliaries.f
 #  
-LOBJ  =  LIMDHERM.o \
+LOBJ  =  LIMDHERM.o sLIMDHERM.o \
          LIMEX4_3A.o LIMEX4_3_Dense.o \
          LIMEX4_3_Auxiliaries.o
 #
@@ -42,7 +42,8 @@ limex : $(LOBJ) LIMEX4_3A_Example_Small.o
 #  LIMEX4_A.f depends from LIMEX4_3_Size_Definitions.h:
 #
 LIMEX4_3A.o : LIMEX4_3A.f   LIMEX4_3_Size_Definitions.h
-LIMDHERM.o : LIMDHERM.f   LIMEX4_3_Size_Definitions.h
+LIMDHERM.o  : LIMDHERM.f    LIMEX4_3_Size_Definitions.h
+sLIMDHERM.o : sLIMDHERM.f   LIMEX4_3_Size_Definitions.h
 
 clean :
 	/bin/rm -f *.o *.so

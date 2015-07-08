@@ -51,9 +51,11 @@ end
 
 #
 
-def jacobian(t,y,par)
+def jacobian(t,y,par,pidx)
 
   dy = abc(t,y,par) # y is virtually too long, but this does not matter! 
+
+  return dy if dy.length == y.length
 
   m = dy.length
   q = par.length
@@ -66,7 +68,7 @@ def jacobian(t,y,par)
            [  0.0 , y[1] ] ]
 
   s = y[m..-1]  # m = 3 species (y[0], y[1], y[2]), and q = 2 parameters
-                #  ==>  s ~ y[m = 3], ... , y[(m + m*q)-1 = 3 + 3*2 - 1 = 8]
+                #  ==>  s ~ y[m = 3], ..., y[(m+m*q-1) = (3 + 3*2 - 1) = 8]
 
   fy = [ [ -drdy[0][0]              , -drdy[0][1]              ,  drdy[0][2]              ] ,
          [  drdy[0][0] - drdy[1][0] ,  drdy[0][1] - drdy[1][1] ,  drdy[0][2] - drdy[1][2] ] ,
@@ -77,11 +79,13 @@ def jacobian(t,y,par)
          [               drdp[1][0] ,               drdp[1][1] ] ]
 
   dS = []
-  q.times do |ell|
+  pidx.each_with_index do |ell,idx|
+    # next if ell < 0
     m.times do |j|
-      sum = fp[j][ell]
-      m.times {|k| sum += fy[j][k]*s[q*ell + k] }
-      dS[q*ell + j] = sum
+      sum = 0.0
+      sum = fp[j][ell-1] if ell > 0
+      m.times { |nu| sum += fy[j][nu]*s[m*idx + nu] }
+      dS[m*idx + j] = sum
     end
   end
 
@@ -147,7 +151,7 @@ fit.pfname = "rb_Nlscon_with_ABC_parameter.dat"
 fit.sfname = "rb_Nlscon_with_ABC_solution.dat"
 fit.nitmax = 195
 fit.nonlin = 3
-fit.jacgen = 2
+fit.jacgen = 1
 fit.rwk = { "ajdel" => $eta } 
 # fit.rwk = { "cond" => 1.0e-3 } 
 

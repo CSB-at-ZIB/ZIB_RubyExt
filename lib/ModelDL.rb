@@ -7,12 +7,10 @@ require_relative '../ext/LimexDL/LimexDL'
 class ModelDL < LimexDL
 
   attr_accessor :t0, :y0ode, :y0Id, :par0
-  # attr_accessor :dfdp, :dfdy
   # attr_accessor :par, :rtol, :atol, :inistep, :hmax
   # attr_accessor :y0, :rtol, :atol, :inistep, :hmax
 
   def initialize( initvals = {},
-                  dfdp = nil, dfdy = nil,
                   rtol = 1.0e-9, atol = 1.0e-9, 
                   inistep = 0.0, maxstep = 0.0 )
 
@@ -20,7 +18,7 @@ class ModelDL < LimexDL
     y0 = initvals.has_key?(:y0) ? initvals[:y0] : []
     par = initvals.has_key?(:par) ? initvals[:par] : []
     t0 = initvals.has_key?(:t0) ? initvals[:t0] : 0.0
- 
+
     @y0ode = self.y0
     @y0Id = self.yId
     if initvals.has_key?(:y0label) and
@@ -29,8 +27,6 @@ class ModelDL < LimexDL
       @y0Id = initvals[:y0label]
     end
     @t0 = t0
-    @dfdp = dfdp
-    @dfdy = dfdy
     @par0 = self.par
     # @rtol = rtol
     # @atol = atol
@@ -43,6 +39,18 @@ class ModelDL < LimexDL
     self.atol = atol
     self.inistep = inistep
     self.hmax = maxstep
+  end
+
+  def solve_var(tspan, y0=[], par=[], pidx=[])
+  #
+    self.y0 = y0 if y0.compact != []
+    self.par = par if par.compact != []
+    return [nil,nil] if pidx.compact == []
+    ifail = self.srun(tspan.sort, pidx) 
+    return [nil,nil] unless ifail.is_a?(Array) and ifail[0] == 0
+    [ self.steps, self.solution ]
+  #
+    [nil,nil]
   end
 
   def solve_ode(tspan, y0=[], par=[])
