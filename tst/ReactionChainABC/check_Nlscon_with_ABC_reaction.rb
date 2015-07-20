@@ -55,8 +55,6 @@ def jacobian(t,y,par,pidx)
 
   dy = abc(t,y,par) # y is virtually too long, but this does not matter! 
 
-  return dy if dy.length == y.length
-
   m = dy.length
   q = par.length
   k1, k2 = par

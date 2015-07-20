@@ -38,6 +38,28 @@ c
 c
 c=======================================================================
 c
+      subroutine ydot_sLIMEX ( n, nz, t, y_state, dy, b, ir, ic, info )
+c
+      implicit none
+c
+c-----------------------------------------------------------------------
+c
+      integer             j, n, nz, info
+c
+      integer             ir(*), ic(*)
+c
+      double precision    t, y_state(n), dy(n), b(*)
+c
+c-----------------------------------------------------------------------
+c
+      info = -999
+      nz = n
+c
+      return
+      end subroutine ydot_sLIMEX
+c
+c=======================================================================
+c
       subroutine ydot ( n, t, y_state, dy, info )
 c
       implicit none

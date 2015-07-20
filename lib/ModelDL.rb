@@ -46,7 +46,7 @@ class ModelDL < LimexDL
     self.y0 = y0 if y0.compact != []
     self.par = par if par.compact != []
     return [nil,nil] if pidx.compact == []
-    ifail = self.srun(tspan.sort, pidx) 
+    ifail = self.srun( tspan.sort, pidx ) 
     return [nil,nil] unless ifail.is_a?(Array) and ifail[0] == 0
     [ self.steps, self.solution ]
   #
@@ -57,7 +57,7 @@ class ModelDL < LimexDL
   #
     self.y0 = y0 if y0.compact != []
     self.par = par if par.compact != []
-    ifail = self.run(tspan.sort) 
+    ifail = self.run( tspan.sort ) 
     return [nil,nil] unless ifail.is_a?(Array) and ifail[0] == 0
     [ self.steps, self.solution ]
   #

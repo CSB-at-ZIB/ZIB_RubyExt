@@ -1509,10 +1509,12 @@ SbmlModel::doFunctionBlock(ifstream& infile)
 
                if ( vec.size() > 1 )
                {
-                   arg = "( double " + vec[0];
+                   // arg = "( double " + vec[0];
+                   arg = "( T " + vec[0];
                    for (unsigned j = 1; j < vec.size()-1; ++j)
                    { 
-                       arg += ", double " + vec[j];
+                       // arg += ", double " + vec[j];
+                       arg += ", T " + vec[j];
                    }
                    arg += " )";
                }
@@ -1611,10 +1613,12 @@ SbmlModel::doPiecewiseBlock(ifstream& infile)
                    arg = "( ";
                    for (unsigned j = 0; j < narg/2; ++j)
                    {
-                       sprintf(str, "double val%d, int cond%d, ", j+1, j+1);
+                       // sprintf(str, "double val%d, int cond%d, ", j+1, j+1);
+                       sprintf(str, "T val%d, int cond%d, ", j+1, j+1);
                        arg += str;
                    }
-                   arg += "double dflt )";
+                   // arg += "double dflt )";
+                   arg += "T dflt )";
                }
 
                line = block[++n];

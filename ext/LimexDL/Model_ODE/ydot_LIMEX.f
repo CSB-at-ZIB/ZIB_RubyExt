@@ -1,7 +1,7 @@
 c-----
 c SBML Model : Gardner1998_CellCycle_Goldbeter                        
 c              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-c       Date : Wed Jan 21 18:33:42 2015
+c       Date : Mon Jul 20 17:59:49 2015
 c              
 c     Author : automated transcription by 'sbml2fortran'
 c              
@@ -44,6 +44,28 @@ c-----------------------------------------------------------------------
 c
       return
       end subroutine ydot_LIMEX
+c
+c=======================================================================
+c
+      subroutine ydot_sLIMEX ( n, nz, t, y_state, dy, b, ir, ic, info )
+c
+      implicit none
+c
+c-----------------------------------------------------------------------
+c
+      integer             j, n, nz, info
+c
+      integer             ir(*), ic(*)
+c
+      double precision    t, y_state(n), dy(n), b(*)
+c
+c-----------------------------------------------------------------------
+c
+      info = -999
+      nz = n
+c
+      return
+      end subroutine ydot_sLIMEX
 c
 c=======================================================================
 c
@@ -574,10 +596,10 @@ c
       end do
 c     ---
       idm(  1) = 'Gardner1998_CellCycle_Goldbeter'//char(0)
-      idm(  2) = 'Wed Jan 21 18:33:42 2015'//char(0)
-      idm(  3) = '001421861622'//char(0)
+      idm(  2) = 'Mon Jul 20 17:59:49 2015'//char(0)
+      idm(  3) = '001437407989'//char(0)
       idm(  4) = 'BIOMD0000000008.xml'//char(0)
-      idm(  5) = 'no var eq'//char(0)
+      idm(  5) = 'no vareq'//char(0)
 c     ---
 c
 c-----------------------------------------------------------------------

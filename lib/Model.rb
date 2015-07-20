@@ -92,7 +92,13 @@ class Model < Limex
     self.y0 = y0 if y0.compact != []
     self.par = par if par.compact != []
     return [nil,nil] if @odejac.nil? or pidx.compact == []
-    ifail = self.srun(tspan.sort, pidx) { |t,y| @odejac.call(t,y,par,pidx) }
+    ifail = self.srun( tspan.sort, pidx ) do |t,y|
+       if y.length == self.y0.length then
+          @odefcn.call(t,y,par)
+       else
+          @odejac.call(t,y,par,pidx)
+       end
+    end
     return [nil,nil] unless ifail.is_a?(Array) and ifail[0] == 0
     [ self.steps, self.solution ]
   #
@@ -104,7 +110,9 @@ class Model < Limex
     self.y0 = y0 if y0.compact != []
     self.par = par if par.compact != []
     return [nil,nil] if @odefcn.nil?
-    ifail = self.run(tspan.sort) { |t,y| @odefcn.call(t,y,par) }
+    ifail = self.run( tspan.sort ) do |t,y| 
+        @odefcn.call(t,y,par)
+    end
     return [nil,nil] unless ifail.is_a?(Array) and ifail[0] == 0
     [ self.steps, self.solution ]
   #

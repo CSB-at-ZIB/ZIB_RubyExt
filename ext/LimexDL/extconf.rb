@@ -10,6 +10,7 @@ $LDFLAGS << " -L./Model_ODE -L./LIMEX4_3A -Wl,-rpath,#{rpath} "
 
 have_library('LIMEX4_3A', 'limex_')
 have_library('ODEydot', 'ydot_limex_')
+have_library('ODEydot', 'ydot_slimex_')
 have_library('ODEydot', 'init_ode_') 
 have_library('ODEydot', 'get_model_ids_')
 #have_library('ODEydot', 'get_species_ids_')

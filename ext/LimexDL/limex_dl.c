@@ -215,7 +215,7 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
 
       while ( (iFail[0] == 0) && (t0 < T) )
       {
-        slimdherm_( &nDAE, &n, ydot_limex_, 0, &t0, &T, z, dz, 
+        slimdherm_( &nDAE, &n, ydot_slimex_, 0, &t0, &T, z, dz, 
                     &rTol, &aTol, &h, iOpt, rOpt, iPos, 
                     iFail, &kOrder, dense, &t1, &t2
                   );

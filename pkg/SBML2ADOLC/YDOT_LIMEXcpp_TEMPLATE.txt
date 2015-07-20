@@ -40,6 +40,8 @@ c#events
 } sbmlvariables_;
 
 //=======================================================================
+};
+//=======================================================================
 
 #define  zero  0.0e0
 #define  one   1.0e0
@@ -53,18 +55,28 @@ c#events
 #define  eve   sbmlvariables_.eve
 
 //=======================================================================
-      void ydot ( int, double, double*, double*, int* );
-      void check_events ( double, int, int* ); 
+      template <typename T>
+      void ydot ( int, T, T*, T*, int* );
+      template <typename T>
+      void check_events ( T, int, int* ); 
 //-----------------------------------------------------------------------
 c#block_for_all(j in functions)
 c#args
-      double fun%d %s;
+      template <typename T> T fun%d %s;
 c#end_block
 //-----------------------------------------------------------------------
 c#block_for_all(j in pieces)
 c#args
-      double piecewise%d %s;
+      template <typename T> T piecewise%d %s;
 c#end_block
+//=======================================================================
+
+void ydot_slimex_ ( int* n, int* nz, double* t, double* y_state, double* dy,
+                    double* b, int* ir, int* ic, int* info )
+{
+   *info = -999;
+}
+
 //=======================================================================
 
 void ydot_limex_ ( int* n, int* nz, double* t, double* y_state, double* dy, 
@@ -87,13 +99,14 @@ c#for_all(j in algebraic)
 
 //=======================================================================
 
-void ydot ( int n, double t, double* y_state, double* dy, int* info )
+template <typename T>
+void ydot ( int n, T t, T* y_state, T* dy, int* info )
 {
 /*
 c#for_all(j in functions)
-   double fun%d(...);
+   T fun%d(...);
 c#for_all(j in pieces)
-   double piecewise%d(...);
+   T piecewise%d(...);
 */
 
    *info = 0;
@@ -106,7 +119,7 @@ c#for_all(j in pieces)
 
 //-----------------------------------------------------------------------
 c#events
-   check_events (t, %d, eve);
+   check_events<T> (t, %d, eve);
 //-----------------------------------------------------------------------
 
 c#for_all(j in assignments)
@@ -115,7 +128,7 @@ c#for_all(j in assignments)
 
 //-----------------------------------------------------------------------
 c#events
-   check_events (t, %d, eve);
+   check_events<T> (t, %d, eve);
 //-----------------------------------------------------------------------
 
 
@@ -124,7 +137,7 @@ c#for_all(j in reactions)
 
 //-----------------------------------------------------------------------
 c#events
-   check_events (t, %d, eve);
+   check_events<T> (t, %d, eve);
 //-----------------------------------------------------------------------
 
 c#for_all(j in rates)
@@ -133,13 +146,14 @@ c#for_all(j in rates)
 
 //=======================================================================
 
-void check_events ( double t, int n, int* ev )
+template <typename T>
+void check_events ( T t, int n, int* ev )
 {
 /*
 c#for_all(j in functions)
-   double fun%d(...);
+   T fun%d(...);
 c#for_all(j in pieces)
-   double piecewise%d(...);
+   T piecewise%d(...);
 */
 
 c#block_for_all(j in events)
@@ -316,14 +330,14 @@ c#comment modelids
 c#block_for_all(j in functions)
 //=======================================================================
 c#args
-      double fun%d %s
+      template<typename T> T fun%d %s
 /*
 c#for_all(j in decls)
-      double %s;
+      T   %s;
 */
 {
 c#funcs
-      double ret%d;
+      T ret%d;
 c#impls
       ret%d = %s;
 c#funcs
@@ -334,16 +348,16 @@ c#end_block
 c#block_for_all(j in pieces)
 //=======================================================================
 c#args
-      double piecewise%d %s
+      template <typename T> T piecewise%d %s
 /*
 c#for_all(j in dbledecls)
-      double %s;
+      T   %s;
 c#for_all(j in logicdecls)
-      int    %s;
+      int %s;
 */
 {
 c#funcs
-      double ret%d;
+      T ret%d;
 
 c#3lines_first_case
       if ( %s )
@@ -364,6 +378,4 @@ c#funcs
 }
 c#end_block
 
-//=======================================================================
-};
 //=======================================================================

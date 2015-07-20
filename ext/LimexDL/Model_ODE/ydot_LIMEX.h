@@ -77,3 +77,16 @@ extern void ydot_limex_ (
                     int*        info
              );
 
+/* computing rhs f(t,y), fy(t,y)S + fp(t,y), and related mass matrix B(t,y) */
+extern void ydot_slimex_ (
+                    int*        n,
+                    int*        nz,
+                    double*     t,
+                    double*     y,
+                    double*     dy,
+                    double*     B,
+                    int*        ir,
+                    int*        ic,
+                    int*        info
+             );
+
