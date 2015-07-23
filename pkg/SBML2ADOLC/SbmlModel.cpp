@@ -71,6 +71,7 @@ SbmlModel::SbmlModel(SbmlModel const& other)
   _reac = other._reac; 
   _rate = other._rate;
   _trig = other._trig;
+  // _dmmy = other._dmmy;
   _emth = other._emth;
 
   _icomp = other._icomp; 
@@ -97,6 +98,7 @@ SbmlModel::SbmlModel(SbmlModel const& other)
 void 
 SbmlModel::initModel(Model const* m)
 {
+   _dmmy.clear();
    _piece.clear();
 
    setModelIDs(m);
@@ -1169,8 +1171,8 @@ SbmlModel::toAdolC(string const& fname)
                ListIndex::const_iterator lBeg;
                ListIndex::const_iterator lEnd;
                ValueList&                val = _comp;
-               StringList&               formula = _rule;
-               char                      lstkind = 'v';
+               StringList&               frm = _dmmy;
+               char                      lstkind = 'X';
 
                if ( line.find("compartments") != string::npos )
                {
@@ -1209,36 +1211,41 @@ SbmlModel::toAdolC(string const& fname)
                {
                   lBeg = _vspec.begin();
                   lEnd = _vspec.end();
-                  formula = _rule;
+                  frm = _rule;
                   lstkind = 'a';
                }
                else if ( line.find("assignments") != string::npos )
                {
                   lBeg = _vrule.begin();
                   lEnd = _vrule.end();
-                  formula = _rule;
+                  frm = _rule;
                   lstkind = 's';
                }
                else if ( line.find("reactions") != string::npos )
                {
                   lBeg = _vreac.begin();
                   lEnd = _vreac.end();
-                  formula = _reac;
+                  frm = _reac;
                   lstkind = 's';
                }
                // else if ( line.find("events") != string::npos )
                // {
                //    lBeg = _vtrig.begin();
                //    lEnd = _vtrig.end();
-               //    formula = _trig;
+               //    frm = _trig;
                //    lstkind = 's';
                // }
                else if ( line.find("rates") != string::npos )
                {
                   lBeg = _vspec.begin();
                   lEnd = _vspec.end();
-                  formula = _rate;
+                  frm = _rate;
                   lstkind = 's';
+               }
+               else
+               {
+                  frm = _dmmy;
+                  lstkind = 'X';
                }
  
                getline( infile, line );
@@ -1272,7 +1279,7 @@ SbmlModel::toAdolC(string const& fname)
                                                     it != lEnd; 
                                                   ++it)
                      {
-                        if ( formula.count(it->second) > 0 )
+                        if ( frm.count(it->second) > 0 )
                         {
                             sprintf( str, line.c_str(), it->first );
                             _outs << str << endl;
@@ -1301,7 +1308,7 @@ SbmlModel::toAdolC(string const& fname)
                          char buf[8192]; 
 
                          sprintf( buf, line.c_str(), 
-                                  it->first, formula[it->second].c_str() );
+                                  it->first, frm[it->second].c_str() );
 
                          doMultiLine( buf );
 /*
@@ -1311,7 +1318,7 @@ SbmlModel::toAdolC(string const& fname)
 
                          ostr.flush();
                          sstr.flush();
-                         sstr << formula[it->second];
+                         sstr << frm[it->second];
                          len = 0;
                          line = old;
 
@@ -1365,6 +1372,7 @@ SbmlModel::toAdolC(string const& fname)
                          }
 */  
                      }
+                     frm = _rule;
                      break;
 
                   default:

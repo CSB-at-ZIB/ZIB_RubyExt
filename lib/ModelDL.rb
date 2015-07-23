@@ -50,7 +50,6 @@ class ModelDL < LimexDL
     return [nil,nil] unless ifail.is_a?(Array) and ifail[0] == 0
     [ self.steps, self.solution ]
   #
-    [nil,nil]
   end
 
   def solve_ode(tspan, y0=[], par=[])

@@ -47,6 +47,7 @@ extern void get_model_ids_ ( char* idm, int* nid, int _len );
 extern void init_ode_ ( double* com, int* icom, int* lcom,
                         double* spe, int* ispe, int* lspe,
                         double* par, int* ipar, int* lpar );
+extern void init_var_ ( int* nidx, int* pidx );
 
 /* dummy routine here */
 /*

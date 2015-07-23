@@ -4,7 +4,7 @@ rpath = $(bpath)/lib
 
 CXX = g++
 CXXFLAGS = -I../include -O3
-# CXXFLAGS = -g
+# CXXFLAGS = -I../include -g
 
 FC = gfortran
 FFLAGS = -O3

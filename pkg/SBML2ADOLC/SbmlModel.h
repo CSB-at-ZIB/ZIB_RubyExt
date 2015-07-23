@@ -121,7 +121,7 @@ class SbmlModel
         ValueList        _comp, _spec, _parm;
         FunctionDefList  _func;
         StringList       _rule, _reac, _rate;
-        StringList       _trig;
+        StringList       _trig, _dmmy;
         EventAssignList  _emth;
         IndexList        _icomp, _ispec, _iparm, _ifunc;
         IndexList        _irule, _ireac;    // , _irate;

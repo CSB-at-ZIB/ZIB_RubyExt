@@ -47,10 +47,10 @@ void eval_hermite(int n, double t, double *y,
 
 /*
 static 
-void fcn(int *n, int *nz,
-         double *t, double *y, double *dy,
-         double *B, int *ir, int *ic,
-         int *info)
+void sfcn(int *n, int *nz,
+          double *t, double *y, double *dy,
+          double *B, int *ir, int *ic,
+          int *info)
 {
   *info = -987;
 }
@@ -63,29 +63,35 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
   Check_Type(tspan, T_ARRAY);
   Check_Type(pidx, T_ARRAY);
 
-  int     j, k, n, nDAE, nTp;
+  int     j, k, n, nDAE, nTp, nPdx;
   double  t0, T;
   double  *tp, *z, *dz;
-  double  rTol, aTol;
+  double  rtol, atol;
   double  h, hMax, hInit;
   int     debug, nDense;
   int     iOpt[32];
   double  rOpt[5];
-  int     *iPos, iFail[3];
+  int     *iPdx, *iPos, iFail[3];
   int     kOrder;
   double  dense[MAX_NO_EQNS*(2 + MAX_ROW_TAB*(MAX_ROW_TAB+1)/2)];
   double  t1, t2;
-  double  *y;
+  double  *y, *rTol, *aTol;
 
   VALUE y0;
   VALUE steps;
   VALUE solution;
 
-  nTp = RARRAY_LEN(tspan);
+   nTp = RARRAY_LEN(tspan);
+  nPdx = RARRAY_LEN(pidx);
 
   if ( nTp < 2 )
   {
     rb_raise(rb_eArgError, "tspan array length wrong (must be 2, at least).");
+    return Qnil;
+  }
+  if ( nPdx < 1 )
+  {
+    rb_raise(rb_eArgError, "pidx array length wrong (must be greater than 0).");
     return Qnil;
   }
 
@@ -95,12 +101,26 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
   // t0 = NUM2DBL(tStart);
   // T  = NUM2DBL(tEnd);
 
-  y0 = rb_iv_get(self, "@y0");
+  rtol = NUM2DBL( rb_iv_get(self, "@rtol") );
+  atol = NUM2DBL( rb_iv_get(self, "@atol") );
+    y0 = rb_iv_get(self, "@y0");
 
-  tp = (double *) ALLOCA_N(double, nTp);
-  y  = (double *) ALLOCA_N(double, n);
-  z  = (double *) ALLOCA_N(double, n);
-  dz = (double *) ALLOCA_N(double, n);
+    tp = (double *) ALLOCA_N(double, nTp);
+    y  = (double *) ALLOCA_N(double, n);
+    z  = (double *) ALLOCA_N(double, n);
+    dz = (double *) ALLOCA_N(double, n);
+  rTol = (double *) ALLOCA_N(double, n);
+  aTol = (double *) ALLOCA_N(double, n);
+  iPdx =    (int *) ALLOCA_N(int, nPdx);
+
+  for (k = 0; k < nPdx; ++k)
+  {
+    iPdx[k] = NUM2INT( rb_ary_entry(pidx, (long)k) );
+  }
+
+  init_var_( &nPdx, iPdx );
+
+  //
 
   for (k = 0; k < nTp; ++k)
   {
@@ -111,12 +131,12 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
 
   for (j = 0; j < n; ++j)
   {
-     z[j] = (j < nDAE) ? NUM2DBL( rb_ary_entry(y0, (long)j) ) : 0.0;
-    dz[j] = 0.0;
+    rTol[j] = (j < nDAE) ? rtol : 1.0e-4;
+    aTol[j] = (j < nDAE) ? atol : 1.0e-4;
+       z[j] = (j < nDAE) ? NUM2DBL( rb_ary_entry(y0, (long)j) ) : 0.0;
+      dz[j] = 0.0;
   }
 
-  rTol = NUM2DBL( rb_iv_get(self, "@rtol") );
-  aTol = NUM2DBL( rb_iv_get(self, "@atol") );
   hMax = NUM2DBL( rb_iv_get(self, "@hmax") );
   hInit = NUM2DBL( rb_iv_get(self, "@inistep") );
   h = hInit /* rTol */;
@@ -136,7 +156,7 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
   iOpt[8]  =  n;        // Upper bandwidth of Jacobian: 0 <= iOpt[8] <= n <= Max_Upper_Diags
 
   iOpt[9]  =  1;        // Re-use of Jacobian: 0 no re-use, 1 re-use of Jacobian in the following steps
-  iOpt[10] =  0;        // Switch for error tolerances: 0 rTol&aTol scalar, 1 rTol&aTol are vectors
+  iOpt[10] =  1;        // Switch for error tolerances: 0 rTol&aTol scalar, 1 rTol&aTol are vectors
   iOpt[11] =  1;        // Switch for one step mode: 0 off, 1 return from each step, 2 return only from prescribed steps
 
   iOpt[12] =  0;        // Dense output option: 0 off, 1 on equidist pts within interval, 2 on equidist pts within step (# in iOpt[13]), 3 on additional pts
@@ -216,7 +236,7 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
       while ( (iFail[0] == 0) && (t0 < T) )
       {
         slimdherm_( &nDAE, &n, ydot_slimex_, 0, &t0, &T, z, dz, 
-                    &rTol, &aTol, &h, iOpt, rOpt, iPos, 
+                    rTol, aTol, &h, iOpt, rOpt, iPos, 
                     iFail, &kOrder, dense, &t1, &t2
                   );
 
@@ -277,8 +297,8 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
   {
     while ( (iFail[0] == 0) && (t0 < T) )
     {
-      slimdherm_( &nDAE, &n, ydot_limex_, 0, &t0, &T, z, dz, 
-                  &rTol, &aTol, &h, iOpt, rOpt, iPos, 
+      slimdherm_( &nDAE, &n, ydot_slimex_, 0, &t0, &T, z, dz, 
+                  rTol, aTol, &h, iOpt, rOpt, iPos, 
                   iFail, &kOrder, dense, &t1, &t2
                 );
 

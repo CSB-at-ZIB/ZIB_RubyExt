@@ -46,7 +46,7 @@ extern "C"
   {
       double start;
   } sbmlvariables_;
-}
+
 
 
 extern void get_species_ids_ ( char (*ids)[MAXIDSTRLEN], int* nspe, 
@@ -60,6 +60,9 @@ extern void get_model_ids_ ( char (*idm)[MAXIDSTRLEN], int* nid,
 extern void init_ode_ ( double* com, int* icom, int* lcom,
                         double* spe, int* ispe, int* lspe,
                         double* par, int* ipar, int* lpar );
+
+extern void init_var_ ( int* nidx, int* pidx );
+
 
 // dummy routine here
 /*
@@ -103,5 +106,6 @@ extern void ydot_slimex_ (
                     int*        ic,
                     int*        info
              );
+}
 
 #endif // __YDOT_LIMEX_CPP_H
