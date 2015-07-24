@@ -172,7 +172,7 @@ c#for_all(j in algebraic)
 void compute_fy( int nspe, int npar, double t, double* y_state, 
                  double* dy, double* fy, int* info )
 {
-   adtl::setNumDir(nspe);
+   /// adtl::setNumDir(nspe);
    adouble ay[nspe], ady[nspe];
    /**/
    for (int j = 0; j < nspe; ++j)
@@ -203,7 +203,7 @@ void compute_fy( int nspe, int npar, double t, double* y_state,
 void compute_fp( int nspe, int npar, double t, double* y_state, 
                  double* fp, int* info )
 {
-   adtl::setNumDir(npar);
+   /// adtl::setNumDir(npar);
    adouble ay[nspe], ady[nspe];
    /**/
    for (int j = 0; j < nspe; ++j)
@@ -214,7 +214,7 @@ void compute_fp( int nspe, int npar, double t, double* y_state,
    {
       if ( apidx[k] > 0 )
       {  
-         par[ apidx[k]-1 ].setADValue(k,1);
+         par[ apidx[k]-1 ].setADValue(nspe+k,1);
       }
    }
    /**/
@@ -224,7 +224,7 @@ void compute_fp( int nspe, int npar, double t, double* y_state,
    {
       for (int j = 0; j < nspe; ++j)
       {
-         fp[ j + nspe*k ] = ady[j].getADValue(k);
+         fp[ j + nspe*k ] = ady[j].getADValue(nspe+k);
       }
    }
 }
@@ -329,13 +329,14 @@ c#parameters
       sbmlvariables_.adpar[j] = par[j];
    }
    /**/
-c#parameters
-   int midx = std::min(%d,*nidx);
+   int midx = std::min(npar,*nidx);
    for (int idx = 0; idx < midx; ++idx)
    {
       apidx[idx] = pidx[idx];
    }
    npidx = midx;
+   /**/
+   adtl::setNumDir(nspe + midx);
 }
 #undef PRE
 
