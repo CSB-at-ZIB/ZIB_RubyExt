@@ -12,8 +12,17 @@ c  par[%3d]  :   %-42s
 #include <cstring>
 #include <algorithm>
 // do not even think to #include "ydot_LIMEXcpp.h"
-#include <adolc/adtl.h>
+/**/
+#define ADOLC_TAPELESS
+c#species
+#define NUM_SPE %d
+c#parameters
+#define NUM_PAR %d
+#define NUMBER_DIRECTIONS (NUM_SPE + NUM_PAR)
+// ... #include <adolc/adtl.h>
+#include <adolc/adouble.h>
 typedef adtl::adouble adouble;
+ADOLC_TAPELESS_UNIQUE_INTERNALS;
 /**/
 #define MAXIDSTRLEN 64
 
@@ -336,7 +345,7 @@ c#parameters
    }
    npidx = midx;
    /**/
-   adtl::setNumDir(nspe + midx);
+   // adtl::setNumDir(nspe + midx);
 }
 #undef PRE
 

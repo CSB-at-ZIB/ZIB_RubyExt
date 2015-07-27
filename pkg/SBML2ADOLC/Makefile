@@ -32,7 +32,8 @@ all : ../lib/libadolc.so ../lib/libsbml.so sbml2adolc
 	$(MAKE) install
 
 sbml2adolc : $(OBJS)
-	$(CXX) -I../include -o sbml2adolc $(OBJS) -L../lib -lsbml -ladolc -Wl,-rpath,$(rpath)
+	$(CXX) -I../include -o sbml2adolc $(OBJS) -L../lib -lsbml -Wl,-rpath,$(rpath)
+	# $(CXX) -I../include -o sbml2adolc $(OBJS) -L../lib -lsbml -ladolc -Wl,-rpath,$(rpath)
 	cp sbml2adolc YDOT_LIMEXcpp_TEMPLATE.txt ../../bin/
 
 SbmlModel.o : SbmlModel.cpp SbmlModel.h myTypes.h
