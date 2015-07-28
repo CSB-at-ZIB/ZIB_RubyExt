@@ -1129,7 +1129,7 @@ c
       integer            Max_Int_Steps, Max_Step_Red_Ex, 
      2                   Max_Step_Red_Dc, Max_Row_Tab, Max_Step_CIV
 c
-      parameter        ( Max_Int_Steps      = 10000,
+      parameter        ( Max_Int_Steps      = 1000000,
      2                   Max_Step_Red_Ex    =    20,
      3                   Max_Step_Red_Dc    =     5,
      4                   Max_Row_Tab        =     7,

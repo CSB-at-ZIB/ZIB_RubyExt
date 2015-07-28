@@ -66,7 +66,7 @@ c#parameters
 } sbmlvariables_;
 
 //=======================================================================
-
+/*
 struct {
 c#compartments
       adouble adcom[%d];
@@ -81,7 +81,7 @@ c#reactions
 c#events
       int     adeve[%d];
 } advariables_;
-
+*/
 //=======================================================================
 
 #define  zero  0.0e0
@@ -537,6 +537,7 @@ c#parameters
       *lp = %d;
    }
 }
+#undef PRE
 
 //=======================================================================
 
@@ -594,18 +595,19 @@ c#modelids
 c#comment modelids
    strncpy(idm[%3d],"%s\0",_len);
 }
-#undef PRE
+
 //=======================================================================
 };
 //=======================================================================
 
 c#block_for_all(j in functions)
 //=======================================================================
+template<typename T> 
 c#args
-      template<typename T> T fun%d %s
+T fun%d %s
 /*
 c#for_all(j in decls)
-      T   %s;
+      T&  %s;
 */
 {
 c#funcs
@@ -619,11 +621,12 @@ c#end_block
 
 c#block_for_all(j in pieces)
 //=======================================================================
+template <typename T> 
 c#args
-      template <typename T> T piecewise%d %s
+T piecewise%d %s
 /*
 c#for_all(j in dbledecls)
-      T   %s;
+      T&  %s;
 c#for_all(j in logicdecls)
       int %s;
 */

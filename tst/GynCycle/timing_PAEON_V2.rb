@@ -20,10 +20,10 @@ atol = Float(ARGV[1]) if ARGV.length > 1
 model = ModelDL.new 
 model.t0 = -42.5
 model.hmax = 0.0
-model.inistep = 1.0e-6
+model.inistep = 1.0e-4
 model.rtol = rtol
 model.atol = atol
-# model.monitor = 1
+model.monitor = 1
 # puts "#{model.inspect}"
 puts "#{model.version}" # see at the end of this script
 
@@ -31,6 +31,12 @@ puts "#{model.version}" # see at the end of this script
 start = Time.now
 t, sol = model.solve_ode [0.0, 150.0]
 stop = Time.now
+
+
+sout = File.open("rb_timing_PAEON_V2_solution.dat","w")
+model.save_current_solution(sout,-2)  # -2: no iterative solution
+sout.close
+
 
 puts
 puts "    #steps: #{t.length} (ODE solution in interval t=[0,150])"

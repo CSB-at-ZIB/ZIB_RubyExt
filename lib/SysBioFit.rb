@@ -17,6 +17,7 @@ class SysBioFit < Nlscon
                   parub = [], parlb = [], ptol = 1.0e-3, 
                   nitmax = 35, nonlin = 3, jacgen = 3, printlevel = 0)
     super(ary)
+    @mcon = ary[1] - ary[2]
     @pidx = pidx
     @pguess = pguess
     @pscal = pscal
@@ -399,6 +400,8 @@ class SysBioFit < Nlscon
       aa = ncjcf(self.x.clone)
     elsif self.iopt["jacgen"] == 2 then
       aa = ncjac(self.x.clone)
+    elsif self.iopt["jacgen"] == 1 then
+      aa = gn_jac(self.x.length,-1,@mcon,self.x.clone)
     end
 
     if nrm == "linf" then

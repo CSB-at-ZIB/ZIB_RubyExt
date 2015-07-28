@@ -2,7 +2,7 @@
 c-----
 c SBML Model : PAEON_V2                                               
 c              ~~~~~~~~
-c       Date : Wed Jul  1 15:15:52 2015
+c       Date : Tue Jul 28 19:03:47 2015
 c              
 c     Author : automated transcription by 'sbml2adolc'
 c              
@@ -171,7 +171,16 @@ c  par[114]  :   global_p_035_001
 #include <cmath>
 #include <cstring>
 #include <algorithm>
-// #include "ydot_LIMEXcpp.h"
+// do not even think to #include "ydot_LIMEXcpp.h"
+/**/
+#define ADOLC_TAPELESS
+#define NUM_SPE 33
+#define NUM_PAR 115
+#define NUMBER_DIRECTIONS (NUM_SPE + NUM_PAR)
+// ... #include <adolc/adtl.h>
+#include <adolc/adouble.h>
+typedef adtl::adouble adouble;
+ADOLC_TAPELESS_UNIQUE_INTERNALS;
 /**/
 #define MAXIDSTRLEN 64
 /**/
@@ -187,30 +196,362 @@ struct
       double  rul[2];
       double  rea[57];
       int     eve[0];
+      /**/
+      adouble adcom[1];
+      adouble adspe[33];
+      adouble adpar[115];
+      adouble adrul[2];
+      adouble adrea[57];
+      int     adeve[0];
+      int     apidx[115];
+      int     npidx;
 } sbmlvariables_;
+//=======================================================================
+/*
+struct {
+      adouble adcom[1];
+      adouble adspe[33];
+      adouble adpar[115];
+      adouble adrul[2];
+      adouble adrea[57];
+      int     adeve[0];
+} advariables_;
+*/
 //=======================================================================
 #define  zero  0.0e0
 #define  one   1.0e0
 #define  pi    3.141592653589793238462643383276e0
 #define  eul   2.718281828459045235360287471352e0
-#define  com   sbmlvariables_.com
-#define  spe   sbmlvariables_.spe
-#define  par   sbmlvariables_.par
-#define  rul   sbmlvariables_.rul
-#define  rea   sbmlvariables_.rea
-#define  eve   sbmlvariables_.eve
+#define  com   sbmlvariables_.PRE(com)
+#define  spe   sbmlvariables_.PRE(spe)
+#define  par   sbmlvariables_.PRE(par)
+#define  rul   sbmlvariables_.PRE(rul)
+#define  rea   sbmlvariables_.PRE(rea)
+#define  eve   sbmlvariables_.PRE(eve)
+#define  apidx sbmlvariables_.apidx
+#define  npidx sbmlvariables_.npidx
 //=======================================================================
-      void ydot ( int, double, double*, double*, int* );
-      void check_events ( double, int, int* ); 
-//-----------------------------------------------------------------------
-      double fun0 ( double x1, double x2, double x3 );
+void compute_fy( int, int, double, double*, double*, double*, int* );
+void compute_fp( int, int, double, double*, double*, int* );
+void ydotAD ( int, double, adouble*, adouble*, int* );
+void check_eventsAD ( double, int, int* ); 
+void ydot ( int, double, double*, double*, int* );
+void check_events ( double, int, int* ); 
+//=======================================================================
+};
+//=======================================================================
+      template <typename T> T fun0 ( T& x1, T& x2, T& x3 );
  
-      double fun1 ( double x1, double x2, double x3 );
+      template <typename T> T fun1 ( T& x1, T& x2, T& x3 );
  
  
 //-----------------------------------------------------------------------
  
 //=======================================================================
+extern "C" {
+//=======================================================================
+void ydot_slimex_ ( int* n, int* nz, double* t, double* y_state, double* dy,
+                    double* b, int* ir, int* ic, int* info )
+{
+   int    nspe = 33;
+   int    npar = npidx;
+   /**/
+   *nz = *n;
+   for (int j = 0; j < *nz; ++j)
+   {
+      ir[j] =
+      ic[j] = j+1;
+       b[j] = one;
+   }
+   /**/
+   if ( *n == nspe )
+   {
+ 
+      ydot ( *n, *t, y_state, dy, info );
+      return;
+   }
+   /**/
+   double fp[npar*nspe];
+   double fy[nspe*nspe];
+   double  s[*n];
+   /**/
+   for (int j = 0; j < *n; ++j)
+   {
+     s[j] = y_state[j];
+   }
+   /**/
+   compute_fp( nspe, npar, *t, y_state, fp, info );
+   compute_fy( nspe, npar, *t, y_state, dy, fy, info );
+   /**/
+   for (int idx = 0; idx < npidx; ++idx)
+   {
+      for (int j = 0; j < nspe; ++j)
+      {
+          double sum = 0.0;
+          if ( apidx[idx] > 0 ) 
+          {
+              sum = fp[j + nspe*idx]; /* fp[j][ apidx[idx]-1 ]; */
+          }
+          for (int nu = 0; nu < nspe; ++nu)
+          {
+              sum += fy[j + nspe*nu] * s[nu + nspe*(idx+1)];
+          } 
+          dy[j + nspe*(idx+1)] = sum;
+      }
+   }
+}
+//=======================================================================
+#define PRE(x) ad ## x
+void compute_fy( int nspe, int npar, double t, double* y_state, 
+                 double* dy, double* fy, int* info )
+{
+   /// adtl::setNumDir(nspe);
+   adouble ay[nspe], ady[nspe];
+   /**/
+   for (int j = 0; j < nspe; ++j)
+   {
+      ay[j] = y_state[j];
+      ay[j].setADValue(j,1);
+   }
+   for (int k = 0; k < npar; ++k)
+   {
+      par[k].setADValue(k,0);
+   }
+   /**/
+   ydotAD ( nspe, t, ay, ady, info );
+   /**/
+   for (int k = 0; k < nspe; ++k)
+   {
+      dy[k] = ady[k].getValue();
+      /**/
+      for (int j = 0; j < nspe; ++j)
+      {
+         fy[ j + nspe*k ] = ady[j].getADValue(k);
+      }
+   }
+}
+//-----------------------------------------------------------------------
+void compute_fp( int nspe, int npar, double t, double* y_state, 
+                 double* fp, int* info )
+{
+   /// adtl::setNumDir(npar);
+   adouble ay[nspe], ady[nspe];
+   /**/
+   for (int j = 0; j < nspe; ++j)
+   {
+      ay[j] = y_state[j];
+   }
+   for (int k = 0; k < npar; ++k)
+   {
+      if ( apidx[k] > 0 )
+      {  
+         par[ apidx[k]-1 ].setADValue(nspe+k,1);
+      }
+   }
+   /**/
+   ydotAD ( nspe, t, ay, ady, info );
+   /**/
+   for (int k = 0; k < npar; ++k)
+   {
+      for (int j = 0; j < nspe; ++j)
+      {
+         fp[ j + nspe*k ] = ady[j].getADValue(nspe+k);
+      }
+   }
+}
+#undef PRE
+//======================================================================= 
+#define PRE(x) ad ## x
+void ydotAD ( int n, double t, adouble* y, adouble* dy, int* info)
+{
+/*
+   adouble fun0(...);
+   adouble fun1(...);
+ 
+ 
+*/
+   *info = 0;
+   for (int j = 0; j < n; ++j)
+   {
+      spe[j] = y[j];
+       dy[j] = zero;
+   }
+//-----------------------------------------------------------------------
+   check_eventsAD (t, 0, eve);
+//-----------------------------------------------------------------------
+      rul[0] = par[93] * fun1(spe[24], par[94], par[95]) *
+                (1.000000e+00 + par[96] * fun0(spe[23], par[97],
+                par[98]));
+      rul[1] = par[99] * (fun0(spe[23], par[100], par[101]) +
+                fun1(spe[23], par[102], par[103]));
+ 
+//-----------------------------------------------------------------------
+   check_eventsAD (t, 0, eve);
+//-----------------------------------------------------------------------
+      rea[0] = (par[0] + par[1] * fun0(spe[23], par[2], par[3])) *
+                fun1(spe[24], par[4], par[5]);
+      rea[1] = (par[6] + par[7] * fun0(spe[31], par[8], par[9])) *
+                spe[0];
+      rea[2] = (par[6] + par[7] * fun0(spe[31], par[8], par[9])) *
+                spe[0] / par[10];
+      rea[3] = par[11] * spe[1] * spe[2];
+      rea[4] = par[12] * spe[1];
+      rea[5] = par[13] * spe[4];
+      rea[6] = par[14] * spe[3];
+      rea[7] = par[15] / (1.000000e+00 + pow(spe[27] / par[16],
+                par[17]) + pow(spe[26] / par[18], par[19])) *
+                fun1(rul[0], par[20], par[21]);
+      rea[8] = (par[22] + par[23] * fun0(spe[31], par[24], par[25]))
+                * spe[5];
+      rea[9] = (par[22] + par[23] * fun0(spe[31], par[24], par[25]))
+                * spe[5] / par[10];
+      rea[10] = par[26] * spe[7] * spe[6];
+      rea[11] = par[27] * spe[6];
+      rea[12] = par[28] * spe[9];
+      rea[13] = par[29] * spe[8];
+      rea[14] = par[30] * fun0(spe[6], par[31], par[32]);
+      rea[15] = par[33] * fun0(spe[24], par[34], par[35]) * spe[10];
+      rea[16] = par[37] * fun0(spe[8], par[38], par[39]);
+      rea[17] = par[40] * spe[8] * spe[11];
+      rea[18] = par[41] * pow(spe[3] / par[42], par[43]) * spe[10] *
+                spe[12];
+      rea[19] = par[44] * spe[8] * spe[13] * (1.000000e+00 - spe[13]
+                / par[45]);
+      rea[20] = par[46] * pow(spe[3] / par[42], par[47]) * spe[10] *
+                spe[13];
+      rea[21] = par[48] * pow(spe[3] / par[42], par[49]) * spe[14] *
+                (1.000000e+00 - spe[14] / par[45]);
+      rea[22] = par[50] * (spe[3] / par[42]) * spe[10] * spe[14];
+      rea[23] = par[51] * pow(spe[3] / par[42], par[52]) * spe[10] *
+                spe[15];
+      rea[24] = par[53] * pow(spe[3] / par[42], par[52]) * spe[10] *
+                fun0(spe[15], par[54], par[55]);
+      rea[25] = par[56] * spe[16];
+      rea[26] = par[57] * fun0(spe[16], par[58], par[59]);
+      rea[27] = par[60] * spe[17];
+      rea[28] = par[61] * spe[18];
+      rea[29] = par[62] * spe[19];
+      rea[30] = par[62] * par[63] * fun0(spe[31], par[64], par[65])
+                * spe[19];
+      rea[31] = par[66] * spe[20];
+      rea[32] = par[66] * par[63] * fun0(spe[31], par[64], par[65])
+                * spe[20];
+      rea[33] = par[67] * spe[21];
+      rea[34] = par[67] * par[63] * fun0(spe[31], par[64], par[65])
+                * spe[21];
+      rea[35] = par[68] * (1.000000e+00 + par[63] * fun0(spe[31],
+                par[64], par[65])) * spe[22];
+      rea[36] = par[69] + par[70] * spe[12] + par[71] * spe[1] *
+                spe[13] + par[72] * spe[14] + par[73] * spe[1] *
+                spe[15] + par[74] * spe[19] + par[75] * spe[22];
+      rea[37] = par[76] * spe[23];
+      rea[38] = par[77] + par[78] * spe[22];
+      rea[39] = par[79] * spe[24];
+      rea[40] = par[80] + par[81] * spe[15] + par[82] * spe[17] +
+                par[83] * spe[19] + par[84] * spe[20] + par[85] *
+                spe[21] + par[86] * spe[22];
+      rea[41] = par[87] * spe[25];
+      rea[42] = par[88] + par[89] * spe[12] + par[90] * spe[18];
+      rea[43] = par[91] * spe[26];
+      rea[44] = par[92] * spe[27];
+      rea[45] = rul[1] * rul[0];
+      rea[46] = par[104] * spe[29] * spe[28];
+      rea[47] = par[105] * spe[31];
+      rea[48] = par[106] * spe[28];
+      rea[49] = par[107] * spe[29];
+      rea[50] = par[108] * spe[30];
+      rea[51] = par[109];
+      rea[52] = par[110] * spe[32];
+      rea[53] = par[111] * spe[30];
+      rea[54] = par[112] * spe[31];
+      rea[55] = par[113] * spe[32];
+      rea[56] = par[114] * spe[32];
+ 
+//-----------------------------------------------------------------------
+   check_eventsAD (t, 0, eve);
+//-----------------------------------------------------------------------
+      dy[0] = ( + rea[0] - rea[1] ) / com[0];
+      dy[1] = ( + rea[2] - rea[3] - rea[4] ) / com[0];
+      dy[2] = ( - rea[3] + rea[5] ) / com[0];
+      dy[3] = ( + rea[3] - rea[6] ) / com[0];
+      dy[4] = ( - rea[5] + rea[6] ) / com[0];
+      dy[5] = ( + rea[7] - rea[8] ) / com[0];
+      dy[6] = ( + rea[9] - rea[10] - rea[11] ) / com[0];
+      dy[7] = ( - rea[10] + rea[12] ) / com[0];
+      dy[8] = ( + rea[10] - rea[13] ) / com[0];
+      dy[9] = ( - rea[12] + rea[13] ) / com[0];
+      dy[10] = ( + rea[14] - rea[15] ) / com[0];
+      dy[11] = ( + rea[16] - rea[17] ) / com[0];
+      dy[12] = ( + rea[17] - rea[18] ) / com[0];
+      dy[13] = ( + rea[18] + rea[19] - rea[20] ) / com[0];
+      dy[14] = ( + rea[20] + rea[21] - rea[22] ) / com[0];
+      dy[15] = ( + rea[22] - rea[23] ) / com[0];
+      dy[16] = ( + rea[24] - rea[25] ) / com[0];
+      dy[17] = ( + rea[26] - rea[27] ) / com[0];
+      dy[18] = ( + rea[27] - rea[28] ) / com[0];
+      dy[19] = ( + rea[28] - rea[29] - rea[30] ) / com[0];
+      dy[20] = ( + rea[29] - rea[31] - rea[32] ) / com[0];
+      dy[21] = ( + rea[31] - rea[33] - rea[34] ) / com[0];
+      dy[22] = ( + rea[33] - rea[35] ) / com[0];
+      dy[23] = ( + rea[36] - rea[37] ) / com[0];
+      dy[24] = ( + rea[38] - rea[39] ) / com[0];
+      dy[25] = ( + rea[40] - rea[41] ) / com[0];
+      dy[26] = ( + rea[42] - rea[43] ) / com[0];
+      dy[27] = ( + rea[41] - rea[44] ) / com[0];
+      dy[28] = ( + rea[45] - rea[46] + rea[47] - rea[48] ) / com[0];
+      dy[29] = ( - rea[46] + rea[47] - rea[49] + rea[50] ) / com[0];
+      dy[30] = ( + rea[49] - rea[50] + rea[51] + rea[52] - rea[53] )
+                / com[0];
+      dy[31] = ( + rea[46] - rea[47] - rea[54] + rea[55] ) / com[0];
+      dy[32] = ( - rea[52] + rea[54] - rea[55] - rea[56] ) / com[0];
+ 
+}
+//======================================================================= 
+void check_eventsAD ( double t, int n, int* ev)
+{
+/*
+   adouble fun0(...);
+   adouble fun1(...);
+ 
+ 
+*/
+ 
+}
+#undef PRE
+//======================================================================= 
+#define PRE(x) x
+void init_var_ ( int* nidx, int* pidx )
+{
+   int ncom = 1;
+   int nspe = 33;
+   int npar = 115;
+   /**/
+   for (int j = 0; j < ncom; ++j)
+   {
+      sbmlvariables_.adcom[j] = com[j];
+   }
+   /**/
+   for (int j = 0; j < nspe; ++j)
+   {
+      sbmlvariables_.adspe[j] = spe[j];
+   }
+   /**/
+   for (int j = 0; j < npar; ++j)
+   {
+      sbmlvariables_.adpar[j] = par[j];
+   }
+   /**/
+   int midx = std::min(npar,*nidx);
+   for (int idx = 0; idx < midx; ++idx)
+   {
+      apidx[idx] = pidx[idx];
+   }
+   npidx = midx;
+   /**/
+   // adtl::setNumDir(nspe + midx);
+}
+#undef PRE
+//======================================================================= 
 void ydot_limex_ ( int* n, int* nz, double* t, double* y_state, double* dy, 
                    double* b, int* ir, int* ic, int* info )
 {
@@ -225,18 +566,19 @@ void ydot_limex_ ( int* n, int* nz, double* t, double* y_state, double* dy,
    ydot ( *n, *t, y_state, dy, info );
 }
 //=======================================================================
-void ydot ( int n, double t, double* y_state, double* dy, int* info )
+#define PRE(x) x
+void ydot ( int n, double t, double* y, double* dy, int* info )
 {
 /*
-   double fun0(...);
-   double fun1(...);
+   T fun0(...);
+   T fun1(...);
  
  
 */
    *info = 0;
    for (int j = 0; j < n; ++j)
    {
-      spe[j] = y_state[j];
+      spe[j] = y[j];
        dy[j] = zero;
    }
 //-----------------------------------------------------------------------
@@ -373,14 +715,16 @@ void ydot ( int n, double t, double* y_state, double* dy, int* info )
 void check_events ( double t, int n, int* ev )
 {
 /*
-   double fun0(...);
-   double fun1(...);
+   T fun0(...);
+   T fun1(...);
  
  
 */
  
 }
+#undef PRE
 //=======================================================================
+#define PRE(x) x
 void init_ode_ ( double* c, int* ic, int* lc ,  
                  double* s, int* is, int* ls ,  
                  double* p, int* ip, int* lp )
@@ -600,6 +944,7 @@ void init_ode_ ( double* c, int* ic, int* lc ,
       *lp = 115;
    }
 }
+#undef PRE
 //=======================================================================
 void get_compartment_ids_ ( char (*idc)[MAXIDSTRLEN], int* ncom, int _len)
 {
@@ -781,52 +1126,55 @@ void get_parameter_ids_ ( char (*idp)[MAXIDSTRLEN], int* npar, int _len)
 //=======================================================================
 void get_model_ids_ ( char (*idm)[MAXIDSTRLEN], int* nid, int _len)
 {
-   *nid = 4;
+   *nid = 5;
    for (int j = 0; j < *nid; ++j)
    {
       strncpy(idm[j],"\0",_len);
    }
    ///
    strncpy(idm[  0],"PAEON_V2\0",_len);
-   strncpy(idm[  1],"Wed Jul  1 15:15:52 2015\0",_len);
-   strncpy(idm[  2],"001435756552\0",_len);
+   strncpy(idm[  1],"Tue Jul 28 19:03:47 2015\0",_len);
+   strncpy(idm[  2],"001438103027\0",_len);
    strncpy(idm[  3],"PAEON_V2.xml\0",_len);
+   strncpy(idm[  4],"with vareq\0",_len);
    ///
 }
 //=======================================================================
+};
 //=======================================================================
-      double fun0 ( double x1, double x2, double x3 )
+//=======================================================================
+template<typename T> 
+      T fun0 ( T& x1, T& x2, T& x3 )
  
 /*
-      double x1;
-      double x2;
-      double x3;
+      T&  x1;
+      T&  x2;
+      T&  x3;
  
 */
 {
-      double ret0;
+      T ret0;
       ret0 = pow(x1 / x2, x3) / (1.000000e+00 + pow(x1 / x2, x3));
  
       return ret0;
 }
 //=======================================================================
-      double fun1 ( double x1, double x2, double x3 )
+template<typename T> 
+      T fun1 ( T& x1, T& x2, T& x3 )
  
 /*
-      double x1;
-      double x2;
-      double x3;
+      T&  x1;
+      T&  x2;
+      T&  x3;
  
 */
 {
-      double ret1;
+      T ret1;
       ret1 = 1.000000e+00 / (1.000000e+00 + pow(x1 / x2, x3));
  
       return ret1;
 }
  
  
-//=======================================================================
-};
 //=======================================================================
 
