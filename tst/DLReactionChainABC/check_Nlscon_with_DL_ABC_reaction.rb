@@ -2,7 +2,7 @@
 
 $LOAD_PATH << File.dirname(__FILE__)
 
-require_relative '../../lib/Model'
+require_relative '../../lib/ModelDL'
 require_relative '../../lib/Experiment'
 require_relative '../../lib/SysBioFit'
 
@@ -49,74 +49,23 @@ def abc(t,y,par)
 
 end
 
-#
-
-def jacobian(t,y,par,pidx)
-
-  dy = abc(t,y,par) # y is virtually too long, but this does not matter! 
-
-  nspe = dy.length
-  npar = par.length
-  k1, k2 = par
-
-  drdy = [ [  k1 , 0.0 , 0.0 ] ,
-           [ 0.0 ,  k2 , 0.0 ] ]
-
-  drdp = [ [ y[0] ,  0.0 ] ,
-           [  0.0 , y[1] ] ]
-
-  s = y[nspe..-1]  # m = 3 species (y[0], y[1], y[2]), and q = 2 parameters
-                   #  ==>  s ~ y[m = 3], ..., y[(m+m*q-1) = (3 + 3*2 - 1) = 8]
-
-  fy = [ [ -drdy[0][0]              , -drdy[0][1]              ,  drdy[0][2]              ] ,
-         [  drdy[0][0] - drdy[1][0] ,  drdy[0][1] - drdy[1][1] ,  drdy[0][2] - drdy[1][2] ] ,
-         [               drdy[1][0] ,               drdy[1][1] ,               drdy[1][2] ] ]
-
-  fp = [ [ -drdp[0][0]              , -drdp[0][1]              ] ,
-         [  drdp[0][0] - drdp[1][0] ,  drdp[0][1] - drdp[1][1] ] ,
-         [               drdp[1][0] ,               drdp[1][1] ] ]
-
-  dS = []
-  pidx.each_with_index do |ell,idx|
-    # next if ell < 0
-    nspe.times do |j|
-      sum = 0.0
-      sum = fp[j][ell-1] if ell > 0
-      nspe.times { |nu| sum += fy[j][nu]*s[nu + nspe*idx] }
-      dS[j + nspe*idx] = sum
-    end
-  end
-
-  [ dy ,  dS ].flatten!
-
-end
-
 # ---------------------------------------------------------------------
 # Model/ODE setup
 
-initvals = {
-                   t0:  0.0 , 
-                   y0: [ 1.0  , 0.0  , 0.0  ] ,
-              y0label: [ "A0" , "B0" , "C0" ] ,
-
-                  par: [  2.0 ,  1.0  ] ,
-               plabel: [  "k1",  "k2" ] ,
-
-                  jac: :jacobian
-           }
-
-model = Model.new :abc, initvals    # t0, y0, par, plabel
+model = ModelDL.new
+model.t0 = 0.0
 model.hmax = 0.0
 model.inistep = 1.0e-4
 model.rtol = $rtol
 model.atol = $atol
 
-# puts "#{model.version}"
+puts "#{model.version}"
+### puts "#{model.pId}"
 
 # ---------------------------------------------------------------------
 # Measurement/Experiment Data
 
-fname = "rb_Nlscon_with_ABC_data.dat"
+fname = "rb_Nlscon_with_DL_ABC_data.dat"
 
 data = Experiment.new 
 data.load_csv fname
@@ -125,8 +74,8 @@ data.load_csv fname
 # Parameter Estimation/Identification
 
 pIniGuess = {
-               "k2" => [ 3.5 , 0.0 ],
-               "k1" => [ 0.3 , 0.0 ]
+               "global_k2" => [ 3.5 , 0.0 ],
+               "global_k1" => [ 0.3 , 0.0 ]
             }
 
 nPar = 0
@@ -145,8 +94,9 @@ mFit   = mTotal - data.mweight.count(0.0)
 fit = SysBioFit.new [nPar,mTotal,mFit]
 fit.rtol = $ptol
 fit.printlevel = 3
-fit.pfname = "rb_Nlscon_with_ABC_parameter.dat"
-fit.sfname = "rb_Nlscon_with_ABC_solution.dat"
+fit.pfname = "rb_Nlscon_with_DL_ABC_parameter.dat"
+fit.sfname = "rb_Nlscon_with_DL_ABC_solution.dat"
+fit.nitmodulo = 1
 fit.nitmax = 195
 fit.nonlin = 3
 fit.jacgen = 1

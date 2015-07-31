@@ -1,4 +1,5 @@
 #include <ruby.h>
+#include <math.h>
 #include "LIMEX4_3A/LIMEX4_3A.h"
 #include "Model_ODE/ydot_LIMEX.h"
 
@@ -63,6 +64,8 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
   Check_Type(tspan, T_ARRAY);
   Check_Type(pidx, T_ARRAY);
 
+  const double EPMACH = 2.0*NUM2DBL( rb_const_get(rb_cFloat, rb_intern("EPSILON")) );
+
   int     j, k, n, nDAE, nTp, nPdx;
   double  t0, T;
   double  *tp, *z, *dz;
@@ -97,7 +100,7 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
 
   // rb_iv_set(self, "@t0", tStart);
   nDAE = NUM2INT( rb_iv_get(self, "@dim") );
-  n    = nDAE*(1 + RARRAY_LEN(pidx));
+  n    = nDAE*(1 + nPdx);
   // t0 = NUM2DBL(tStart);
   // T  = NUM2DBL(tEnd);
 
@@ -131,8 +134,8 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
 
   for (j = 0; j < n; ++j)
   {
-    rTol[j] = (j < nDAE) ? rtol : 1.0e-4;
-    aTol[j] = (j < nDAE) ? atol : 1.0e-4;
+    rTol[j] = (j < nDAE) ? rtol : 1.0e-9;
+    aTol[j] = (j < nDAE) ? atol : 1.0e-6;
        z[j] = (j < nDAE) ? NUM2DBL( rb_ary_entry(y0, (long)j) ) : 0.0;
       dz[j] = 0.0;
   }
@@ -240,7 +243,9 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
                     iFail, &kOrder, dense, &t1, &t2
                   );
 
-        // fprintf(stderr,"k=%d, t0=%f, t1=%f, t2=%f, tp[k]=%f\n",k,t0,t1,t2,tp[k]);
+        // fprintf(stderr,"!!! limex_dl_srun:\n");
+        // fprintf(stderr,"!!! k=%d, nDAE=%d, n=%d, t0=%f, t1=%f, t2=%f, tp[k]=%f\n",
+        //                 k,nDAE,n,t0,t1,t2,tp[k]);
 
         if (t0 <= T)
         {
@@ -258,6 +263,10 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
 
               for (j = 0; j < n; ++j)
               {
+                if ( !(j < nDAE) && (fabs(z[j]) < EPMACH) )
+                {
+                   z[j] = 0.0;
+                }
                 rb_ary_push( arr, rb_float_new(z[j]) );
               }
 
@@ -282,6 +291,10 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
 
               for (j = 0; j < n; ++j)
               {
+                if ( !(j < nDAE) && (fabs(y[j]) < EPMACH) )
+                {
+                   y[j] = 0.0;
+                }
                 rb_ary_push( arr, rb_float_new(y[j]) );
               }
 
@@ -314,6 +327,10 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
 
         for (j = 0; j < n; ++j)
         {
+          if ( !(j < nDAE) && (fabs(z[j]) < EPMACH) )
+          {
+            z[j] = 0.0;
+          }
           rb_ary_push( arr, rb_float_new(z[j]) );
         }
 

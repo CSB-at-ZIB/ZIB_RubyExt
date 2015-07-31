@@ -1,19 +1,24 @@
+pwd = $(shell pwd)
+bpath =$(shell dirname $(pwd))
+rpath = $(bpath)/../../pkg/lib
+
 FC = gfortran
 FINC = -I.
 FFLAGS = $(FINC) -fexceptions -O3 -fPIC
 
 CXX = g++
-CXXINC = -I.
-CXXLIB = -ladolc
+CXXINC = -I. 
+CXXLIB = -ladolc 
+# CXXINC = -I. -I../../../pkg/include
+# CXXLIB = -L../../../pkg/lib -ladolc -Wl,-rpath,$(rpath)
 CXXFLAGS = $(CXXINC) -fexceptions -O3 -fPIC
 
 OBJS = ydot_LIMEXcpp.o
-# OBJS = ydot_LIMEX.o sbml_mathfuns.o
+#OBJS = ydot_LIMEX.o sbml_mathfuns.o
 
 ALL: libODEydot.so
 
 libODEydot.so: $(OBJS) 
-	# $(FC) -s -shared $(OBJS) -o $@
 	$(CXX) -s -shared $(OBJS) -o $@ $(CXXLIB)
 	cp $@ ..
 

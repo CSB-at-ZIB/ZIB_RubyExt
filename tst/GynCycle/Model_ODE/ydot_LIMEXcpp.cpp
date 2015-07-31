@@ -2,7 +2,7 @@
 c-----
 c SBML Model : PAEON_V2                                               
 c              ~~~~~~~~
-c       Date : Tue Jul 28 19:03:47 2015
+c       Date : Thu Jul 30 09:06:44 2015
 c              
 c     Author : automated transcription by 'sbml2adolc'
 c              
@@ -196,7 +196,7 @@ struct
       double  rul[2];
       double  rea[57];
       int     eve[0];
-      /**/
+/*
       adouble adcom[1];
       adouble adspe[33];
       adouble adpar[115];
@@ -205,31 +205,32 @@ struct
       int     adeve[0];
       int     apidx[115];
       int     npidx;
+*/
 } sbmlvariables_;
 //=======================================================================
-/*
 struct {
-      adouble adcom[1];
-      adouble adspe[33];
-      adouble adpar[115];
-      adouble adrul[2];
-      adouble adrea[57];
-      int     adeve[0];
+      adouble com[1];
+      adouble spe[33];
+      adouble par[115];
+      adouble rul[2];
+      adouble rea[57];
+      int     eve[0];
+      int     apidx[115];
+      int     npidx;
 } advariables_;
-*/
 //=======================================================================
 #define  zero  0.0e0
 #define  one   1.0e0
 #define  pi    3.141592653589793238462643383276e0
 #define  eul   2.718281828459045235360287471352e0
-#define  com   sbmlvariables_.PRE(com)
-#define  spe   sbmlvariables_.PRE(spe)
-#define  par   sbmlvariables_.PRE(par)
-#define  rul   sbmlvariables_.PRE(rul)
-#define  rea   sbmlvariables_.PRE(rea)
-#define  eve   sbmlvariables_.PRE(eve)
-#define  apidx sbmlvariables_.apidx
-#define  npidx sbmlvariables_.npidx
+#define  com   PRE(variables_).com
+#define  spe   PRE(variables_).spe
+#define  par   PRE(variables_).par
+#define  rul   PRE(variables_).rul
+#define  rea   PRE(variables_).rea
+#define  eve   PRE(variables_).eve
+#define  apidx advariables_.apidx
+#define  npidx advariables_.npidx
 //=======================================================================
 void compute_fy( int, int, double, double*, double*, double*, int* );
 void compute_fp( int, int, double, double*, double*, int* );
@@ -240,9 +241,11 @@ void check_events ( double, int, int* );
 //=======================================================================
 };
 //=======================================================================
-      template <typename T> T fun0 ( T& x1, T& x2, T& x3 );
+template <typename T> 
+      T fun0 ( T& x1, T& x2, T& x3 );
  
-      template <typename T> T fun1 ( T& x1, T& x2, T& x3 );
+template <typename T> 
+      T fun1 ( T& x1, T& x2, T& x3 );
  
  
 //-----------------------------------------------------------------------
@@ -283,7 +286,7 @@ void ydot_slimex_ ( int* n, int* nz, double* t, double* y_state, double* dy,
    compute_fp( nspe, npar, *t, y_state, fp, info );
    compute_fy( nspe, npar, *t, y_state, dy, fy, info );
    /**/
-   for (int idx = 0; idx < npidx; ++idx)
+   for (int idx = 0; idx < npar; ++idx)
    {
       for (int j = 0; j < nspe; ++j)
       {
@@ -315,7 +318,10 @@ void compute_fy( int nspe, int npar, double t, double* y_state,
    }
    for (int k = 0; k < npar; ++k)
    {
-      par[k].setADValue(k,0);
+      if ( apidx[k] > 0 )
+      {  
+         par[ apidx[k]-1 ].setADValue(nspe+k,0);
+      }
    }
    /**/
    ydotAD ( nspe, t, ay, ady, info );
@@ -519,7 +525,10 @@ void check_eventsAD ( double t, int n, int* ev)
 }
 #undef PRE
 //======================================================================= 
-#define PRE(x) x
+// #define PRE(x) sbml ## x
+#undef com
+#undef spe
+#undef par
 void init_var_ ( int* nidx, int* pidx )
 {
    int ncom = 1;
@@ -528,17 +537,17 @@ void init_var_ ( int* nidx, int* pidx )
    /**/
    for (int j = 0; j < ncom; ++j)
    {
-      sbmlvariables_.adcom[j] = com[j];
+      advariables_.com[j] = sbmlvariables_.com[j];
    }
    /**/
    for (int j = 0; j < nspe; ++j)
    {
-      sbmlvariables_.adspe[j] = spe[j];
+      advariables_.spe[j] = sbmlvariables_.spe[j];
    }
    /**/
    for (int j = 0; j < npar; ++j)
    {
-      sbmlvariables_.adpar[j] = par[j];
+      advariables_.par[j] = sbmlvariables_.par[j];
    }
    /**/
    int midx = std::min(npar,*nidx);
@@ -550,7 +559,10 @@ void init_var_ ( int* nidx, int* pidx )
    /**/
    // adtl::setNumDir(nspe + midx);
 }
-#undef PRE
+#define com PRE(variables_).com
+#define spe PRE(variables_).spe
+#define par PRE(variables_).par
+// #undef PRE
 //======================================================================= 
 void ydot_limex_ ( int* n, int* nz, double* t, double* y_state, double* dy, 
                    double* b, int* ir, int* ic, int* info )
@@ -566,7 +578,7 @@ void ydot_limex_ ( int* n, int* nz, double* t, double* y_state, double* dy,
    ydot ( *n, *t, y_state, dy, info );
 }
 //=======================================================================
-#define PRE(x) x
+#define PRE(x) sbml ## x
 void ydot ( int n, double t, double* y, double* dy, int* info )
 {
 /*
@@ -724,7 +736,7 @@ void check_events ( double t, int n, int* ev )
 }
 #undef PRE
 //=======================================================================
-#define PRE(x) x
+#define PRE(x) sbml ## x
 void init_ode_ ( double* c, int* ic, int* lc ,  
                  double* s, int* is, int* ls ,  
                  double* p, int* ip, int* lp )
@@ -1133,8 +1145,8 @@ void get_model_ids_ ( char (*idm)[MAXIDSTRLEN], int* nid, int _len)
    }
    ///
    strncpy(idm[  0],"PAEON_V2\0",_len);
-   strncpy(idm[  1],"Tue Jul 28 19:03:47 2015\0",_len);
-   strncpy(idm[  2],"001438103027\0",_len);
+   strncpy(idm[  1],"Thu Jul 30 09:06:44 2015\0",_len);
+   strncpy(idm[  2],"001438240004\0",_len);
    strncpy(idm[  3],"PAEON_V2.xml\0",_len);
    strncpy(idm[  4],"with vareq\0",_len);
    ///

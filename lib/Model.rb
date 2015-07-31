@@ -21,6 +21,7 @@ class Model < Limex
     par = initvals.has_key?(:par) ? initvals[:par] : []
 
     super(y0)
+    @pidx = []
     @odejac = nil
     @odefcn = odefcn.is_a?(Symbol) ? method(odefcn) : nil
     @y0ode = y0
@@ -78,6 +79,7 @@ class Model < Limex
     self.hmax = maxstep
   end
 
+
   def odefcn=(fcn)
     @odefcn = fcn.is_a?(Symbol) ? method(fcn) : nil
   end
@@ -89,6 +91,7 @@ class Model < Limex
 
   def solve_var(tspan, y0=[], par=[], pidx=[])
   #
+    @pidx = []
     self.y0 = y0 if y0.compact != []
     self.par = par if par.compact != []
     return [nil,nil] if @odejac.nil? or pidx.compact == []
@@ -100,6 +103,7 @@ class Model < Limex
        end
     end
     return [nil,nil] unless ifail.is_a?(Array) and ifail[0] == 0
+    @pidx = pidx
     [ self.steps, self.solution ]
   #
   end
@@ -107,6 +111,7 @@ class Model < Limex
 
   def solve_ode(tspan, y0=[], par=[])
   #
+    @pidx = []
     self.y0 = y0 if y0.compact != []
     self.par = par if par.compact != []
     return [nil,nil] if @odefcn.nil?
@@ -118,6 +123,7 @@ class Model < Limex
   #
   end
 
+
   def save_current_solution(fout, iter=-2)
   #
     return if fout.closed?
@@ -126,6 +132,16 @@ class Model < Limex
     fout.printf("%-12s","Timepoint")
     self.y0.each_with_index do |val,idx| 
        fout.printf("\t%12d", idx+1)
+    end
+    if @pidx.compact != [] and 
+       self.solution.first[1].length == self.y0.length*(1+@pidx.length) 
+    then
+       @pidx.each_with_index do |ell,dmy|
+          self.y0.each_with_index do |val,idx|
+             str = "#{'%5d/%5d' % [idx+1, ell]}"
+             fout.printf("\t%12s", str)
+          end
+       end
     end
     fout.printf("\n")
     # fout.printf("%.6e", self.interval[0])

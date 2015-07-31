@@ -19,6 +19,7 @@ class ModelDL < LimexDL
     par = initvals.has_key?(:par) ? initvals[:par] : []
     t0 = initvals.has_key?(:t0) ? initvals[:t0] : 0.0
 
+    @pidx = []
     @y0ode = self.y0
     @y0Id = self.yId
     if initvals.has_key?(:y0label) and
@@ -41,19 +42,24 @@ class ModelDL < LimexDL
     self.hmax = maxstep
   end
 
+
   def solve_var(tspan, y0=[], par=[], pidx=[])
   #
+    @pidx = []
     self.y0 = y0 if y0.compact != []
     self.par = par if par.compact != []
     return [nil,nil] if pidx.compact == []
     ifail = self.srun( tspan.sort, pidx ) 
     return [nil,nil] unless ifail.is_a?(Array) and ifail[0] == 0
+    @pidx = pidx
     [ self.steps, self.solution ]
   #
   end
 
+
   def solve_ode(tspan, y0=[], par=[])
   #
+    @pidx = []
     self.y0 = y0 if y0.compact != []
     self.par = par if par.compact != []
     ifail = self.run( tspan.sort ) 
@@ -61,6 +67,7 @@ class ModelDL < LimexDL
     [ self.steps, self.solution ]
   #
   end
+
 
   def save_current_solution(fout, iter=-2)
   #
@@ -71,6 +78,19 @@ class ModelDL < LimexDL
     self.yId.each do |label|
        label = "***" if label.length == 0
        fout.printf("\t%-12s", label)
+    end
+    if @pidx.compact != [] and 
+       self.solution.first[1].length == self.yId.length*(1+@pidx.length) 
+    then
+       @pidx.each_with_index do |ell,dmy|
+          pId = "***"
+          pId = self.pId[ ell-1 ] if ell > 0
+          self.yId.each do |label|
+             label = "***" if label.length == 0
+             str = "#{'%5s/%5s' % [label, pId]}"
+             fout.printf("\t%-12s", str)
+          end
+       end
     end
     fout.printf("\n")
     # fout.printf("%.6e", self.interval[0])

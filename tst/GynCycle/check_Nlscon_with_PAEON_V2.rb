@@ -20,8 +20,8 @@ model = ModelDL.new
 model.t0 = -42.5
 model.hmax = 0.0
 model.inistep = 1.0e-4
-model.rtol = 1.0e-7
-model.atol = 1.0e-7
+model.rtol = 1.0e-8
+model.atol = 1.0e-8
 # model.monitor = 1
 # puts "#{model.inspect}"
 puts "#{model.version}" # see at the end of this script
@@ -112,10 +112,10 @@ nlscon.printlevel = 3
 nlscon.pfname = "rb_Nlscon_with_PAEON_V2_parameter.dat"
 nlscon.sfname = "rb_Nlscon_with_PAEON_V2_solution.dat"
 #nlscon.nitmodulo = 5 # every nitmodulo-th solution is written to sfname 
-nlscon.nitmax = 45
+nlscon.nitmax = 12
 nlscon.nonlin = 3
-# nlscon.jacgen = 1
-nlscon.rwk = { "cond" => 1.0e+7 } 
+nlscon.jacgen = 1 # 3
+nlscon.rwk = { "cond" => 1.0e+4 } 
 
 
 current_task = { model: model, data: data,  guess: pIniGuess }

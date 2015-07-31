@@ -95,7 +95,14 @@ class SysBioFit < Nlscon
     #
     y0, par = set_current_par(x)
 
+    puts "########## SysBioFit.gn_jac :"
+    puts "       x = #{x}"
+    puts "   @pidx = #{@pidx}"
+
     t, sol = @model.solve_var(@tspan, y0, par, @pidx)
+
+    puts "t.length = {t.length}" unless t==nil or t==[]
+    puts "##########"
 
     dfdx = []
     return if sol==nil

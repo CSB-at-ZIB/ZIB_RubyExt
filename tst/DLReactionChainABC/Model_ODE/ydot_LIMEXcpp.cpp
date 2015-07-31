@@ -1,12 +1,31 @@
 /*
-c#comment compartments
-c  com[%3d]  :   %-42s
+c-----
+c SBML Model : ChainABC                                               
+c              ~~~~~~~~
+c       Date : Thu Jul 30 13:24:00 2015
+c              
+c     Author : automated transcription by 'sbml2adolc'
+c              
+c Copyright (C) Zuse Institute Berlin, CSB Group
+c-----
+*/
+/*
+   ///
+c  com[  0]  :   default                                   
+   ///
 c
-c#comment species
-c  spe[%3d]  :   %-42s
+   ///
+c  spe[  0]  :   A                                         
+c  spe[  1]  :   B                                         
+c  spe[  2]  :   C                                         
+   ///
 c
-c#comment parameters
-c  par[%3d]  :   %-42s
+   ///
+c  par[  0]  :   global_k1                                 
+c  par[  1]  :   global_k_1                                
+c  par[  2]  :   global_k2                                 
+c  par[  3]  :   global_k_2                                
+   ///
 */
 #include <cmath>
 #include <cstring>
@@ -14,10 +33,8 @@ c  par[%3d]  :   %-42s
 // do not even think to #include "ydot_LIMEXcpp.h"
 /**/
 #define ADOLC_TAPELESS
-c#species
-#define NUM_SPE %d
-c#parameters
-#define NUM_PAR %d
+#define NUM_SPE 3
+#define NUM_PAR 4
 #define NUMBER_DIRECTIONS (NUM_SPE + NUM_PAR)
 // ... #include <adolc/adtl.h>
 #include <adolc/adouble.h>
@@ -25,69 +42,42 @@ typedef adtl::adouble adouble;
 ADOLC_TAPELESS_UNIQUE_INTERNALS;
 /**/
 #define MAXIDSTRLEN 64
-
 /**/
 using namespace std;
-
 //=======================================================================
 extern "C" {
 //=======================================================================
-
 struct
 {
-c#compartments
-      double  com[%d];
-c#species
-      double  spe[%d];
-c#parameters
-      double  par[%d];
-c#rules
-      double  rul[%d];
-c#reactions
-      double  rea[%d];
-c#events
-      int     eve[%d];
+      double  com[1];
+      double  spe[3];
+      double  par[4];
+      double  rul[0];
+      double  rea[4];
+      int     eve[0];
 /*
-c#compartments
-      adouble adcom[%d];
-c#species
-      adouble adspe[%d];
-c#parameters
-      adouble adpar[%d];
-c#rules
-      adouble adrul[%d];
-c#reactions
-      adouble adrea[%d];
-c#events
-      int     adeve[%d];
-c#parameters
-      int     apidx[%d];
+      adouble adcom[1];
+      adouble adspe[3];
+      adouble adpar[4];
+      adouble adrul[0];
+      adouble adrea[4];
+      int     adeve[0];
+      int     apidx[4];
       int     npidx;
 */
 } sbmlvariables_;
-
 //=======================================================================
-
 struct {
-c#compartments
-      adouble com[%d];
-c#species
-      adouble spe[%d];
-c#parameters
-      adouble par[%d];
-c#rules
-      adouble rul[%d];
-c#reactions
-      adouble rea[%d];
-c#events
-      int     eve[%d];
-c#parameters
-      int     apidx[%d];
+      adouble com[1];
+      adouble spe[3];
+      adouble par[4];
+      adouble rul[0];
+      adouble rea[4];
+      int     eve[0];
+      int     apidx[4];
       int     npidx;
 } advariables_;
-
 //=======================================================================
-
 #define  zero  0.0e0
 #define  one   1.0e0
 #define  pi    3.141592653589793238462643383276e0
@@ -100,7 +90,6 @@ c#parameters
 #define  eve   PRE(variables_).eve
 #define  apidx advariables_.apidx
 #define  npidx advariables_.npidx
-
 //=======================================================================
 void compute_fy( int, int, double, double*, double*, double*, int* );
 void compute_fp( int, int, double, double*, double*, int* );
@@ -111,26 +100,16 @@ void check_events ( double, int, int* );
 //=======================================================================
 };
 //=======================================================================
-c#block_for_all(j in functions)
-template <typename T> 
-c#args
-T fun%d %s;
-c#end_block
+ 
 //-----------------------------------------------------------------------
-c#block_for_all(j in pieces)
-template <typename T> 
-c#args
-T piecewise%d %s;
-c#end_block
+ 
 //=======================================================================
 extern "C" {
 //=======================================================================
-
 void ydot_slimex_ ( int* n, int* nz, double* t, double* y_state, double* dy,
                     double* b, int* ir, int* ic, int* info )
 {
-c#species
-   int    nspe = %d;
+   int    nspe = 3;
    int    npar = npidx;
    /**/
    *nz = *n;
@@ -143,11 +122,8 @@ c#species
    /**/
    if ( *n == nspe )
    {
-c#for_all(j in algebraic)
-      b[%d] = zero;
-
+ 
       ydot ( *n, *t, y_state, dy, info );
-
       return;
    }
    /**/
@@ -180,9 +156,7 @@ c#for_all(j in algebraic)
       }
    }
 }
-
 //=======================================================================
-
 #define PRE(x) ad ## x
 void compute_fy( int nspe, int npar, double t, double* y_state, 
                  double* dy, double* fy, int* info )
@@ -215,9 +189,7 @@ void compute_fy( int nspe, int npar, double t, double* y_state,
       }
    }
 }
-
 //-----------------------------------------------------------------------
-
 void compute_fp( int nspe, int npar, double t, double* y_state, 
                  double* fp, int* info )
 {
@@ -247,93 +219,60 @@ void compute_fp( int nspe, int npar, double t, double* y_state,
    }
 }
 #undef PRE
-
 //======================================================================= 
-
 #define PRE(x) ad ## x
 void ydotAD ( int n, double t, adouble* y, adouble* dy, int* info)
 {
 /*
-c#for_all(j in functions)
-   adouble fun%d(...);
-c#for_all(j in pieces)
-   adouble piecewise%d(...);
+ 
+ 
 */
-
    *info = 0;
-
    for (int j = 0; j < n; ++j)
    {
       spe[j] = y[j];
        dy[j] = zero;
    }
-
 //-----------------------------------------------------------------------
-c#events
-   check_eventsAD (t, %d, eve);
+   check_eventsAD (t, 0, eve);
 //-----------------------------------------------------------------------
-
-c#for_all(j in assignments)
-   rul[%d] = %s;
-
+ 
 //-----------------------------------------------------------------------
-c#events
-   check_eventsAD (t, %d, eve);
+   check_eventsAD (t, 0, eve);
 //-----------------------------------------------------------------------
-
-c#for_all(j in reactions)
-   rea[%d] = %s;
-
+      rea[0] = par[0] * spe[0];
+      rea[1] = par[1] * spe[1];
+      rea[2] = par[2] * spe[1];
+      rea[3] = par[3] * spe[2];
+ 
 //-----------------------------------------------------------------------
-c#events
-   check_eventsAD (t, %d, eve);
+   check_eventsAD (t, 0, eve);
 //-----------------------------------------------------------------------
-
-c#for_all(j in rates)
-   dy[%d] = %s;
+      dy[0] = ( - rea[0] + rea[1] ) / com[0];
+      dy[1] = ( + rea[0] - rea[1] - rea[2] + rea[3] ) / com[0];
+      dy[2] = ( + rea[2] - rea[3] ) / com[0];
+ 
 }
-
 //======================================================================= 
-
 void check_eventsAD ( double t, int n, int* ev)
 {
 /*
-c#for_all(j in functions)
-   adouble fun%d(...);
-c#for_all(j in pieces)
-   adouble piecewise%d(...);
+ 
+ 
 */
-
-c#block_for_all(j in events)
-c#trigs
-   ev[%d] = %s;
-
-c#if_trig
-   if ( ev[%d] )
-   {
-c#for_all(j in eventassignments)
-      %s = %s;
-   }
-
-c#end_block
-
+ 
 }
 #undef PRE
-
 //======================================================================= 
-
 // #define PRE(x) sbml ## x
 #undef com
 #undef spe
 #undef par
 void init_var_ ( int* nidx, int* pidx )
 {
-c#compartments
-   int ncom = %d;
-c#species
-   int nspe = %d;
-c#parameters
-   int npar = %d;
+   int ncom = 1;
+   int nspe = 3;
+   int npar = 4;
    /**/
    for (int j = 0; j < ncom; ++j)
    {
@@ -363,122 +302,84 @@ c#parameters
 #define spe PRE(variables_).spe
 #define par PRE(variables_).par
 // #undef PRE
-
 //======================================================================= 
-
 void ydot_limex_ ( int* n, int* nz, double* t, double* y_state, double* dy, 
                    double* b, int* ir, int* ic, int* info )
 {
    *nz = *n;
-
    for (int j = 0; j < *nz; ++j)
    {
       ir[j] =
       ic[j] = j+1;
        b[j] = one;
    }
-
-c#for_all(j in algebraic)
-   b[%d] = zero;
-
+ 
    ydot ( *n, *t, y_state, dy, info );
 }
-
 //=======================================================================
 #define PRE(x) sbml ## x
 void ydot ( int n, double t, double* y, double* dy, int* info )
 {
 /*
-c#for_all(j in functions)
-   T fun%d(...);
-c#for_all(j in pieces)
-   T piecewise%d(...);
+ 
+ 
 */
-
    *info = 0;
-
    for (int j = 0; j < n; ++j)
    {
       spe[j] = y[j];
        dy[j] = zero;
    }
-
 //-----------------------------------------------------------------------
-c#events
-   check_events (t, %d, eve);
+   check_events (t, 0, eve);
 //-----------------------------------------------------------------------
-
-c#for_all(j in assignments)
-   rul[%d] = %s;
-
+ 
 //-----------------------------------------------------------------------
-c#events
-   check_events (t, %d, eve);
+   check_events (t, 0, eve);
 //-----------------------------------------------------------------------
-
-c#for_all(j in reactions)
-   rea[%d] = %s;
-
+      rea[0] = par[0] * spe[0];
+      rea[1] = par[1] * spe[1];
+      rea[2] = par[2] * spe[1];
+      rea[3] = par[3] * spe[2];
+ 
 //-----------------------------------------------------------------------
-c#events
-   check_events (t, %d, eve);
+   check_events (t, 0, eve);
 //-----------------------------------------------------------------------
-
-c#for_all(j in rates)
-   dy[%d] = %s;
+      dy[0] = ( - rea[0] + rea[1] ) / com[0];
+      dy[1] = ( + rea[0] - rea[1] - rea[2] + rea[3] ) / com[0];
+      dy[2] = ( + rea[2] - rea[3] ) / com[0];
+ 
 }
-
 //=======================================================================
-
 void check_events ( double t, int n, int* ev )
 {
 /*
-c#for_all(j in functions)
-   T fun%d(...);
-c#for_all(j in pieces)
-   T piecewise%d(...);
+ 
+ 
 */
-
-c#block_for_all(j in events)
-c#trigs
-   ev[%d] = %s;
-
-c#if_trig
-   if ( ev[%d] )
-   {
-c#for_all(j in eventassignments)
-      %s = %s;
-   }
-
-c#end_block
-
+ 
 }
 #undef PRE
-
 //=======================================================================
-
 #define PRE(x) sbml ## x
 void init_ode_ ( double* c, int* ic, int* lc ,  
                  double* s, int* is, int* ls ,  
                  double* p, int* ip, int* lp )
 {
-c#for_all(j in compartments)
-   com[%3d] = %e;
-
-c#for_all(j in species)
-   spe[%3d] = %e;
-
-c#for_all(j in parameters)
-   par[%3d] = %e;
-
-c#for_all(j in rulex)
-   rul[%3d] = %e;
-
+   com[  0] = 1.000000e+00;
+ 
+   spe[  0] = 1.000000e+00;
+   spe[  1] = 0.000000e+00;
+   spe[  2] = 0.000000e+00;
+ 
+   par[  0] = 2.000000e+00;
+   par[  1] = 3.000000e-03;
+   par[  2] = 1.000000e+00;
+   par[  3] = 2.000000e-03;
+ 
+ 
 //-----------------------------------------------------------------------
-
-c#compartments
-   int mc = std::min(%d,*lc);
-
+   int mc = std::min(1,*lc);
    if ( ic[0] == 0 )
    {
       for (int j = 0; j < mc; ++j)
@@ -493,18 +394,12 @@ c#compartments
          com[ ic[j]-1 ] = c[j];
       }
    }
-
    if ( *lc == 0 )
    {
-c#compartments
-      *lc = %d;
+      *lc = 1;
    }
-
 //-----------------------------------------------------------------------
-
-c#species
-   int ms = std::min(%d,*ls);
-
+   int ms = std::min(3,*ls);
    if ( is[0] == 0 )
    {
       for (int j = 0; j < ms; ++j)
@@ -519,18 +414,13 @@ c#species
          spe[ is[j]-1 ] = s[j];
       }
    }
-
    if ( *ls == 0 )
    {
-c#species
-      *ls = %d;
+      *ls = 3;
    }
  
 //-----------------------------------------------------------------------
-
-c#parameters
-   int mp = std::min(%d,*lp);
-
+   int mp = std::min(4,*lp);
    if ( ip[0] == 0 )
    {
       for (int j = 0; j < mp; ++j)
@@ -545,127 +435,69 @@ c#parameters
          par[ ip[j]-1 ] = p[j];
       }
    }
-
    if ( *lp == 0 )
    {
-c#parameters
-      *lp = %d;
+      *lp = 4;
    }
 }
 #undef PRE
-
 //=======================================================================
-
 void get_compartment_ids_ ( char (*idc)[MAXIDSTRLEN], int* ncom, int _len)
 {
-c#compartments
-   *ncom = %d;
-c#comment compartments
-   strncpy(idc[%3d],"%s\0",_len);
+   *ncom = 1;
+   ///
+   strncpy(idc[  0],"default\0",_len);
+   ///
 }
-
 //=======================================================================
-
 void get_species_ids_ ( char (*ids)[MAXIDSTRLEN], int* nspe, int _len)
 {
-c#species
-   *nspe = %d;
-
+   *nspe = 3;
    for (int j = 0; j < *nspe; ++j)
    {
       strncpy(ids[j],"\0",_len);
    }
-
-c#comment species
-   strncpy(ids[%3d],"%s\0",_len);
+   ///
+   strncpy(ids[  0],"A\0",_len);
+   strncpy(ids[  1],"B\0",_len);
+   strncpy(ids[  2],"C\0",_len);
+   ///
 }
-
 //=======================================================================
-
 void get_parameter_ids_ ( char (*idp)[MAXIDSTRLEN], int* npar, int _len)
 {
-c#parameters
-   *npar = %d;
+   *npar = 4;
    for (int j = 0; j < *npar; ++j)
    {
       strncpy(idp[j],"\0",_len);
    }
-
-c#comment parameters
-   strncpy(idp[%3d],"%s\0",_len);
+   ///
+   strncpy(idp[  0],"global_k1\0",_len);
+   strncpy(idp[  1],"global_k_1\0",_len);
+   strncpy(idp[  2],"global_k2\0",_len);
+   strncpy(idp[  3],"global_k_2\0",_len);
+   ///
 }
-
 //=======================================================================
-
 void get_model_ids_ ( char (*idm)[MAXIDSTRLEN], int* nid, int _len)
 {
-c#modelids
-   *nid = %d;
-
+   *nid = 5;
    for (int j = 0; j < *nid; ++j)
    {
       strncpy(idm[j],"\0",_len);
    }
-
-c#comment modelids
-   strncpy(idm[%3d],"%s\0",_len);
+   ///
+   strncpy(idm[  0],"ChainABC\0",_len);
+   strncpy(idm[  1],"Thu Jul 30 13:24:00 2015\0",_len);
+   strncpy(idm[  2],"001438255440\0",_len);
+   strncpy(idm[  3],"ChainABC.xml\0",_len);
+   strncpy(idm[  4],"with vareq\0",_len);
+   ///
 }
-
 //=======================================================================
 };
 //=======================================================================
-
-c#block_for_all(j in functions)
+ 
+ 
 //=======================================================================
-template<typename T> 
-c#args
-T fun%d %s
-/*
-c#for_all(j in decls)
-      T&  %s;
-*/
-{
-c#funcs
-      T ret%d;
-c#impls
-      ret%d = %s;
-c#funcs
-      return ret%d;
-}
-c#end_block
 
-c#block_for_all(j in pieces)
-//=======================================================================
-template <typename T> 
-c#args
-T piecewise%d %s
-/*
-c#for_all(j in dbledecls)
-      T&  %s;
-c#for_all(j in logicdecls)
-      int %s;
-*/
-{
-c#funcs
-      T ret%d;
-
-c#3lines_first_case
-      if ( %s )
-      {
-         ret%d = %s;
-c#for_all_3lines(j in remaining_cases)
-      } else if ( %s )
-      {
-         ret%d = %s;
-c#3lines_default
-      } else
-      {
-         ret%d = %s;
-      }
-
-c#funcs
-      return ret%d;
-}
-c#end_block
-
-//=======================================================================

@@ -1,4 +1,4 @@
-SUBDIRS := pkg/SBML2FORTRAN/. pkg/LIMEX4_3A/. pkg/NLSCON/. ext/LimexDL/Model_ODE/. ext/. $(wildcard ext/*/.)  
+SUBDIRS := pkg/SBML2ADOLC/. pkg/SBML2FORTRAN/. pkg/LIMEX4_3A/. pkg/NLSCON/. ext/LimexDL/Model_ODE/. ext/. $(wildcard ext/*/.)  
 # e.g. SUBDIRS == "... ext/. ext/foo/. ext/bar/."
 TARGETS := all clean mclean # whatever else, but must not contain '/'
 

@@ -73,7 +73,7 @@ INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir
 DEFS     = -D_FILE_OFFSET_BITS=64
 CPPFLAGS =  -D_FORTIFY_SOURCE=2 $(DEFS) $(cppflags)
 CXXFLAGS = $(CFLAGS) -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -Wall -fno-strict-aliasing
-ldflags  = -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -L/build/buildd/ruby1.9.1-1.9.3.484/debian/lib -rdynamic -Wl,-export-dynamic -L./Model_ODE -L./LIMEX4_3A -Wl,-rpath,.:/home/tom/Work/Programs/ZIB_RubyExt/ext/LimexDL/Model_ODE:/home/tom/Work/Programs/ZIB_RubyExt/ext/LimexDL/LIMEX4_3A 
+ldflags  = -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -L/build/buildd/ruby1.9.1-1.9.3.484/debian/lib -rdynamic -Wl,-export-dynamic -lm -L./Model_ODE -L./LIMEX4_3A -Wl,-rpath,.:/home/tom/Work/Programs/ZIB_RubyExt/ext/LimexDL/Model_ODE:/home/tom/Work/Programs/ZIB_RubyExt/ext/LimexDL/LIMEX4_3A 
 dldflags =  
 ARCH_FLAG = 
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)

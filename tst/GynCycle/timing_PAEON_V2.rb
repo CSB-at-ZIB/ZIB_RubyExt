@@ -19,7 +19,7 @@ atol = Float(ARGV[1]) if ARGV.length > 1
 
 model = ModelDL.new 
 model.t0 = -42.5
-model.hmax = 0.0
+model.hmax = 0.02
 model.inistep = 1.0e-4
 model.rtol = rtol
 model.atol = atol
