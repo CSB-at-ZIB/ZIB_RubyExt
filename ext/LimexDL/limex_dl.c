@@ -64,7 +64,7 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
   Check_Type(tspan, T_ARRAY);
   Check_Type(pidx, T_ARRAY);
 
-  const double EPMACH = 2.0*NUM2DBL( rb_const_get(rb_cFloat, rb_intern("EPSILON")) );
+  // double const EPMACH = 2.0*NUM2DBL( rb_const_get(rb_cFloat, rb_intern("EPSILON")) );
 
   int     j, k, n, nDAE, nTp, nPdx;
   double  t0, T;
@@ -134,8 +134,8 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
 
   for (j = 0; j < n; ++j)
   {
-    rTol[j] = (j < nDAE) ? rtol : 1.0e-9;
-    aTol[j] = (j < nDAE) ? atol : 1.0e-6;
+    rTol[j] = (j < nDAE) ? rtol : 1.0e-4;
+    aTol[j] = (j < nDAE) ? atol : 1.0e-4;
        z[j] = (j < nDAE) ? NUM2DBL( rb_ary_entry(y0, (long)j) ) : 0.0;
       dz[j] = 0.0;
   }
@@ -263,10 +263,10 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
 
               for (j = 0; j < n; ++j)
               {
-                if ( !(j < nDAE) && (fabs(z[j]) < EPMACH) )
-                {
-                   z[j] = 0.0;
-                }
+                // if ( !(j < nDAE) && (fabs(z[j]) < EPMACH) )
+                // {
+                //    z[j] = 0.0;
+                // }
                 rb_ary_push( arr, rb_float_new(z[j]) );
               }
 
@@ -291,10 +291,10 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
 
               for (j = 0; j < n; ++j)
               {
-                if ( !(j < nDAE) && (fabs(y[j]) < EPMACH) )
-                {
-                   y[j] = 0.0;
-                }
+                // if ( !(j < nDAE) && (fabs(y[j]) < EPMACH) )
+                // {
+                //    y[j] = 0.0;
+                // }
                 rb_ary_push( arr, rb_float_new(y[j]) );
               }
 
@@ -327,10 +327,10 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
 
         for (j = 0; j < n; ++j)
         {
-          if ( !(j < nDAE) && (fabs(z[j]) < EPMACH) )
-          {
-            z[j] = 0.0;
-          }
+          // if ( !(j < nDAE) && (fabs(z[j]) < EPMACH) )
+          // {
+          //   z[j] = 0.0;
+          // }
           rb_ary_push( arr, rb_float_new(z[j]) );
         }
 

@@ -36,6 +36,10 @@ model.rtol = $rtol
 model.atol = $atol
 # model.monitor = 1
 
+puts ""
+puts "ModelDL settings:"
+puts "pId  : #{'[%15s, %15s, %15s, %15s]' % model.pId}"
+puts "par0 : #{'[% 15.3f, % 15.3f, % 15.3f, % 15.3f]' % model.par0}"
 # puts "#{model.version}"
 
 # ---------------------------------------------------------------------
@@ -59,6 +63,7 @@ end
 tspan = [0.0,5.0]
 y0 = model.y0ode
 par = model.par0
+par[1] = par[3] = 0.0
 pidx = []
 pIniGuess.keys.each do |key|
    idx = model.pId.index(key) 
@@ -67,6 +72,11 @@ pIniGuess.keys.each do |key|
       par[ idx ] = pIniGuess[key][0]
    end
 end
+
+puts ""
+puts "ModelDL: model.solve_var called with:"
+puts "pId  : #{'[%15s, %15s, %15s, %15s]' % model.pId}"
+puts "par0 : #{'[% 15.3f, % 15.3f, % 15.3f, % 15.3f]' % model.par}"
 
 model.solve_var tspan, y0, par, pidx
 
@@ -77,6 +87,7 @@ sout = File.open("rb_DL_vareq_solution.dat","w")
 model.save_current_solution sout
 sout.close
 
+puts " "
 puts "#{model.version}"
 puts " "
 

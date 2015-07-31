@@ -102,7 +102,7 @@ c#parameters
 #define  npidx advariables_.npidx
 
 //=======================================================================
-void compute_fy( int, int, double, double*, double*, double*, int* );
+void compute_fy( int, double, double*, double*, double*, int* );
 void compute_fp( int, int, double, double*, double*, int* );
 void ydotAD ( int, double, adouble*, adouble*, int* );
 void check_eventsAD ( double, int, int* ); 
@@ -160,18 +160,15 @@ c#for_all(j in algebraic)
      s[j] = y_state[j];
    }
    /**/
+   compute_fy( nspe, *t, y_state, dy, fy, info );
    compute_fp( nspe, npar, *t, y_state, fp, info );
-   compute_fy( nspe, npar, *t, y_state, dy, fy, info );
    /**/
    for (int idx = 0; idx < npar; ++idx)
    {
       for (int j = 0; j < nspe; ++j)
       {
-          double sum = 0.0;
-          if ( apidx[idx] > 0 ) 
-          {
-              sum = fp[j + nspe*idx]; /* fp[j][ apidx[idx]-1 ]; */
-          }
+          double sum = fp[j + nspe*idx];
+          /**/
           for (int nu = 0; nu < nspe; ++nu)
           {
               sum += fy[j + nspe*nu] * s[nu + nspe*(idx+1)];
@@ -184,7 +181,7 @@ c#for_all(j in algebraic)
 //=======================================================================
 
 #define PRE(x) ad ## x
-void compute_fy( int nspe, int npar, double t, double* y_state, 
+void compute_fy( int nspe, double t, double* y_state, 
                  double* dy, double* fy, int* info )
 {
    /// adtl::setNumDir(nspe);
@@ -194,13 +191,6 @@ void compute_fy( int nspe, int npar, double t, double* y_state,
    {
       ay[j] = y_state[j];
       ay[j].setADValue(j,1);
-   }
-   for (int k = 0; k < npar; ++k)
-   {
-      if ( apidx[k] > 0 )
-      {  
-         par[ apidx[k]-1 ].setADValue(nspe+k,0);
-      }
    }
    /**/
    ydotAD ( nspe, t, ay, ady, info );
@@ -227,12 +217,14 @@ void compute_fp( int nspe, int npar, double t, double* y_state,
    for (int j = 0; j < nspe; ++j)
    {
       ay[j] = y_state[j];
+      ay[j].setADValue(j,0);
    }
    for (int k = 0; k < npar; ++k)
    {
       if ( apidx[k] > 0 )
       {  
-         par[ apidx[k]-1 ].setADValue(nspe+k,1);
+         int ell = apidx[k]-1;
+         par[ ell ].setADValue(nspe+ell,1);
       }
    }
    /**/
@@ -240,9 +232,21 @@ void compute_fp( int nspe, int npar, double t, double* y_state,
    /**/
    for (int k = 0; k < npar; ++k)
    {
-      for (int j = 0; j < nspe; ++j)
+      if ( apidx[k] > 0 )
       {
-         fp[ j + nspe*k ] = ady[j].getADValue(nspe+k);
+         int ell = apidx[k]-1;
+         for (int j = 0; j < nspe; ++j)
+         {
+            fp[ j + nspe*k ] = ady[j].getADValue(nspe+ell);
+         }
+         par[ ell ].setADValue(nspe+ell,0);
+      }
+      else
+      {
+         for (int j = 0; j < nspe; ++j)
+         {
+            fp[ j + nspe*k ] = zero;
+         }
       }
    }
 }
