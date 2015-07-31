@@ -10,7 +10,7 @@ require_relative '../../lib/SysBioFit'
 
 # =====================================================================
 
-rtol = atol = 1.0e-4
+rtol = atol = 1.0e-7
 rtol = atol = Float(ARGV[0]) if ARGV.length > 0
 atol = Float(ARGV[1]) if ARGV.length > 1
 
@@ -19,11 +19,11 @@ atol = Float(ARGV[1]) if ARGV.length > 1
 
 model = ModelDL.new 
 model.t0 = -42.5
-model.hmax = 0.02
+model.hmax = 0.0
 model.inistep = 1.0e-4
 model.rtol = rtol
 model.atol = atol
-model.monitor = 1
+# model.monitor = 1
 # puts "#{model.inspect}"
 puts "#{model.version}" # see at the end of this script
 
@@ -34,7 +34,7 @@ stop = Time.now
 
 
 sout = File.open("rb_timing_PAEON_V2_solution.dat","w")
-model.save_current_solution(sout,-2)  # -2: no iterative solution
+model.save_current_solution sout, -2  # -2: no iterative solution
 sout.close
 
 
