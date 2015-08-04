@@ -4,7 +4,7 @@ FFLAGS = $(FINC) -fexceptions -O3 -fPIC
 
 CXX = g++
 CXXINC = -I.
-CXXLIB = -ladolc
+CXXLIB = -ladolc 
 CXXFLAGS = $(CXXINC) -fexceptions -O3 -fPIC
 
 OBJS = ydot_LIMEXcpp.o
@@ -20,14 +20,14 @@ libODEydot.so: $(OBJS)
 %.so : %.xml
 	./sbml2adolc $< >ydot_LIMEXcpp.cpp
 	$(CXX) $(CXXFLAGS) -c ydot_LIMEXcpp.cpp
-	$(CXX) -s -shared ydot_LIMEXcpp.o -o $@ $(CXXLIB)
+	$(CXX) -shared -s ydot_LIMEXcpp.o -o $@ $(CXXLIB)
 	cp $@ ../libODEydot.so
 
 %.f.so : %.xml
 	./sbml2fortran $< >ydot_LIMEX.f
 	$(FC) $(FFLAGS) -c ydot_LIMEX.f
 	$(FC) $(FFLAGS) -c sbml_mathfuns.f
-	$(FC) -s -shared ydot_LIMEX.o sbml_mathfuns.o -o $@
+	$(FC) -shared -s ydot_LIMEX.o sbml_mathfuns.o -o $@
 	cp $@ ../libODEydot.so
 
 clean:

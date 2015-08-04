@@ -8,10 +8,11 @@ c
 c#comment parameters
 c  par[%3d]  :   %-42s
 */
-#include <cmath>
+// #include <cmath>
 #include <cstring>
 #include <algorithm>
 // do not even think to #include "ydot_LIMEXcpp.h"
+#define MAXIDSTRLEN 64
 /**/
 #define ADOLC_TAPELESS
 c#species
@@ -19,15 +20,16 @@ c#species
 c#parameters
 #define NUM_PAR %d
 #define NUMBER_DIRECTIONS (NUM_SPE + NUM_PAR)
-// ... #include <adolc/adtl.h>
 #include <adolc/adouble.h>
 typedef adtl::adouble adouble;
+// ... #include <adolc/adtl.h>
 ADOLC_TAPELESS_UNIQUE_INTERNALS;
-/**/
-#define MAXIDSTRLEN 64
 
 /**/
-using namespace std;
+#include "sbml_mathfuns_cpp.hpp"
+/**/
+using namespace ODEydot;
+// using namespace std;
 
 //=======================================================================
 extern "C" {
@@ -111,6 +113,7 @@ void check_events ( double, int, int* );
 //=======================================================================
 };
 //=======================================================================
+namespace ODEydot {
 c#block_for_all(j in functions)
 template <typename T> 
 c#args
@@ -122,6 +125,7 @@ template <typename T>
 c#args
 T piecewise%d %s;
 c#end_block
+};
 //=======================================================================
 extern "C" {
 //=======================================================================
@@ -565,7 +569,7 @@ void get_compartment_ids_ ( char (*idc)[MAXIDSTRLEN], int* ncom, int _len)
 c#compartments
    *ncom = %d;
 c#comment compartments
-   strncpy(idc[%3d],"%s\0",_len);
+   std::strncpy(idc[%3d],"%s\0",_len);
 }
 
 //=======================================================================
@@ -577,11 +581,11 @@ c#species
 
    for (int j = 0; j < *nspe; ++j)
    {
-      strncpy(ids[j],"\0",_len);
+      std::strncpy(ids[j],"\0",_len);
    }
 
 c#comment species
-   strncpy(ids[%3d],"%s\0",_len);
+   std::strncpy(ids[%3d],"%s\0",_len);
 }
 
 //=======================================================================
@@ -592,11 +596,11 @@ c#parameters
    *npar = %d;
    for (int j = 0; j < *npar; ++j)
    {
-      strncpy(idp[j],"\0",_len);
+      std::strncpy(idp[j],"\0",_len);
    }
 
 c#comment parameters
-   strncpy(idp[%3d],"%s\0",_len);
+   std::strncpy(idp[%3d],"%s\0",_len);
 }
 
 //=======================================================================
@@ -608,11 +612,11 @@ c#modelids
 
    for (int j = 0; j < *nid; ++j)
    {
-      strncpy(idm[j],"\0",_len);
+      std::strncpy(idm[j],"\0",_len);
    }
 
 c#comment modelids
-   strncpy(idm[%3d],"%s\0",_len);
+   std::strncpy(idm[%3d],"%s\0",_len);
 }
 
 //=======================================================================
@@ -623,7 +627,7 @@ c#block_for_all(j in functions)
 //=======================================================================
 template<typename T> 
 c#args
-T fun%d %s
+T ODEydot::fun%d %s
 /*
 c#for_all(j in decls)
       T&  %s;
@@ -642,7 +646,7 @@ c#block_for_all(j in pieces)
 //=======================================================================
 template <typename T> 
 c#args
-T piecewise%d %s
+T ODEydot::piecewise%d %s
 /*
 c#for_all(j in dbledecls)
       T&  %s;
