@@ -946,6 +946,21 @@ SbmlModel::translateFormulaString(string& str, string const& rId)
          sprintf(toC, "t");
          pos = replaceSingle(str, w, toC, pos);
       }
+      else if ( w.compare("and") == 0 ) // neccessary, since "and" is a keyword
+      {
+         sprintf(toC, "sbml_and");
+         pos = replaceSingle(str, w, toC, pos);
+      }
+      else if ( w.compare("or") == 0 )  // neccessary, since "or" is a keyword
+      {
+         sprintf(toC, "sbml_or");
+         pos = replaceSingle(str, w, toC, pos);
+      }
+      else if ( w.compare("not") == 0 ) // neccessary, since "not" is a keyword
+      {
+         sprintf(toC, "sbml_not");
+         pos = replaceSingle(str, w, toC, pos);
+      }
    }
 
    pos = str.find("piecewise");

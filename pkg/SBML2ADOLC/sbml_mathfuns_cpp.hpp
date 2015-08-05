@@ -2,77 +2,306 @@
 #define __SBML_MATH_CPP_HPP
 
 #define NDEBUG
-#include <cmath>
 #include <cassert>
-
+#include <cmath>
+//=======================================================================
 namespace ODEydot
 {
-  template<typename T>   T         abs( T x );
-  template<typename T>   T        acos( T x );
-  template<typename T>   T      arccos( T x );
-  template<typename T>   T       acosh( T x );
-  template<typename T>   T     arccosh( T x );
-  template<typename T>   T        acot( T x );
-  template<typename T>   T      arccot( T x );
-  template<typename T>   T       acoth( T x );
-  template<typename T>   T     arccoth( T x );
-  template<typename T>   T        acsc( T x );
-  template<typename T>   T      arccsc( T x );
-  template<typename T>   T       acsch( T x );
-  template<typename T>   T     arccsch( T x );
-  template<typename T>   T        asec( T x );
-  template<typename T>   T      arcsec( T x );
-  template<typename T>   T       asech( T x );
-  template<typename T>   T     arcsech( T x );
-  template<typename T>   T        asin( T x );
-  template<typename T>   T      arcsin( T x );
-  template<typename T>   T       asinh( T x );
-  template<typename T>   T     arcsinh( T x );
-  template<typename T>   T        atan( T x );
-  template<typename T>   T      arctan( T x );
-  template<typename T>   T       atanh( T x );
-  template<typename T>   T     arctanh( T x );
+  template<typename T>   T        abs( T x );
+  template<typename T>   T       acos( T x );
+  template<typename T>   T     arccos( T x );
+  template<typename T>   T      acosh( T x );
+  template<typename T>   T    arccosh( T x );
+  template<typename T>   T       acot( T x );
+  template<typename T>   T     arccot( T x );
+  template<typename T>   T      acoth( T x );
+  template<typename T>   T    arccoth( T x );
+  template<typename T>   T       acsc( T x );
+  template<typename T>   T     arccsc( T x );
+  template<typename T>   T      acsch( T x );
+  template<typename T>   T    arccsch( T x );
+  template<typename T>   T       asec( T x );
+  template<typename T>   T     arcsec( T x );
+  template<typename T>   T      asech( T x );
+  template<typename T>   T    arcsech( T x );
+  template<typename T>   T       asin( T x );
+  template<typename T>   T     arcsin( T x );
+  template<typename T>   T      asinh( T x );
+  template<typename T>   T    arcsinh( T x );
+  template<typename T>   T       atan( T x );
+  template<typename T>   T     arctan( T x );
+  template<typename T>   T      atanh( T x );
+  template<typename T>   T    arctanh( T x );
 
-  template<typename T>   T        ceil( T x );
-  template<typename T>   T     ceiling( T x );
-  template<typename T>   T         cos( T x );
-  template<typename T>   T        cosh( T x );
-  template<typename T>   T         cot( T x );
-  template<typename T>   T        coth( T x );
-  template<typename T>   T         csc( T x );
-  template<typename T>   T        csch( T x );
+  template<typename T>   T       ceil( T x );
+  template<typename T>   T    ceiling( T x );
+  template<typename T>   T        cos( T x );
+  template<typename T>   T       cosh( T x );
+  template<typename T>   T        cot( T x );
+  template<typename T>   T       coth( T x );
+  template<typename T>   T        csc( T x );
+  template<typename T>   T       csch( T x );
 
-  template<typename T>   T         exp( T x );
+  template<typename T>   T        exp( T x );
 
-  template<typename T>   T   factorial( int x );
-  template<typename T>   T       floor( T x );
+  template<typename T>   T  factorial( T x );
+  template<typename T>   T      floor( T x );
 
-  template<typename T>   T          ln( T x );
-  template<typename T>   T         log( T x );
-  template<typename T>   T         log( T x, T y );
-  template<typename T>   T       log10( T x );
+  template<typename T>   T         ln( T x );
+  template<typename T>   T        log( T x );
+  template<typename T>   T        log( T b, T x );
+  template<typename T>   T      log10( T x );
 
-  template<typename T>   T         pow( T x, T y ); 
-  template<typename T>   T       power( T x, T y ); 
+  template<typename T>   T        pow( T x, T y ); 
+  template<typename T>   T      power( T x, T y ); 
 
-  template<typename T>   T        root( T x, T y ); 
+  template<typename T>   T       root( T b, T x ); 
 
-  template<typename T>   T         sec( T x );
-  template<typename T>   T        sech( T x );
-  template<typename T>   T         sqr( T x );
-  template<typename T>   T        sqrt( T x );
-  template<typename T>   T         sin( T x );
-  template<typename T>   T        sinh( T x );
+  template<typename T>   T        sec( T x );
+  template<typename T>   T       sech( T x );
+  template<typename T>   T        sqr( T x );
+  template<typename T>   T       sqrt( T x );
+  template<typename T>   T        sin( T x );
+  template<typename T>   T       sinh( T x );
 
-  template<typename T>   T         tan( T x );
-  template<typename T>   T        tanh( T x );
+  template<typename T>   T        tan( T x );
+  template<typename T>   T       tanh( T x );
+
+  template<typename T>   int sbml_and( T a, T b );
+  template<typename T>   int sbml_or ( T a, T b );
+  template<typename T>   int sbml_not( T a );
+
+  template<typename T>   int       eq( T x, T y );
+  template<typename T>   int      neq( T x, T y );
+  template<typename T>   int       gt( T x, T y );
+  template<typename T>   int      geq( T x, T y );
+  template<typename T>   int       lt( T x, T y );
+  template<typename T>   int      leq( T x, T y );
 };
-
 //=======================================================================
 template<typename T>
 T ODEydot::abs( T x )
 {
   return ::fabs(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::acos( T x )
+{
+  return ::acos(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::arccos( T x )
+{
+  return ::acos(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::acosh( T x )
+{
+  return ::acosh(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::arccosh( T x )
+{
+  return ::acosh(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::acot( T x )
+{
+  return (M_PI_2 - ::atan(x));  // M_PI_2 = M_PI/2
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::arccot( T x )
+{
+  return (M_PI_2 - ::atan(x));  // M_PI_2 = M_PI/2
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::acoth( T x )
+{
+  assert( x != 0.0 );
+  return ::atanh( 1.0 / x );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::arccoth( T x )
+{
+  assert( x != 0.0 );
+  return ::atanh( 1.0 / x );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::acsc( T x )
+{
+  assert( x != 0.0 );
+  return ::asin( 1.0 / x );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::arccsc( T x )
+{
+  assert( x != 0.0 );
+  return ::asin( 1.0 / x );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::acsch( T x )
+{
+  assert( x != 0.0 );
+  return ::asinh( 1.0 / x );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::arccsch( T x )
+{
+  assert( x != 0.0 );
+  return ::asinh( 1.0 / x );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::asec( T x )
+{
+  assert( x != 0.0 );
+  return ::acos( 1.0 / x );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::arcsec( T x )
+{
+  assert( x != 0.0 );
+  return ::acos( 1.0 / x );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::asech( T x )
+{
+  assert( x != 0.0 );
+  return ::acosh( 1.0 / x );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::arcsech( T x )
+{
+  assert( x != 0.0 );
+  return ::acosh( 1.0 / x );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::asin( T x )
+{
+  return ::asin(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::arcsin( T x )
+{
+  return ::asin(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::asinh( T x )
+{
+  return ::asinh(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::arcsinh( T x )
+{
+  return ::asinh(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::atan( T x )
+{
+  return ::atan(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::arctan( T x )
+{
+  return ::atan(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::atanh( T x )
+{
+  return ::atanh(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::arctanh( T x )
+{
+  return ::atanh(x);
+}
+//=======================================================================
+template<typename T>
+T ODEydot::ceil( T x )
+{
+  return ::ceil(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::ceiling( T x )
+{
+  return ::ceil(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::cos( T x )
+{
+  return ::cos(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::cosh( T x )
+{
+  return ::cosh(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::cot( T x )
+{
+  assert( ::sin(x) != 0.0 );
+  return ( ::cos(x) / ::sin(x) );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::coth( T x )
+{
+  assert( x != 0.0 );
+  return ( ::cosh(x) / ::sinh(x) );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::csc( T x )
+{
+  assert( ::sin(x) != 0.0 );
+  return ( 1.0 / ::sin(x) );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::csch( T x )
+{
+  assert( x != 0.0 );
+  return ( 1.0 / ::sinh(x) );
+}
+//=======================================================================
+template<typename T>
+T ODEydot::factorial( T x )
+{
+  assert( x > -1.0 );
+  return ::gamma( x + 1.0 );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::floor( T x )
+{
+  return ::floor(x);
 }
 //=======================================================================
 template<typename T>
@@ -82,204 +311,166 @@ T ODEydot::exp( T x )
 }
 //=======================================================================
 template<typename T>
+T ODEydot::ln( T x )
+{
+  assert( x > 0.0 );
+  return ::log(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
 T ODEydot::log( T x )
 {
+  assert( x > 0.0 );
   return ::log(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::log( T b, T x )
+{
+  assert( x > 0.0 );
+  assert( (b > 0.0) && (b != 1.0) );
+  return ( ::log(x) / ::log(b) );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::log10( T x )
+{
+  assert( x > 0.0 );
+  return ( ::log(x) / M_LN10 );  // M_LN10 = log(10.0)
 }
 //=======================================================================
 template<typename T>
 T ODEydot::pow( T x, T y )
 {
   assert( x >= 0.0 );
-  T ret = ::pow(::fabs(x),y);
-  // T ret = ::exp( y*::log(::fabs(x)) );
+  T ret = (x != 0.0) ? ::pow( ::fabs(x), y ) : 0.0;
+  // T ret = ::exp( y * ::log(::fabs(x)) );
   return ret;
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::power( T x, T y )
+{
+  assert( x >= 0.0 );
+  T ret = (x != 0.0) ? ::pow( ::fabs(x), y ) : 0.0;
+  return ret;
+}
+//=======================================================================
+template<typename T>
+T ODEydot::root( T b, T x )
+{
+  assert( x >= 0.0 );
+  assert( b != 0.0 );
+  T ret = (x != 0.0) ? ::pow( ::fabs(x), 1.0/b ) : 0.0;
+  return ret;
+}
+//=======================================================================
+template<typename T>
+T ODEydot::sec( T x )
+{
+  assert( ::cos(x) != 0.0 );
+  return ( 1.0 / ::cos(x) );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::sech( T x )
+{
+  return ( 1.0 / ::cosh(x) );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::sqr( T x )
+{
+  return ( x*x );
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::sqrt( T x )
+{
+  return ::sqrt(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::sin( T x )
+{
+  return ::sin(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::sinh( T x )
+{
+  return ::sinh(x);
+}
+//=======================================================================
+template<typename T>
+T ODEydot::tan( T x )
+{
+  return ::tan(x);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+T ODEydot::tanh( T x )
+{
+  return ::tanh(x);
+}
+//=======================================================================
+//-----------------------------------------------------------------------
+//=======================================================================
+template<typename T>
+int ODEydot::sbml_and( T a, T b )
+{
+  return (a and b);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+int ODEydot::sbml_or( T a, T b )
+{
+  return (a or b);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+int ODEydot::sbml_not( T a )
+{
+  return (not a);
+}
+//=======================================================================
+//-----------------------------------------------------------------------
+//=======================================================================
+template<typename T>
+int ODEydot::eq( T x, T y )
+{
+  return (x == y);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+int ODEydot::neq( T x, T y )
+{
+  return (x != y);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+int ODEydot::gt( T x, T y )
+{
+  return (x > y);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+int ODEydot::geq( T x, T y )
+{
+  return (x >= y);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+int ODEydot::lt( T x, T y )
+{
+  return (x < y);
+}
+//-----------------------------------------------------------------------
+template<typename T>
+int ODEydot::leq( T x, T y )
+{
+  return (x <= y);
 }
 //=======================================================================
 
 #endif // __SBML_MATH_CPP_HPP
-
-/*
-c
-c=======================================================================
-c
-      logical function and ( a, b )
-c
-      implicit none
-c
-c-----------------------------------------------------------------------
-c
-      logical             a
-      logical             b
-c
-c-----------------------------------------------------------------------
-c
-      and = a.AND.b
-c
-c-----------------------------------------------------------------------
-c
-      return
-      end function and
-c
-c=======================================================================
-c
-      logical function or ( a, b )
-c
-      implicit none
-c
-c-----------------------------------------------------------------------
-c
-      logical             a
-      logical             b
-c
-c-----------------------------------------------------------------------
-c
-      or = a.OR.b
-c
-c-----------------------------------------------------------------------
-c
-      return
-      end function or
-c
-c=======================================================================
-c
-      logical function not ( a )
-c
-      implicit none
-c
-c-----------------------------------------------------------------------
-c
-      logical             a
-c
-c-----------------------------------------------------------------------
-c
-      not = .NOT.a
-c
-c-----------------------------------------------------------------------
-c
-      return
-      end function not
-c
-c=======================================================================
-c 
-      logical function eq ( x, y )
-c
-      implicit none
-c
-c-----------------------------------------------------------------------
-c
-      double precision    x
-      double precision    y
-c
-c-----------------------------------------------------------------------
-c
-      eq = x.EQ.y
-c
-c-----------------------------------------------------------------------
-c
-      return
-      end function eq
-c
-c=======================================================================
-c 
-      logical function neq ( x, y )
-c
-      implicit none
-c
-c-----------------------------------------------------------------------
-c
-      double precision    x
-      double precision    y
-c
-c-----------------------------------------------------------------------
-c
-      neq = x.NE.y
-c
-c-----------------------------------------------------------------------
-c
-      return
-      end function neq
-c
-c=======================================================================
-c 
-      logical function gt ( x, y )
-c
-      implicit none
-c
-c-----------------------------------------------------------------------
-c
-      double precision    x
-      double precision    y
-c
-c-----------------------------------------------------------------------
-c
-      gt = x.GT.y
-c
-c-----------------------------------------------------------------------
-c
-      return
-      end function gt
-c
-c=======================================================================
-c 
-      logical function geq ( x, y )
-c
-      implicit none
-c
-c-----------------------------------------------------------------------
-c
-      double precision    x
-      double precision    y
-c
-c-----------------------------------------------------------------------
-c
-      geq = x.GE.y
-c
-c-----------------------------------------------------------------------
-c
-      return
-      end function geq
-c
-c=======================================================================
-c 
-      logical function lt ( x, y )
-c
-      implicit none
-c
-c-----------------------------------------------------------------------
-c
-      double precision    x
-      double precision    y
-c
-c-----------------------------------------------------------------------
-c
-      lt = x.LT.y
-c
-c-----------------------------------------------------------------------
-c
-      return
-      end function lt
-c
-c=======================================================================
-c 
-      logical function leq ( x, y )
-c
-      implicit none
-c
-c-----------------------------------------------------------------------
-c
-      double precision    x
-      double precision    y
-c
-c-----------------------------------------------------------------------
-c
-      leq = x.LE.y
-c
-c-----------------------------------------------------------------------
-c
-      return
-      end function leq
-c
-c=======================================================================
-c 
-*/

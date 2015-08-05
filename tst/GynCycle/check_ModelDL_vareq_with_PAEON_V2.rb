@@ -7,7 +7,7 @@ require_relative '../../lib/ModelDL'
 # ---------------------------------------------------------------------
 # Command line
 
-$rtol = 1.0e-6
+$rtol = 1.0e-7
 $atol = $rtol
 
 if ARGV.length > 0 then
@@ -21,12 +21,12 @@ else
   puts " "
   puts "         Default values"
   puts "         --------------"
-  puts "          * rtol = atol = 1.0e-6"
+  puts "          * rtol = atol = 1.0e-7"
   puts " "
   exit -1
 end
-$rtol = 1.0e-6 if $rtol <= 0.0
-$atol = 1.0e-6 if $atol <= 0.0
+$rtol = 1.0e-7 if $rtol <= 0.0
+$atol = 1.0e-7 if $atol <= 0.0
 
 model = ModelDL.new 
 model.t0 = 0.0
@@ -75,7 +75,7 @@ end
 # pscal  = [ 1.0, 1.0 ]
 # nPar   = pidx.length
 
-tspan = [0.0,30.0]
+tspan = [0.0,60.0]
 y0 = model.y0ode
 par = model.par0
 pidx = []
