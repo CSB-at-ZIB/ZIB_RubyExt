@@ -71,12 +71,12 @@ namespace ODEydot
   template<typename T>   int sbml_or ( T a, T b );
   template<typename T>   int sbml_not( T a );
 
-  template<typename T>   int       eq( T x, T y );
-  template<typename T>   int      neq( T x, T y );
-  template<typename T>   int       gt( T x, T y );
-  template<typename T>   int      geq( T x, T y );
-  template<typename T>   int       lt( T x, T y );
-  template<typename T>   int      leq( T x, T y );
+  template<typename T1, typename T2>   int       eq( T1 x, T2 y );
+  template<typename T1, typename T2>   int      neq( T1 x, T2 y );
+  template<typename T1, typename T2>   int       gt( T1 x, T2 y );
+  template<typename T1, typename T2>   int      geq( T1 x, T2 y );
+  template<typename T1, typename T2>   int       lt( T1 x, T2 y );
+  template<typename T1, typename T2>   int      leq( T1 x, T2 y );
 };
 //=======================================================================
 template<typename T>
@@ -436,40 +436,40 @@ int ODEydot::sbml_not( T a )
 //=======================================================================
 //-----------------------------------------------------------------------
 //=======================================================================
-template<typename T>
-int ODEydot::eq( T x, T y )
+template<typename T1, typename T2>
+int ODEydot::eq( T1 x, T2 y )
 {
-  return (x == y);
+  return ( x == y );
 }
 //-----------------------------------------------------------------------
-template<typename T>
-int ODEydot::neq( T x, T y )
+template<typename T1, typename T2>
+int ODEydot::neq( T1 x, T2 y )
 {
-  return (x != y);
+  return ( x != y );
 }
 //-----------------------------------------------------------------------
-template<typename T>
-int ODEydot::gt( T x, T y )
+template<typename T1, typename T2>
+int ODEydot::gt( T1 x, T2 y )
 {
-  return (x > y);
+  return ( x > y );
 }
 //-----------------------------------------------------------------------
-template<typename T>
-int ODEydot::geq( T x, T y )
+template<typename T1, typename T2>
+int ODEydot::geq( T1 x, T2 y )
 {
-  return (x >= y);
+  return ( x >= y );
 }
 //-----------------------------------------------------------------------
-template<typename T>
-int ODEydot::lt( T x, T y )
+template<typename T1, typename T2>
+int ODEydot::lt( T1 x, T2 y )
 {
-  return (x < y);
+  return ( x < y );
 }
 //-----------------------------------------------------------------------
-template<typename T>
-int ODEydot::leq( T x, T y )
+template<typename T1, typename T2>
+int ODEydot::leq( T1 x, T2 y )
 {
-  return (x <= y);
+  return ( x <= y );
 }
 //=======================================================================
 
