@@ -63,6 +63,7 @@ extern void init_ode_ ( double* com, int* icom, int* lcom,
 
 extern void init_var_ ( int* nidx, int* pidx );
 
+extern void set_model_number_directions_ ();
 
 // dummy routine here
 /*

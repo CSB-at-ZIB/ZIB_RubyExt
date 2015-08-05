@@ -885,9 +885,6 @@ SbmlModel::translateFormulaString(string& str, string const& rId)
    {
       char   toC[64];
       string w = tok[n];
-      string ww = "global_" + w;
-      string rw = rId + "_" + w;
-      string lw = rId + "_local_" + w;
 
       char*  pEnd = &w[0];
       double val = strtod(w.c_str(), &pEnd);
@@ -906,60 +903,73 @@ SbmlModel::translateFormulaString(string& str, string const& rId)
          // *pEnd = 'D';
          pos = replaceSingle(str, w, toC, pos);
       }
-      else if ( _irule.count(w) > 0 )
-      {
-         sprintf(toC, "rul[%d]", _irule[w]);
-         pos = replaceSingle(str, w, toC, pos);
-      }
-      else if ( _ifunc.count(w) > 0 )
-      {
-         sprintf(toC, "fun%d", _ifunc[w]);
-         pos = replaceSingle(str, w, toC, pos);
-      }
-      else if ( _iparm.count(lw) > 0 )  //first, check purely local parameters
-      {
-         sprintf(toC, "par[%d]", _iparm[lw]);
-         pos = replaceSingle(str, w, toC, pos);
-      }
-      else if ( _iparm.count(rw) > 0 )  // then, parameters based on reactions
-      {
-         sprintf(toC, "par[%d]", _iparm[rw]);
-         pos = replaceSingle(str, w, toC, pos);
-      }
-      else if ( _iparm.count(ww) > 0 )  // finally, global parameters
-      {
-         sprintf(toC, "par[%d]", _iparm[ww]);
-         pos = replaceSingle(str, w, toC, pos);
-      }
-      else if ( _ispec.count(w) > 0 )
-      {
-         sprintf(toC, "spe[%d]", _ispec[w]);
-         pos = replaceSingle(str, w, toC, pos);
-      }
-      else if ( _icomp.count(w) > 0 )
-      {
-         sprintf(toC, "com[%d]", _icomp[w]);
-         pos = replaceSingle(str, w, toC, pos);
-      }
-      else if ( w.compare("time") == 0 )
-      {
-         sprintf(toC, "t");
-         pos = replaceSingle(str, w, toC, pos);
-      }
-      else if ( w.compare("and") == 0 ) // neccessary, since "and" is a keyword
-      {
-         sprintf(toC, "sbml_and");
-         pos = replaceSingle(str, w, toC, pos);
-      }
-      else if ( w.compare("or") == 0 )  // neccessary, since "or" is a keyword
-      {
-         sprintf(toC, "sbml_or");
-         pos = replaceSingle(str, w, toC, pos);
-      }
-      else if ( w.compare("not") == 0 ) // neccessary, since "not" is a keyword
-      {
-         sprintf(toC, "sbml_not");
-         pos = replaceSingle(str, w, toC, pos);
+      else
+      { 
+         if ( w[0] == '-' )  // get rid of unary minus!
+         {
+            w.erase(w.begin(),w.begin()+1);
+            ++pos;
+         }
+
+         string ww = "global_" + w;
+         string rw = rId + "_" + w;
+         string lw = rId + "_local_" + w;
+
+         if ( _irule.count(w) > 0 )
+         {
+            sprintf(toC, "rul[%d]", _irule[w]);
+            pos = replaceSingle(str, w, toC, pos);
+         }
+         else if ( _ifunc.count(w) > 0 )
+         {
+            sprintf(toC, "fun%d", _ifunc[w]);
+            pos = replaceSingle(str, w, toC, pos);
+         }
+         else if ( _iparm.count(lw) > 0 )  //first, check purely local parameters
+         {
+            sprintf(toC, "par[%d]", _iparm[lw]);
+            pos = replaceSingle(str, w, toC, pos);
+         }
+         else if ( _iparm.count(rw) > 0 )  // then, parameters based on reactions
+         {
+            sprintf(toC, "par[%d]", _iparm[rw]);
+            pos = replaceSingle(str, w, toC, pos);
+         }
+         else if ( _iparm.count(ww) > 0 )  // finally, global parameters
+         {
+            sprintf(toC, "par[%d]", _iparm[ww]);
+            pos = replaceSingle(str, w, toC, pos);
+         }
+         else if ( _ispec.count(w) > 0 )
+         {
+            sprintf(toC, "spe[%d]", _ispec[w]);
+            pos = replaceSingle(str, w, toC, pos);
+         }
+         else if ( _icomp.count(w) > 0 )
+         {
+            sprintf(toC, "com[%d]", _icomp[w]);
+            pos = replaceSingle(str, w, toC, pos);
+         }
+         else if ( w.compare("time") == 0 )
+         {
+            sprintf(toC, "t");
+            pos = replaceSingle(str, w, toC, pos);
+         }
+         else if ( w.compare("and") == 0 ) // neccessary, since "and" is a keyword
+         {
+            sprintf(toC, "sbml_and");
+            pos = replaceSingle(str, w, toC, pos);
+         }
+         else if ( w.compare("or") == 0 )  // neccessary, since "or" is a keyword
+         {
+            sprintf(toC, "sbml_or");
+            pos = replaceSingle(str, w, toC, pos);
+         }
+         else if ( w.compare("not") == 0 ) // neccessary, since "not" is a keyword
+         {
+            sprintf(toC, "sbml_not");
+            pos = replaceSingle(str, w, toC, pos);
+         }
       }
    }
 

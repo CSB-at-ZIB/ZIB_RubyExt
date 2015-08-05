@@ -16,12 +16,12 @@ OBJS = sbml2fortran.o SbmlModel.o
 all : ../lib/libsbml.so sbml2fortran chk_ydot
 # all : ../lib/liblepton.so ../lib/libsbml.so sbml2fortran chk_ydot
 
-../lib/liblepton.so :
-	cd .. && \
-	/bin/rm -rf liblepton-1.3 && \
-	tar xf libLepton-1.3-src.tar.gz && \
-	cd liblepton-1.3 && \
-	$(MAKE) install prefix=$(bpath)
+# ../lib/liblepton.so :
+#	cd .. && \
+#	/bin/rm -rf liblepton-1.3 && \
+#	tar xf libLepton-1.3-src.tar.gz && \
+#	cd liblepton-1.3 && \
+#	$(MAKE) install prefix=$(bpath)
 
 ../lib/libsbml.so : 
 	cd .. && \
@@ -31,7 +31,7 @@ all : ../lib/libsbml.so sbml2fortran chk_ydot
 	./configure --prefix=$(bpath) --disable-static && \
 	$(MAKE) install
 
-sbml2fortran : $(OBJS)
+sbml2fortran : $(OBJS) YDOT_LIMEX_TEMPLATE.txt
 	$(CXX) -I../include -o sbml2fortran $(OBJS) -L../lib -lsbml -Wl,-rpath,$(rpath)
 	cp sbml2fortran YDOT_LIMEX_TEMPLATE.txt ../../bin/
 

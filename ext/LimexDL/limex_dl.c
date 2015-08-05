@@ -1,5 +1,6 @@
 #include <ruby.h>
 #include <math.h>
+// #include <string.h>  /* for strncmp() */
 #include "LIMEX4_3A/LIMEX4_3A.h"
 #include "Model_ODE/ydot_LIMEX.h"
 
@@ -956,6 +957,17 @@ VALUE limex_dl_init(VALUE self) /* , VALUE y0) */
   {
     rb_ary_push( pId, rb_str_new2(idp+j*MAXIDSTRLEN) );
   }
+
+  /**/
+  /*
+  if ( strncmp(idm+4*MAXIDSTRLEN, "with vareq", MAXIDSTRLEN) == 0 )
+  {
+    set_model_number_directions_();
+    k = 0;
+    init_var_(&k,NULL);
+  }
+  */
+  /**/
 
   rb_iv_set(self,  "@dim",     INT2NUM( RARRAY_LEN(y0) ) );
   rb_iv_set(self,  "@version", version);

@@ -888,9 +888,6 @@ SbmlModel::translateFormulaString(string& str, string const& rId)
    {
       char   toF[64];
       string w = tok[n];
-      string ww = "global_" + w;
-      string rw = rId + "_" + w;
-      string lw = rId + "_local_" + w;
 
       char*  pEnd = &w[0];
       double val = strtod(w.c_str(), &pEnd);
@@ -909,45 +906,58 @@ SbmlModel::translateFormulaString(string& str, string const& rId)
          *pEnd = 'D';
          pos = replaceSingle(str, w, toF, pos);
       }
-      else if ( _irule.count(w) > 0 )
-      {
-         sprintf(toF, "rul(%d)", _irule[w]);
-         pos = replaceSingle(str, w, toF, pos);
-      }
-      else if ( _ifunc.count(w) > 0 )
-      {
-         sprintf(toF, "fun%d", _ifunc[w]);
-         pos = replaceSingle(str, w, toF, pos);
-      }
-      else if ( _iparm.count(lw) > 0 )  //first, check purely local parameters
-      {
-         sprintf(toF, "par(%d)", _iparm[lw]);
-         pos = replaceSingle(str, w, toF, pos);
-      }
-      else if ( _iparm.count(rw) > 0 )  // then, parameters based on reactions
-      {
-         sprintf(toF, "par(%d)", _iparm[rw]);
-         pos = replaceSingle(str, w, toF, pos);
-      }
-      else if ( _iparm.count(ww) > 0 )  // finally, global parameters
-      {
-         sprintf(toF, "par(%d)", _iparm[ww]);
-         pos = replaceSingle(str, w, toF, pos);
-      }
-      else if ( _ispec.count(w) > 0 )
-      {
-         sprintf(toF, "spe(%d)", _ispec[w]);
-         pos = replaceSingle(str, w, toF, pos);
-      }
-      else if ( _icomp.count(w) > 0 )
-      {
-         sprintf(toF, "com(%d)", _icomp[w]);
-         pos = replaceSingle(str, w, toF, pos);
-      }
-      else if ( w.compare("time") == 0 )
-      {
-         sprintf(toF, "t");
-         pos = replaceSingle(str, w, toF, pos);
+      else
+      { 
+         if ( w[0] == '-' )  // get rid of unary minus!
+         {
+            w.erase(w.begin(),w.begin()+1);
+            ++pos;
+         }
+
+         string ww = "global_" + w;
+         string rw = rId + "_" + w;
+         string lw = rId + "_local_" + w;
+
+         if ( _irule.count(w) > 0 )
+         {
+            sprintf(toF, "rul(%d)", _irule[w]);
+            pos = replaceSingle(str, w, toF, pos);
+         }
+         else if ( _ifunc.count(w) > 0 )
+         {
+            sprintf(toF, "fun%d", _ifunc[w]);
+            pos = replaceSingle(str, w, toF, pos);
+         }
+         else if ( _iparm.count(lw) > 0 )  //first, check purely local parameters
+         {
+            sprintf(toF, "par(%d)", _iparm[lw]);
+            pos = replaceSingle(str, w, toF, pos);
+         }
+         else if ( _iparm.count(rw) > 0 )  // then, parameters based on reactions
+         {
+            sprintf(toF, "par(%d)", _iparm[rw]);
+            pos = replaceSingle(str, w, toF, pos);
+         }
+         else if ( _iparm.count(ww) > 0 )  // finally, global parameters
+         {
+            sprintf(toF, "par(%d)", _iparm[ww]);
+            pos = replaceSingle(str, w, toF, pos);
+         }
+         else if ( _ispec.count(w) > 0 )
+         {
+            sprintf(toF, "spe(%d)", _ispec[w]);
+            pos = replaceSingle(str, w, toF, pos);
+         }
+         else if ( _icomp.count(w) > 0 )
+         {
+            sprintf(toF, "com(%d)", _icomp[w]);
+            pos = replaceSingle(str, w, toF, pos);
+         }
+         else if ( w.compare("time") == 0 )
+         {
+            sprintf(toF, "t");
+            pos = replaceSingle(str, w, toF, pos);
+         }
       }
    }
 

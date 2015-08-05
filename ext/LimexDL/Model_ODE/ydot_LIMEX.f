@@ -1,7 +1,7 @@
 c-----
 c SBML Model : Gardner1998_CellCycle_Goldbeter                        
 c              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-c       Date : Mon Jul 20 17:59:49 2015
+c       Date : Wed Aug  5 17:51:50 2015
 c              
 c     Author : automated transcription by 'sbml2fortran'
 c              
@@ -596,8 +596,8 @@ c
       end do
 c     ---
       idm(  1) = 'Gardner1998_CellCycle_Goldbeter'//char(0)
-      idm(  2) = 'Mon Jul 20 17:59:49 2015'//char(0)
-      idm(  3) = '001437407989'//char(0)
+      idm(  2) = 'Wed Aug  5 17:51:50 2015'//char(0)
+      idm(  3) = '001438789910'//char(0)
       idm(  4) = 'BIOMD0000000008.xml'//char(0)
       idm(  5) = 'no vareq'//char(0)
 c     ---

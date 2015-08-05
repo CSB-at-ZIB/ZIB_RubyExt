@@ -15,6 +15,7 @@ have_library('ODEydot', 'init_ode_')
 have_library('ODEydot', 'get_model_ids_')
 #have_library('ODEydot', 'get_species_ids_')
 #have_library('ODEydot', 'get_parameter_ids_')
+#have_library('ODEydot', 'set_model_number_directions_')
 
 # create_makefile('Limex')
 create_makefile('LimexDL')

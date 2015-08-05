@@ -38,6 +38,21 @@ c
 c
 c=======================================================================
 c
+      subroutine init_var ( nidx, pidx )
+c
+      implicit none
+c
+c-----------------------------------------------------------------------
+c
+      integer             nidx, pidx(*)
+c
+c-----------------------------------------------------------------------
+c
+      return
+      end subroutine init_var
+c
+c=======================================================================
+c
       subroutine ydot_sLIMEX ( n, nz, t, y_state, dy, b, ir, ic, info )
 c
       implicit none

@@ -14,16 +14,16 @@ c  par[%3d]  :   %-42s
 // do not even think to #include "ydot_LIMEXcpp.h"
 #define MAXIDSTRLEN 64
 /**/
-#define ADOLC_TAPELESS
+// ... #define ADOLC_TAPELESS
 c#species
 #define NUM_SPE %d
 c#parameters
 #define NUM_PAR %d
 #define NUMBER_DIRECTIONS (NUM_SPE + NUM_PAR)
-#include <adolc/adouble.h>
+// ... #include <adolc/adouble.h>
+#include "adolc/adtl.h"
 typedef adtl::adouble adouble;
-// ... #include <adolc/adtl.h>
-ADOLC_TAPELESS_UNIQUE_INTERNALS;
+// ... ADOLC_TAPELESS_UNIQUE_INTERNALS;
 
 /**/
 #include "sbml_mathfuns_cpp.hpp"
@@ -71,6 +71,10 @@ c#parameters
 //=======================================================================
 
 struct {
+// c#species
+//       adouble ay[%d];
+// c#species
+//       adouble ady[%d];
 c#compartments
       adouble com[%d];
 c#species
@@ -102,6 +106,8 @@ c#parameters
 #define  eve   PRE(variables_).eve
 #define  apidx advariables_.apidx
 #define  npidx advariables_.npidx
+// #define  ay    advariables_.ay
+// #define  ady   advariables_.ady
 
 //=======================================================================
 void compute_fy( int, double, double*, double*, double*, int* );
@@ -128,6 +134,13 @@ c#end_block
 };
 //=======================================================================
 extern "C" {
+//=======================================================================
+
+void set_adolc_num_dir ()
+{
+   adtl::setNumDir( NUMBER_DIRECTIONS );
+}
+
 //=======================================================================
 
 void ydot_slimex_ ( int* n, int* nz, double* t, double* y_state, double* dy,
@@ -188,7 +201,6 @@ c#for_all(j in algebraic)
 void compute_fy( int nspe, double t, double* y_state, 
                  double* dy, double* fy, int* info )
 {
-   /// adtl::setNumDir(nspe);
    adouble ay[nspe], ady[nspe];
    /**/
    for (int j = 0; j < nspe; ++j)
@@ -215,7 +227,6 @@ void compute_fy( int nspe, double t, double* y_state,
 void compute_fp( int nspe, int npar, double t, double* y_state, 
                  double* fp, int* info )
 {
-   /// adtl::setNumDir(npar);
    adouble ay[nspe], ady[nspe];
    /**/
    for (int j = 0; j < nspe; ++j)
@@ -343,6 +354,8 @@ c#species
 c#parameters
    int npar = %d;
    /**/
+   // adtl::setNumDir(nspe + npar);
+   /**/
    for (int j = 0; j < ncom; ++j)
    {
       advariables_.com[j] = sbmlvariables_.com[j];
@@ -351,6 +364,7 @@ c#parameters
    for (int j = 0; j < nspe; ++j)
    {
       advariables_.spe[j] = sbmlvariables_.spe[j];
+      /// ay[j] = ady[j] = zero; 
    }
    /**/
    for (int j = 0; j < npar; ++j)
