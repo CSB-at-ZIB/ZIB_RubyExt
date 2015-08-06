@@ -240,7 +240,7 @@ SbmlModel::setSpecies(Species const* s, unsigned n)
       {
          // _vspec[n] = sId;
          _rate[sId] = "0.0";
-         return;
+         // return;
       }
 
       // if ( s->getHasOnlySubstanceUnits() || 

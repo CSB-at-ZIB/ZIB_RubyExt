@@ -119,6 +119,7 @@ class SbmlModel
         string           _sbmlfile;
         string           _modelname;
         ValueList        _comp, _spec, _parm;
+        // ValueList        _bcsp, _cons;
         FunctionDefList  _func;
         StringList       _rule, _reac, _rate;
         StringList       _trig, _dmmy;

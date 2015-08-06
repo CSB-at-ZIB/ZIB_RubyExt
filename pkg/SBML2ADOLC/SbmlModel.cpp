@@ -66,6 +66,10 @@ SbmlModel::SbmlModel(SbmlModel const& other)
   _comp = other._comp; 
   _spec = other._spec; 
   _parm = other._parm;
+
+  // _bcsp = other._bcsp;
+  // _cons = other._cons;
+
   _func = other._func;
   _rule = other._rule; 
   _reac = other._reac; 
@@ -230,7 +234,7 @@ SbmlModel::setSpecies(Species const* s, unsigned n)
       {
          // _vspec[n] = sId;
          _rate[sId] = "0.0";
-         return;
+         // return;
       }
 
       // if ( s->getHasOnlySubstanceUnits() || 
