@@ -49,7 +49,7 @@ puts "par0 : #{model.par0}"
 pIniGuess = {
    "global_p_019_001"  =>  [    0.958 ,  1.0 ],  # GynCycle Param 61
    "global_p_020_001"  =>  [    0.925 ,  1.0 ],  # GynCycle Param 62
-   "global_p_021_001"  =>  [    0.7576,  1.0 ],  # GynCycle Param 63
+   "global_p_021_001"  =>  [    0.7567,  1.0 ],  # GynCycle Param 63
    "global_p_022_001"  =>  [    0.61  ,  1.0 ],  # GynCycle Param 64
    "global_p_023_001"  =>  [    0.543 ,  1.0 ],  # GynCycle Param 65
 
@@ -57,7 +57,7 @@ pIniGuess = {
 
    "global_p_024_002"  =>  [    2.0945,  1.0 ],  # GynCycle Param 70
    "global_p_024_003"  =>  [    9.28  ,  1.0 ],  # GynCycle Param 71
-   "global_p_024_004"  =>  [ 6960.53  ,  1.0 ],  # GynCycle Param 72
+   "global_p_024_004"  =>  [ 3480.27  ,  1.0 ],  # GynCycle Param 72
    "global_p_024_005"  =>  [    0.972 ,  1.0 ],  # GynCycle Param 73
    "global_p_024_006"  =>  [ 1713.71  ,  1.0 ],  # GynCycle Param 74
    "global_p_024_007"  =>  [ 8675.14  ,  1.0 ],  # GynCycle Param 75
