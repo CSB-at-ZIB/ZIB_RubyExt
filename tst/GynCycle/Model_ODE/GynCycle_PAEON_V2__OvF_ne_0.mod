@@ -22,7 +22,7 @@
   default:[AF3]       =      0.492        "Antral follicle develop. stage 3"                        "[AF3]"
   default:[AF4]       =      0.0000161    "Antral follicle develop. stage 4"                        "[AF4]"
   default:[PrF]       =      0.2449       "Pre-ovulatory follicle stage"                            "[PrF]"
-  default:[OvF]       =      1.0E-16      "Ovulatory follicle stage"                                "[OvF]"
+  default:[OvF]       =      1.0E-09      "Ovulatory follicle stage"                                "[OvF]"
   default:[Sc1]       =      1.0E-08      "Ovulatory scar 1"                                        "[Sc1]"
   default:[Sc2]       =      2.0E-06      "Ovulatory scar 2"                                        "[Sc2]"
   default:[Lut1]      =      2.0E-05      "Corpus luteum develop. stage 1"                          "[Lut1]"

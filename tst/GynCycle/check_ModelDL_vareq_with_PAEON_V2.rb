@@ -7,7 +7,7 @@ require_relative '../../lib/ModelDL'
 # ---------------------------------------------------------------------
 # Command line
 
-$rtol = 1.0e-7
+$rtol = 1.0e-6
 $atol = $rtol
 
 if ARGV.length > 0 then
@@ -21,12 +21,12 @@ else
   puts " "
   puts "         Default values"
   puts "         --------------"
-  puts "          * rtol = atol = 1.0e-7"
+  puts "          * rtol = atol = 1.0e-6"
   puts " "
   exit -1
 end
-$rtol = 1.0e-7 if $rtol <= 0.0
-$atol = 1.0e-7 if $atol <= 0.0
+$rtol = 1.0e-6 if $rtol <= 0.0
+$atol = 1.0e-6 if $atol <= 0.0
 
 model = ModelDL.new 
 model.t0 = 0.0
@@ -51,18 +51,21 @@ pIniGuess = {
    "global_p_020_001"  =>  [    0.925 ,  1.0 ],  # GynCycle Param 62
    "global_p_021_001"  =>  [    0.7576,  1.0 ],  # GynCycle Param 63
    "global_p_022_001"  =>  [    0.61  ,  1.0 ],  # GynCycle Param 64
-   "global_p_023_001"  =>  [    0.543 ,  1.0 ]   # GynCycle Param 65
+   "global_p_023_001"  =>  [    0.543 ,  1.0 ],  # GynCycle Param 65
 
 #  "global_p_024_001"  =>  [   51.558 ,  1.0 ],  # GynCycle Param 69
 
-#  "global_p_024_002"  =>  [    2.0945,  1.0 ],  # GynCycle Param 70
-#  "global_p_024_003"  =>  [    9.28  ,  1.0 ],  # GynCycle Param 71
-#  "global_p_024_004"  =>  [ 6960.53  ,  1.0 ],  # GynCycle Param 72
-#  "global_p_024_005"  =>  [    0.972 ,  1.0 ],  # GynCycle Param 73
-#  "global_p_024_006"  =>  [ 1713.71  ,  1.0 ],  # GynCycle Param 74
-#  "global_p_024_007"  =>  [ 8675.14  ,  1.0 ],  # GynCycle Param 75
-#  "global_p_024_008"  =>  [    5.235 ,  1.0 ]   # GynCycle Param 76
+   "global_p_024_002"  =>  [    2.0945,  1.0 ],  # GynCycle Param 70
+   "global_p_024_003"  =>  [    9.28  ,  1.0 ],  # GynCycle Param 71
+   "global_p_024_004"  =>  [ 6960.53  ,  1.0 ],  # GynCycle Param 72
+   "global_p_024_005"  =>  [    0.972 ,  1.0 ],  # GynCycle Param 73
+   "global_p_024_006"  =>  [ 1713.71  ,  1.0 ],  # GynCycle Param 74
+   "global_p_024_007"  =>  [ 8675.14  ,  1.0 ],  # GynCycle Param 75
+   "global_p_024_008"  =>  [    5.235 ,  1.0 ]   # GynCycle Param 76
 }
+pIniGuess = {
+   "global_p_019_001"  =>  [    0.958 ,  1.0 ]   # GynCycle Param 61
+} if 0 < 1
 
 
 nPar = 0
@@ -75,7 +78,7 @@ end
 # pscal  = [ 1.0, 1.0 ]
 # nPar   = pidx.length
 
-tspan = [0.0,60.0]
+tspan = [0.0,90.0]
 y0 = model.y0ode
 par = model.par0
 pidx = []

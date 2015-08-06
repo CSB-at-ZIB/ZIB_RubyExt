@@ -158,8 +158,8 @@ VALUE limex_srun(VALUE self, VALUE tspan, VALUE pidx)
 
   for (j = 0; j < n; ++j)
   {
-    rTol[j] = (j < nDAE) ? rtol : 1.0e-4;
-    aTol[j] = (j < nDAE) ? atol : 1.0e-4;
+    rTol[j] = rtol;  // (j < nDAE) ? rtol : 1.0e-4;
+    aTol[j] = atol;  // (j < nDAE) ? atol : 1.0e-4;
        z[j] = (j < nDAE) ? NUM2DBL( rb_ary_entry(y0, (long)j) ) : 0.0;
       dz[j] = 0.0;
   }

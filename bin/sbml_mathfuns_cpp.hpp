@@ -343,7 +343,7 @@ template<typename T>
 T ODEydot::pow( T x, T y )
 {
   assert( x >= 0.0 );
-  T ret = (x != 0.0) ? ::pow( ::fabs(x), y ) : 0.0;
+  T ret = (x != 0.0) ? ::pow( x, y ) : 0.0;
   // T ret = ::exp( y * ::log(::fabs(x)) );
   return ret;
 }
@@ -352,7 +352,7 @@ template<typename T>
 T ODEydot::power( T x, T y )
 {
   assert( x >= 0.0 );
-  T ret = (x != 0.0) ? ::pow( ::fabs(x), y ) : 0.0;
+  T ret = (x != 0.0) ? ::pow( x, y ) : 0.0;
   return ret;
 }
 //=======================================================================
@@ -361,7 +361,7 @@ T ODEydot::root( T b, T x )
 {
   assert( x >= 0.0 );
   assert( b != 0.0 );
-  T ret = (x != 0.0) ? ::pow( ::fabs(x), 1.0/b ) : 0.0;
+  T ret = (x != 0.0) ? ::pow( x, 1.0/b ) : 0.0;
   return ret;
 }
 //=======================================================================

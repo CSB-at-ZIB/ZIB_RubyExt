@@ -31,9 +31,9 @@ all : ../lib/libadolc.so ../lib/libsbml.so sbml2adolc
 	./configure --prefix=$(bpath) --disable-static && \
 	$(MAKE) install
 
-sbml2adolc : $(OBJS) YDOT_LIMEXcpp_TEMPLATE.txt
+sbml2adolc : $(OBJS) YDOT_LIMEXcpp_TEMPLATE.txt sbml_mathfuns_cpp.hpp
 	$(CXX) -I../include -o sbml2adolc $(OBJS) -L../lib -lsbml -Wl,-rpath,$(rpath)
-	cp sbml2adolc YDOT_LIMEXcpp_TEMPLATE.txt ../../bin/
+	cp sbml2adolc YDOT_LIMEXcpp_TEMPLATE.txt sbml_mathfuns_cpp.hpp ../../bin/
 
 SbmlModel.o : SbmlModel.cpp SbmlModel.h myTypes.h
 

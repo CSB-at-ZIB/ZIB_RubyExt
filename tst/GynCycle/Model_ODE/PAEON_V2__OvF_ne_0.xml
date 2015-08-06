@@ -95,7 +95,7 @@
       <species id="AF3" name="Antral follicle develop. stage 3" compartment="default" initialConcentration="0.492" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="AF4" name="Antral follicle develop. stage 4" compartment="default" initialConcentration="1.61e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="PrF" name="Pre-ovulatory follicle stage" compartment="default" initialConcentration="0.2449" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="OvF" name="Ovulatory follicle stage" compartment="default" initialConcentration="1e-16" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="OvF" name="Ovulatory follicle stage" compartment="default" initialConcentration="1e-09" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="Sc1" name="Ovulatory scar 1" compartment="default" initialConcentration="1e-08" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="Sc2" name="Ovulatory scar 2" compartment="default" initialConcentration="2e-06" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="Lut1" name="Corpus luteum develop. stage 1" compartment="default" initialConcentration="2e-05" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
