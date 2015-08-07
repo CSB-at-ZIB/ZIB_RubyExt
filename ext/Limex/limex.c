@@ -158,10 +158,26 @@ VALUE limex_srun(VALUE self, VALUE tspan, VALUE pidx)
 
   for (j = 0; j < n; ++j)
   {
-    rTol[j] = rtol;  // (j < nDAE) ? rtol : 1.0e-4;
-    aTol[j] = atol;  // (j < nDAE) ? atol : 1.0e-4;
-       z[j] = (j < nDAE) ? NUM2DBL( rb_ary_entry(y0, (long)j) ) : 0.0;
-      dz[j] = 0.0;
+     if ( rtol < 1.0e-6 )  // 1.0e-5 ?!
+     {
+        rTol[j] = (j < nDAE) ? rtol : 100.0*rtol;
+     } 
+     else
+     {
+        rTol[j] = (j < nDAE) ? rtol : 1.0e-4;
+     }
+
+     if ( atol < 1.0e-6 )  // 1.0e-5 ?!
+     {
+        aTol[j] = (j < nDAE) ? atol : 100.0*atol;
+     }
+     else
+     {
+        aTol[j] = (j < nDAE) ? atol : 1.0e-4;
+     }
+
+      z[j] = (j < nDAE) ? NUM2DBL( rb_ary_entry(y0, (long)j) ) : 0.0;
+     dz[j] = 0.0;
   }
 
   hMax = NUM2DBL( rb_iv_get(self, "@hmax") );

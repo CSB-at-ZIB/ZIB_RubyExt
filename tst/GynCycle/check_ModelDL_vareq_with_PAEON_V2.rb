@@ -55,7 +55,6 @@ pIniGuess = {
 
 #  "global_p_024_001"  =>  [   51.558 ,  1.0 ],  # GynCycle Param 69
 
-   "global_p_024_002"  =>  [    2.0945,  1.0 ],  # GynCycle Param 70
    "global_p_024_003"  =>  [    9.28  ,  1.0 ],  # GynCycle Param 71
    "global_p_024_004"  =>  [ 3480.27  ,  1.0 ],  # GynCycle Param 72
    "global_p_024_005"  =>  [    0.972 ,  1.0 ],  # GynCycle Param 73
@@ -64,8 +63,19 @@ pIniGuess = {
    "global_p_024_008"  =>  [    5.235 ,  1.0 ]   # GynCycle Param 76
 }
 pIniGuess = {
-   "global_p_019_001"  =>  [    0.958 ,  1.0 ]   # GynCycle Param 61
+   "global_p_019_001"  =>  [    0.958 ,  1.0 ],  # GynCycle Param 61
+   "global_p_020_001"  =>  [    0.925 ,  1.0 ],  # GynCycle Param 62
+   "global_p_021_001"  =>  [    0.7567,  1.0 ],  # GynCycle Param 63
+   "global_p_022_001"  =>  [    0.61  ,  1.0 ],  # GynCycle Param 64
+   "global_p_023_001"  =>  [    0.543 ,  1.0 ],  # GynCycle Param 65
+
+#  "global_p_024_001"  =>  [   51.558 ,  1.0 ]   # GynCycle Param 69
+
+   "global_p_024_002"  =>  [    2.0945,  1.0 ]   # GynCycle Param 70
 } if 0 < 1
+pIniGuess = {
+   "global_p_019_001"  =>  [    0.958 ,  1.0 ]   # GynCycle Param 61
+} if 0 < 0
 
 
 nPar = 0

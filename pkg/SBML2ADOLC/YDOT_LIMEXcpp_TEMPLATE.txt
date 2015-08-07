@@ -110,7 +110,7 @@ c#parameters
 // #define  ady   advariables_.ady
 
 //=======================================================================
-void compute_fy( int, double, double*, double*, int* );
+void compute_fy( int, double, double*, double*, double*, int* );
 void compute_fp( int, int, double, double*, double*, int* );
 void ydotAD ( int, double, adouble*, adouble*, int* );
 void check_eventsAD ( double, int, int* ); 
@@ -183,8 +183,8 @@ c#for_all(j in algebraic)
      s[j] = y_state[j];
    }
    /**/
-   compute_fp ( nspe, npar, *t, s, fp, info );
-   compute_fy ( nspe, *t, s, fy, info );
+   compute_fy ( nspe, *t, y_state, dy, fy, info );
+   compute_fp ( nspe, npar, *t, y_state, fp, info );
    /**/
    for (int idx = 0; idx < npar; ++idx)
    {
@@ -200,14 +200,14 @@ c#for_all(j in algebraic)
       }
    }
    /**/
-   ydot ( nspe, *t, y_state, dy, info );
+   // ydot ( nspe, *t, y_state, dy, info );
 }
 
 //=======================================================================
 
 #define PRE(x) ad ## x
 void compute_fy( int nspe, double t, double* y_state, 
-                 double* fy, int* info )
+                 double* dy, double* fy, int* info )
 {
    adouble ay[nspe], ady[nspe];
    /**/
@@ -221,7 +221,7 @@ void compute_fy( int nspe, double t, double* y_state,
    /**/
    for (int k = 0; k < nspe; ++k)
    {
-      // dy[k] = ady[k].getValue();
+      dy[k] = ady[k].getValue();
       /**/
       for (int j = 0; j < nspe; ++j)
       {
