@@ -1,5 +1,19 @@
 #! /usr/bin/env ruby
 
+begin
+  require 'gsl'
+  include GSL
+  $gsl_avail = true
+rescue LoadError
+  puts " "
+  puts "Hint: Unable to load ruby's gsl library."
+  puts "      Probably try to install it by '[sudo] gem install gsl'"
+  puts "      to get this script fully functional. Some parts"
+  puts "      of it are switched off by now."
+  puts " "
+  $gsl_avail = false
+end
+
 $LOAD_PATH << File.dirname(__FILE__)
 
 require_relative '../../lib/ModelDL'
@@ -55,6 +69,7 @@ pIniGuess = {
 
 #  "global_p_024_001"  =>  [   51.558 ,  1.0 ],  # GynCycle Param 69
 
+   "global_p_024_002"  =>  [    2.0945,  1.0 ],  # GynCycle Param 70
    "global_p_024_003"  =>  [    9.28  ,  1.0 ],  # GynCycle Param 71
    "global_p_024_004"  =>  [ 3480.27  ,  1.0 ],  # GynCycle Param 72
    "global_p_024_005"  =>  [    0.972 ,  1.0 ],  # GynCycle Param 73
@@ -76,7 +91,7 @@ pIniGuess = {
 pIniGuess = {
    "global_p_019_001"  =>  [    0.958 ,  1.0 ]   # GynCycle Param 61
 } if 0 < 0
-
+# pIniGuess = {}
 
 nPar = 0
 pIniGuess.keys.each do |key| 
@@ -88,7 +103,7 @@ end
 # pscal  = [ 1.0, 1.0 ]
 # nPar   = pidx.length
 
-tspan = [0.0,90.0]
+tspan = (0..120).to_a  # [0.0,90.0]
 y0 = model.y0ode
 par = model.par0
 pidx = []
@@ -98,6 +113,9 @@ pIniGuess.keys.each do |key|
       pidx << idx+1
       par[ idx ] = pIniGuess[key][0]
    end
+end 
+if pidx==[] then
+  pidx = (1..par.length).to_a
 end
 
 puts ""
@@ -105,7 +123,71 @@ puts "ModelDL: model.solve_var called with:"
 puts "pidx : #{pidx}"
 puts "par0 : #{model.par}"
 
-model.solve_var tspan, y0, par, pidx
+tpoints, sol = model.solve_var tspan, y0, par, pidx
+
+if $gsl_avail
+   nspe = y0.length
+   npar = pidx.length
+   speout = File.open("rb_ModelDL_vareq_PAEON_V2_svd_species.dat","w")
+   parout = File.open("rb_ModelDL_vareq_PAEON_V2_svd_parameter.dat","w")
+   speout.printf("%-12s", "Timepoint")
+   model.yId.each_with_index do |label,dmy|
+      label = "***" if label.length == 0
+      speout.printf("\tn%-11s\tx%-11s\ty%-11s\tz%-11s", 
+                     label, label, label, label)
+   end
+   speout.printf("\n")
+   parout.printf("%-12s", "Timepoint")
+   pidx.each do |idx|
+      label = "***"
+      label = model.pId[ idx-1 ] if idx > 0
+      label = "***" if label.length == 0
+      parout.printf("\tn%-11s\tx%-11s\ty%-11s\tz%-11s", 
+                     label, label, label, label)
+   end
+   parout.printf("\n")
+   tpoints[1..-1].each do |t|
+      mat = GSL::Matrix[ sol[t][nspe..-1], nspe, npar ]
+      if nspe < npar then
+         v, u, s = mat.trans.SV_decomp
+         # su = GSL::Matrix.diag(s)*u.trans
+         # sv = v*GSL::Matrix.diag(s)
+      else
+         u, v, s = mat.SV_decomp
+      end
+      su = GSL::Matrix.diag(s)*u.trans
+      sv = v*GSL::Matrix.diag(s)
+      total = s.sum
+      puts "  #{'%6.2f  %dx%d  %dx%d  %8.2e  %8.2e  %8.2e ... sum %8.2e' % 
+              [t, u.shape, v.shape, s[0..2].to_a, total].flatten}"
+      puts "  #{'%6.2f  %dx%d  %dx%d    %5.2f%%    %5.2f%%    %5.2f%% ...' % 
+              [t, u.shape, v.shape, s[0]*100.0/total, (s[0]+s[1])*100.0/total, 
+                                    (s[0]+s[1]+s[2])*100.0/total].flatten}"
+      #
+      speout.printf("% .6e", t) 
+      0.upto(nspe-1) do |j| 
+         speout.printf("\t% .6e\t% .6e\t% .6e\t% .6e",
+                        su.col(j).norm, 
+                        u[j,0]*s[0], 
+                        u[j,1]*s[1], 
+                        u[j,2]*s[2])  # (almost) principle components
+      end
+      speout.printf("\n")
+      #
+      parout.printf("% .6e", t)
+      0.upto(npar-1) do |j|
+         parout.printf("\t% .6e\t% .6e\t% .6e\t% .6e",
+                        sv.row(j).norm, 
+                        v[j,0]*s[0], 
+                        v[j,1]*s[1], 
+                        v[j,2]*s[2])
+      end
+      parout.printf("\n")
+      #
+   end
+   speout.close
+   parout.close
+end
 
 # ---------------------------------------------------------------------
 # Result Output
