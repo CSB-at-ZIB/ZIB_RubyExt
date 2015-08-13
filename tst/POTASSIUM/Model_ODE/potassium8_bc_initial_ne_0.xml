@@ -1,0 +1,1321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model id="potassium">
+    <listOfUnitDefinitions>
+      <unitDefinition id="substance" name="substance">
+        <listOfUnits>
+          <unit kind="mole" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="volume" name="volume">
+        <listOfUnits>
+          <unit kind="litre" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="area" name="area">
+        <listOfUnits>
+          <unit kind="metre" exponent="2" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="length" name="length">
+        <listOfUnits>
+          <unit kind="metre" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="time" name="time">
+        <listOfUnits>
+          <unit kind="second" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment id="default" size="1" constant="true"/>
+      <compartment id="c1" name="intracell" size="10.2" constant="true"/>
+      <compartment id="c2" name="extracell" size="22.8" constant="true"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="K_ECF" name="K_ECF" compartment="c2" initialConcentration="0.17513682777" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="K_ICF" name="K_ICF" compartment="c1" initialConcentration="0.897325991903" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="K_urin" name="K_urin" compartment="default" initialAmount="1e-09" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="K_tiss" name="K_tiss" compartment="default" initialAmount="1509.6" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="K_sal" name="K_sal" compartment="default" initialAmount="4.53818901679" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="met_act" name="met_act" compartment="default" initialAmount="6.24885128313" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="K_ECF_mmol" name="K_ECF_mmol" compartment="c2" initialConcentration="4.6" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="K_ICF_mmol" name="K_ICF_mmol" compartment="c1" initialConcentration="22.9" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="K_git" name="K_git" compartment="default" initialAmount="43.1365559451" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="Gluc_b" name="Gluc_b" compartment="c2" initialConcentration="0.546566462071" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="ins_b" name="ins_b" compartment="c2" initialConcentration="21.8532954203" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="Gluc_stor" name="Gluc_stor" compartment="default" initialAmount="3647.74674177" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="Gluc_prod" name="Gluc_prod" compartment="default" initialAmount="34.0337183015" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="s24" name="Gluc_use" compartment="default" initialConcentration="1e-09" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
+      <species id="sa4_degraded" name="sa4_degraded" compartment="default" initialAmount="1e-09" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="src_metact" name="src_metact" compartment="default" initialAmount="1e-09" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="snk_metact" name="snk_metact" compartment="default" initialAmount="1e-09" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="src_insnew" name="src_insnew" compartment="c2" initialAmount="1e-09" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="snk_insnew" name="snk_insnew" compartment="c2" initialAmount="1e-09" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="src_Kgit" name="src_Kgit" compartment="default" initialAmount="1e-09" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="src_Glucblood" name="src_Glucb" compartment="c2" initialAmount="1e-09" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+      <species id="s23" name="src_Gep" compartment="default" initialAmount="1e-09" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="p3" name="p3" value="22" constant="true"/>
+      <parameter id="p4" name="p4" value="0.0001783" constant="true"/>
+      <parameter id="p5" name="p5" value="0.563" constant="true"/>
+      <parameter id="p6" name="p6" value="0.051" constant="true"/>
+      <parameter id="p8" name="p8" value="0.5994" constant="true"/>
+      <parameter id="p9" name="p9" value="0.4016" constant="true"/>
+      <parameter id="p13" name="p13" value="6.08" constant="true"/>
+      <parameter id="p14" name="p14" value="0.15639932" constant="true"/>
+      <parameter id="p15" name="p15" value="32" constant="true"/>
+      <parameter id="p16" name="p16" value="10" constant="true"/>
+      <parameter id="p18" name="p18" value="0.0223" constant="true"/>
+      <parameter id="p19" name="p19" value="0.1373" constant="true"/>
+      <parameter id="p20" name="p20" value="7.38" constant="true"/>
+      <parameter id="p21" name="p21" value="0.1085" constant="true"/>
+      <parameter id="p22" name="p22" value="0.25" constant="true"/>
+      <parameter id="p23" name="p23" value="0.58649745" constant="true"/>
+      <parameter id="p24" name="p24" value="0.1962811466" constant="true"/>
+      <parameter id="p25" name="p25" value="6.6085" constant="true"/>
+      <parameter id="p26" name="p26" value="49.0279" constant="true"/>
+      <parameter id="p27" name="p27" value="0.232634885" constant="true"/>
+      <parameter id="p29" name="p29" value="0.11729949" constant="true"/>
+      <parameter id="p30" name="p30" value="0.95" constant="true"/>
+      <parameter id="p31" name="p31" value="0.353" constant="true"/>
+      <parameter id="p32" name="p32" value="1.31" constant="true"/>
+      <parameter id="p33" name="p33" value="0.07819966" constant="true"/>
+      <parameter id="pH" name="pH" value="0" constant="false"/>
+      <parameter id="p42" name="src_metact" value="4.5" constant="true"/>
+      <parameter id="p43" name="T_src_metact" value="10" constant="true"/>
+      <parameter id="p44" name="snc_metact" value="1.2" constant="true"/>
+      <parameter id="p45" name="basic_metact" value="3" constant="true"/>
+      <parameter id="p46" name="src_glucfeed" value="0.0854" constant="true"/>
+      <parameter id="p48" name="scale_blood_gluc" value="0.08" constant="true"/>
+      <parameter id="p49" name="p49" value="800" constant="true"/>
+      <parameter id="p41" name="p41" value="20" constant="true"/>
+      <parameter id="dmi" name="dmi" value="0" constant="false"/>
+      <parameter id="K_feed" name="K_feed" value="0" constant="false"/>
+      <parameter id="Gluc_feed" name="Gluc_feed" value="0" constant="false"/>
+      <parameter id="p52" name="kmilk_content" value="1.4" constant="true"/>
+      <parameter id="p53" name="basal_KeKu" value="0.01" constant="true"/>
+      <parameter id="p54" name="dmi_percentage" value="1" constant="true"/>
+      <parameter id="p55" name="Milk_in_l/h" value="0" constant="true"/>
+      <parameter id="p56" name="perctK_in_dmi" value="0.01137" constant="true"/>
+      <parameter id="p34" name="con" value="0.0390983" constant="true"/>
+      <parameter id="p1" name="p1" value="40.4" constant="true"/>
+      <parameter id="p11" name="p11" value="860" constant="true"/>
+      <parameter id="p12" name="p12" value="0.0105" constant="true"/>
+      <parameter id="p17" name="p17" value="16" constant="true"/>
+      <parameter id="p28" name="p28" value="25" constant="true"/>
+      <parameter id="p37" name="p37" value="0" constant="true"/>
+      <parameter id="p39" name="p39" value="30" constant="true"/>
+      <parameter id="p50" name="p50" value="0.4" constant="true"/>
+      <parameter id="p7" name="p7" value="0.925" constant="true"/>
+      <parameter id="p51" name="p51" value="0.1" constant="true"/>
+      <parameter id="p57" name="p57" value="3800" constant="true"/>
+      <parameter id="p59" name="p59" value="1" constant="true"/>
+      <parameter id="p60" name="p60" value="2" constant="true"/>
+      <parameter id="p61" name="p61" value="5" constant="true"/>
+      <parameter id="p40" name="p40" value="0.01" constant="true"/>
+      <parameter id="p47" name="p47" value="72" constant="true"/>
+      <parameter id="p58" name="p58" value="0.01" constant="true"/>
+      <parameter id="p63" name="p63" value="800" constant="true"/>
+      <parameter id="p64" name="p64" value="0.2" constant="true"/>
+      <parameter id="p65" name="p65" value="0.3" constant="true"/>
+      <parameter id="p66" name="p66" value="1.4" constant="true"/>
+      <parameter id="p2" name="p2" value="1600" constant="true"/>
+      <parameter id="p10" name="p10" value="1400" constant="true"/>
+      <parameter id="p35" name="p35" value="100" constant="true"/>
+      <parameter id="p62" name="p62" value="1" constant="true"/>
+      <parameter id="p38" name="p38" value="1509.6" constant="true"/>
+      <parameter id="p36" name="p36" value="1" constant="true"/>
+    </listOfParameters>
+    <listOfRules>
+      <assignmentRule variable="pH">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <minus/>
+            <cn> 7.5 </cn>
+            <apply>
+              <divide/>
+              <ci> met_act </ci>
+              <cn type="integer"> 40 </cn>
+            </apply>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="dmi">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> p54 </ci>
+            <cn> 487.5 </cn>
+            <apply>
+              <minus/>
+              <cn type="integer"> 1 </cn>
+              <apply>
+                <sin/>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <times/>
+                    <pi/>
+                    <csymbol encoding="text" definitionURL="http://www.sbml.org/sbml/symbols/time"> t </csymbol>
+                  </apply>
+                  <cn type="integer"> 12 </cn>
+                </apply>
+              </apply>
+            </apply>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="K_feed">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> p56 </ci>
+            <ci> dmi </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="Gluc_feed">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <times/>
+            <ci> p46 </ci>
+            <ci> dmi </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="K_ECF_mmol">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <ci> K_ECF </ci>
+            <ci> p34 </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+      <assignmentRule variable="K_ICF_mmol">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <apply>
+            <divide/>
+            <ci> K_ICF </ci>
+            <ci> p34 </ci>
+          </apply>
+        </math>
+      </assignmentRule>
+    </listOfRules>
+    <listOfReactions>
+      <reaction id="re20" name="DmMa" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="src_metact" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="met_act" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <ci> p45 </ci>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> p42 </ci>
+                  <apply>
+                    <power/>
+                    <ci> dmi </ci>
+                    <cn type="integer"> 2 </cn>
+                  </apply>
+                </apply>
+                <apply>
+                  <plus/>
+                  <apply>
+                    <power/>
+                    <ci> dmi </ci>
+                    <cn type="integer"> 2 </cn>
+                  </apply>
+                  <apply>
+                    <power/>
+                    <ci> p43 </ci>
+                    <cn type="integer"> 2 </cn>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re37" name="GbGs" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Gluc_b" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Gluc_stor" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="ins_b"/>
+          <modifierSpeciesReference species="Gluc_prod"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <times/>
+                    <apply>
+                      <divide/>
+                      <apply>
+                        <power/>
+                        <ci> Gluc_feed </ci>
+                        <cn type="integer"> 10 </cn>
+                      </apply>
+                      <apply>
+                        <plus/>
+                        <apply>
+                          <power/>
+                          <ci> Gluc_feed </ci>
+                          <cn type="integer"> 10 </cn>
+                        </apply>
+                        <apply>
+                          <power/>
+                          <ci> p1 </ci>
+                          <cn type="integer"> 10 </cn>
+                        </apply>
+                      </apply>
+                    </apply>
+                    <ci> p12 </ci>
+                    <ci> Gluc_prod </ci>
+                    <apply>
+                      <power/>
+                      <ci> p57 </ci>
+                      <cn type="integer"> 10 </cn>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <plus/>
+                    <apply>
+                      <power/>
+                      <ci> Gluc_stor </ci>
+                      <cn type="integer"> 10 </cn>
+                    </apply>
+                    <apply>
+                      <power/>
+                      <ci> p57 </ci>
+                      <cn type="integer"> 10 </cn>
+                    </apply>
+                  </apply>
+                </apply>
+                <ci> ins_b </ci>
+                <ci> Gluc_b </ci>
+                <apply>
+                  <power/>
+                  <ci> p36 </ci>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+              </apply>
+              <apply>
+                <plus/>
+                <apply>
+                  <power/>
+                  <ci> p36 </ci>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+                <apply>
+                  <power/>
+                  <ci> p55 </ci>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re41" name="GpGb" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Gluc_prod" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Gluc_b" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <ci> p37 </ci>
+                <apply>
+                  <times/>
+                  <ci> p39 </ci>
+                  <ci> Gluc_prod </ci>
+                </apply>
+              </apply>
+              <apply>
+                <divide/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <plus/>
+                  <cn type="integer"> 1 </cn>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <divide/>
+                      <ci> Gluc_b </ci>
+                      <ci> p50 </ci>
+                    </apply>
+                    <cn type="integer"> 10 </cn>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re39" name="GpGs" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Gluc_prod" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Gluc_stor" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> p51 </ci>
+                <ci> Gluc_prod </ci>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <power/>
+                    <ci> p57 </ci>
+                    <cn type="integer"> 10 </cn>
+                  </apply>
+                  <apply>
+                    <plus/>
+                    <apply>
+                      <power/>
+                      <ci> Gluc_stor </ci>
+                      <cn type="integer"> 10 </cn>
+                    </apply>
+                    <apply>
+                      <power/>
+                      <ci> p57 </ci>
+                      <cn type="integer"> 10 </cn>
+                    </apply>
+                  </apply>
+                </apply>
+                <apply>
+                  <power/>
+                  <ci> p62 </ci>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+              </apply>
+              <apply>
+                <plus/>
+                <apply>
+                  <power/>
+                  <ci> p62 </ci>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+                <apply>
+                  <power/>
+                  <ci> p55 </ci>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re38" name="GsGb" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Gluc_stor" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Gluc_b" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <apply>
+                    <divide/>
+                    <cn type="integer"> 1 </cn>
+                    <apply>
+                      <plus/>
+                      <cn type="integer"> 1 </cn>
+                      <apply>
+                        <power/>
+                        <apply>
+                          <divide/>
+                          <ci> Gluc_feed </ci>
+                          <ci> p1 </ci>
+                        </apply>
+                        <cn type="integer"> 10 </cn>
+                      </apply>
+                    </apply>
+                  </apply>
+                  <ci> p17 </ci>
+                  <apply>
+                    <minus/>
+                    <ci> p7 </ci>
+                    <ci> Gluc_b </ci>
+                  </apply>
+                  <apply>
+                    <power/>
+                    <ci> Gluc_stor </ci>
+                    <cn type="integer"> 10 </cn>
+                  </apply>
+                </apply>
+                <apply>
+                  <plus/>
+                  <apply>
+                    <power/>
+                    <ci> Gluc_stor </ci>
+                    <cn type="integer"> 10 </cn>
+                  </apply>
+                  <apply>
+                    <power/>
+                    <ci> p35 </ci>
+                    <cn type="integer"> 10 </cn>
+                  </apply>
+                </apply>
+              </apply>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <apply>
+                    <divide/>
+                    <apply>
+                      <times/>
+                      <apply>
+                        <divide/>
+                        <cn type="integer"> 1 </cn>
+                        <apply>
+                          <plus/>
+                          <cn type="integer"> 1 </cn>
+                          <apply>
+                            <power/>
+                            <apply>
+                              <divide/>
+                              <ci> p64 </ci>
+                              <ci> p55 </ci>
+                            </apply>
+                            <cn type="integer"> 10 </cn>
+                          </apply>
+                        </apply>
+                      </apply>
+                      <apply>
+                        <power/>
+                        <ci> p65 </ci>
+                        <cn type="integer"> 10 </cn>
+                      </apply>
+                    </apply>
+                    <apply>
+                      <plus/>
+                      <apply>
+                        <power/>
+                        <ci> p65 </ci>
+                        <cn type="integer"> 10 </cn>
+                      </apply>
+                      <apply>
+                        <power/>
+                        <ci> Gluc_b </ci>
+                        <cn type="integer"> 10 </cn>
+                      </apply>
+                    </apply>
+                  </apply>
+                  <ci> p63 </ci>
+                  <apply>
+                    <power/>
+                    <ci> Gluc_stor </ci>
+                    <cn type="integer"> 10 </cn>
+                  </apply>
+                </apply>
+                <apply>
+                  <plus/>
+                  <apply>
+                    <power/>
+                    <ci> Gluc_stor </ci>
+                    <cn type="integer"> 10 </cn>
+                  </apply>
+                  <apply>
+                    <power/>
+                    <ci> p35 </ci>
+                    <cn type="integer"> 10 </cn>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re43" name="GsGp" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Gluc_stor" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Gluc_prod" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <times/>
+                    <ci> p60 </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                  <apply>
+                    <plus/>
+                    <cn type="integer"> 1 </cn>
+                    <apply>
+                      <power/>
+                      <apply>
+                        <divide/>
+                        <ci> Gluc_feed </ci>
+                        <ci> p61 </ci>
+                      </apply>
+                      <cn type="integer"> 5 </cn>
+                    </apply>
+                  </apply>
+                </apply>
+                <apply>
+                  <power/>
+                  <ci> Gluc_stor </ci>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+              </apply>
+              <apply>
+                <plus/>
+                <apply>
+                  <power/>
+                  <ci> Gluc_stor </ci>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+                <apply>
+                  <power/>
+                  <ci> p35 </ci>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re4" name="KeKi" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="K_ECF" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="K_ICF" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="ins_b"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <apply>
+                    <plus/>
+                    <ci> p8 </ci>
+                    <apply>
+                      <divide/>
+                      <apply>
+                        <times/>
+                        <ci> p9 </ci>
+                        <apply>
+                          <power/>
+                          <ci> ins_b </ci>
+                          <cn type="integer"> 8 </cn>
+                        </apply>
+                      </apply>
+                      <apply>
+                        <plus/>
+                        <apply>
+                          <power/>
+                          <ci> ins_b </ci>
+                          <cn type="integer"> 8 </cn>
+                        </apply>
+                        <apply>
+                          <power/>
+                          <ci> p3 </ci>
+                          <cn type="integer"> 8 </cn>
+                        </apply>
+                      </apply>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <power/>
+                    <ci> K_ECF </ci>
+                    <cn type="integer"> 2 </cn>
+                  </apply>
+                </apply>
+                <apply>
+                  <plus/>
+                  <apply>
+                    <power/>
+                    <ci> K_ECF </ci>
+                    <cn type="integer"> 2 </cn>
+                  </apply>
+                  <apply>
+                    <power/>
+                    <ci> p33 </ci>
+                    <cn type="integer"> 2 </cn>
+                  </apply>
+                </apply>
+              </apply>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <times/>
+                    <ci> p21 </ci>
+                    <apply>
+                      <power/>
+                      <ci> pH </ci>
+                      <cn type="integer"> 10 </cn>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <plus/>
+                    <apply>
+                      <power/>
+                      <ci> pH </ci>
+                      <cn type="integer"> 10 </cn>
+                    </apply>
+                    <apply>
+                      <power/>
+                      <ci> p20 </ci>
+                      <cn type="integer"> 10 </cn>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re5" name="KeKs" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="K_ECF" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="K_sal" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p18 </ci>
+              <ci> K_ECF </ci>
+              <ci> dmi </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re7" name="KeKt" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="K_ECF" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="K_tiss" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="K_git"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <power/>
+                    <ci> K_git </ci>
+                    <cn type="integer"> 10 </cn>
+                  </apply>
+                  <apply>
+                    <plus/>
+                    <apply>
+                      <power/>
+                      <ci> K_git </ci>
+                      <cn type="integer"> 10 </cn>
+                    </apply>
+                    <apply>
+                      <power/>
+                      <ci> p15 </ci>
+                      <cn type="integer"> 10 </cn>
+                    </apply>
+                  </apply>
+                </apply>
+                <ci> p25 </ci>
+                <ci> K_ECF </ci>
+                <apply>
+                  <power/>
+                  <apply>
+                    <minus/>
+                    <ci> p2 </ci>
+                    <ci> p10 </ci>
+                  </apply>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+              </apply>
+              <apply>
+                <plus/>
+                <apply>
+                  <power/>
+                  <apply>
+                    <minus/>
+                    <ci> K_tiss </ci>
+                    <ci> p10 </ci>
+                  </apply>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+                <apply>
+                  <power/>
+                  <apply>
+                    <minus/>
+                    <ci> p2 </ci>
+                    <ci> p10 </ci>
+                  </apply>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re9" name="KeKu" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="K_ECF" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="K_urin" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="K_git"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <plus/>
+              <apply>
+                <times/>
+                <apply>
+                  <plus/>
+                  <cn type="integer"> 1 </cn>
+                  <apply>
+                    <divide/>
+                    <apply>
+                      <times/>
+                      <ci> p13 </ci>
+                      <apply>
+                        <power/>
+                        <ci> K_ECF </ci>
+                        <cn type="integer"> 5 </cn>
+                      </apply>
+                    </apply>
+                    <apply>
+                      <plus/>
+                      <apply>
+                        <power/>
+                        <ci> K_ECF </ci>
+                        <cn type="integer"> 5 </cn>
+                      </apply>
+                      <apply>
+                        <power/>
+                        <ci> p24 </ci>
+                        <cn type="integer"> 5 </cn>
+                      </apply>
+                    </apply>
+                  </apply>
+                </apply>
+                <ci> p6 </ci>
+                <ci> K_git </ci>
+                <apply>
+                  <plus/>
+                  <cn type="integer"> 1 </cn>
+                  <apply>
+                    <divide/>
+                    <apply>
+                      <times/>
+                      <ci> p16 </ci>
+                      <apply>
+                        <power/>
+                        <ci> K_ECF </ci>
+                        <cn type="integer"> 10 </cn>
+                      </apply>
+                    </apply>
+                    <apply>
+                      <plus/>
+                      <apply>
+                        <power/>
+                        <ci> K_ECF </ci>
+                        <cn type="integer"> 10 </cn>
+                      </apply>
+                      <apply>
+                        <power/>
+                        <ci> p22 </ci>
+                        <cn type="integer"> 10 </cn>
+                      </apply>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+              <apply>
+                <times/>
+                <ci> p53 </ci>
+                <ci> K_ECF </ci>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re6" name="KeR" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="K_ECF" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="sa4_degraded" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p4 </ci>
+              <ci> K_ECF </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re34" name="KfKg" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="src_Kgit" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="K_git" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p30 </ci>
+              <ci> K_feed </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re10" name="KgKe" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="K_git" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="K_ECF" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p31 </ci>
+              <ci> K_git </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re3" name="KiKe" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="K_ICF" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="K_ECF" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <apply>
+                    <plus/>
+                    <cn type="integer"> 1 </cn>
+                    <apply>
+                      <divide/>
+                      <cn type="integer"> 1 </cn>
+                      <apply>
+                        <plus/>
+                        <cn type="integer"> 1 </cn>
+                        <apply>
+                          <power/>
+                          <apply>
+                            <divide/>
+                            <ci> K_ECF </ci>
+                            <ci> p29 </ci>
+                          </apply>
+                          <cn type="integer"> 10 </cn>
+                        </apply>
+                      </apply>
+                    </apply>
+                  </apply>
+                  <ci> p5 </ci>
+                  <apply>
+                    <plus/>
+                    <cn type="integer"> 1 </cn>
+                    <apply>
+                      <divide/>
+                      <cn type="integer"> 1 </cn>
+                      <apply>
+                        <plus/>
+                        <cn type="integer"> 1 </cn>
+                        <apply>
+                          <power/>
+                          <apply>
+                            <divide/>
+                            <ci> pH </ci>
+                            <ci> p20 </ci>
+                          </apply>
+                          <cn type="integer"> 10 </cn>
+                        </apply>
+                      </apply>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <power/>
+                    <ci> K_ICF </ci>
+                    <cn type="integer"> 2 </cn>
+                  </apply>
+                </apply>
+                <apply>
+                  <plus/>
+                  <apply>
+                    <power/>
+                    <ci> K_ICF </ci>
+                    <cn type="integer"> 2 </cn>
+                  </apply>
+                  <apply>
+                    <power/>
+                    <ci> p23 </ci>
+                    <cn type="integer"> 2 </cn>
+                  </apply>
+                </apply>
+              </apply>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <times/>
+                    <ci> p19 </ci>
+                    <apply>
+                      <power/>
+                      <ci> K_ICF </ci>
+                      <cn type="integer"> 2 </cn>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <plus/>
+                    <apply>
+                      <power/>
+                      <ci> K_ICF </ci>
+                      <cn type="integer"> 2 </cn>
+                    </apply>
+                    <apply>
+                      <power/>
+                      <ci> p14 </ci>
+                      <cn type="integer"> 2 </cn>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re11" name="KsKg" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="K_sal" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="K_git" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p32 </ci>
+              <ci> K_sal </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re8" name="KtKe" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="K_tiss" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="K_ECF" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="K_git"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <apply>
+                  <divide/>
+                  <cn type="integer"> 1 </cn>
+                  <apply>
+                    <plus/>
+                    <cn type="integer"> 1 </cn>
+                    <apply>
+                      <power/>
+                      <apply>
+                        <divide/>
+                        <ci> K_git </ci>
+                        <ci> p15 </ci>
+                      </apply>
+                      <cn type="integer"> 10 </cn>
+                    </apply>
+                  </apply>
+                </apply>
+                <ci> p26 </ci>
+                <apply>
+                  <minus/>
+                  <ci> p27 </ci>
+                  <ci> K_ECF </ci>
+                </apply>
+                <apply>
+                  <power/>
+                  <apply>
+                    <minus/>
+                    <ci> K_tiss </ci>
+                    <ci> p10 </ci>
+                  </apply>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+              </apply>
+              <apply>
+                <plus/>
+                <apply>
+                  <power/>
+                  <apply>
+                    <minus/>
+                    <ci> K_tiss </ci>
+                    <ci> p10 </ci>
+                  </apply>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+                <apply>
+                  <power/>
+                  <apply>
+                    <minus/>
+                    <apply>
+                      <times/>
+                      <ci> p38 </ci>
+                      <cn> 0.99 </cn>
+                    </apply>
+                    <ci> p10 </ci>
+                  </apply>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re21" name="MaSnk" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="met_act" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="snk_metact" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p44 </ci>
+              <ci> met_act </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re40" name="SnkGb" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="Gluc_b" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="s24" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="Gluc_prod"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <divide/>
+                <apply>
+                  <power/>
+                  <ci> Gluc_b </ci>
+                  <cn type="integer"> 10 </cn>
+                </apply>
+                <apply>
+                  <plus/>
+                  <apply>
+                    <power/>
+                    <ci> Gluc_b </ci>
+                    <cn type="integer"> 10 </cn>
+                  </apply>
+                  <apply>
+                    <power/>
+                    <ci> p58 </ci>
+                    <cn type="integer"> 10 </cn>
+                  </apply>
+                </apply>
+              </apply>
+              <apply>
+                <plus/>
+                <apply>
+                  <times/>
+                  <ci> p28 </ci>
+                  <ci> Gluc_b </ci>
+                </apply>
+                <apply>
+                  <times/>
+                  <ci> p59 </ci>
+                  <ci> Gluc_prod </ci>
+                  <apply>
+                    <exp/>
+                    <apply>
+                      <times/>
+                      <apply>
+                        <minus/>
+                        <ci> p66 </ci>
+                      </apply>
+                      <ci> p55 </ci>
+                    </apply>
+                  </apply>
+                </apply>
+                <apply>
+                  <times/>
+                  <ci> p55 </ci>
+                  <ci> p47 </ci>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re32" name="SnkIn" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="ins_b" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="snk_insnew" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p41 </ci>
+              <ci> ins_b </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re33" name="SrcGb" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="src_Glucblood" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Gluc_b" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p48 </ci>
+              <ci> Gluc_feed </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re36" name="SrcGp" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="s23" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Gluc_prod" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <apply>
+                <minus/>
+                <cn type="integer"> 1 </cn>
+                <ci> p48 </ci>
+              </apply>
+              <ci> Gluc_feed </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="re31" name="SrcIn" reversible="false" fast="false">
+        <listOfReactants>
+          <speciesReference species="src_insnew" stoichiometry="1" constant="false"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="ins_b" stoichiometry="1" constant="false"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="Gluc_b"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> p49 </ci>
+              <ci> Gluc_b </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>
