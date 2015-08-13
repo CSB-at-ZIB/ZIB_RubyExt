@@ -1,6 +1,7 @@
 pwd = $(shell pwd)
-bpath = $(shell dirname $(pwd))
-rpath = $(bpath)/../../pkg/lib
+bpath = $(shell dirname $(pwd))/../../pkg
+pcpath = $(bpath)/lib64/pkgconfig:$(bpath)/lib/pkgconfig
+pkg_config_add = $(shell PKG_CONFIG_PATH=$(pcpath) pkg-config --libs adolc)
 
 FC = gfortran
 FINC = -I.
@@ -8,8 +9,8 @@ FFLAGS = $(FINC) -fexceptions -O3 -fPIC
 
 CXX = g++
 CXXINC = -I. -I../../../pkg/include
-CXXLIB = -Wl,-init,set_adolc_num_dir -L../../../pkg/lib -ladolc -Wl,-rpath,$(rpath)
 CXXFLAGS = $(CXXINC) -fexceptions -O3 -fPIC
+CXXLIB = -Wl,-init,set_adolc_num_dir $(pkg_config_add)
 
 OBJS = ydot_LIMEXcpp.o
 # OBJS = ydot_LIMEX.o sbml_mathfuns.o
