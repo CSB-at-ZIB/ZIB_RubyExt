@@ -186,6 +186,33 @@ c#for_all(j in algebraic)
    compute_fy ( nspe, *t, y_state, dy, fy, info );
    compute_fp ( nspe, npar, *t, y_state, fp, info );
    /**/
+/*
+fprintf( stderr, "\n### fy (t=%e)\n", *t );
+for (int k = 0; k < nspe; ++k)
+{
+   for (int j = 0; j < nspe; ++j)
+   {
+      fprintf( stderr, "\t% 9.3e", fy[j + nspe*k] );
+   }
+   fprintf( stderr, "\n" );
+}
+for (int k = 0; k < nspe; ++k) 
+{
+  fprintf( stderr, "\t% 9d", k );
+}
+fprintf( stderr, "\n" );
+fprintf( stderr, "\n+++ fp (t=%e)\n", *t );
+for (int k = 0; k < npar; ++k)
+{
+   for (int j = 0; j < nspe; ++j)
+   {
+      fprintf( stderr, "\t% 9.3e", fp[j + nspe*k] );
+   }
+   fprintf( stderr, "\n" );
+}
+fprintf( stderr, "\n" );
+*/
+   /**/
    for (int idx = 0; idx < npar; ++idx)
    {
       for (int j = 0; j < nspe; ++j)

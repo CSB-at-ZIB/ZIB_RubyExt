@@ -48,7 +48,7 @@ model.hmax = 0.0
 model.inistep = 1.0e-4
 model.rtol = $rtol
 model.atol = $atol
-model.monitor = 1
+# model.monitor = 1
 
 puts ""
 puts "ModelDL settings:"
@@ -76,7 +76,6 @@ end
 # nPar   = pidx.length
 
 tspan = (0..60).to_a  # [0.0,120.0]
-tspan = [0.0,10.0] 
 y0 = model.y0ode
 par = model.par0
 pidx = []
@@ -97,6 +96,11 @@ puts "pidx : #{pidx}"
 puts "par0 : #{model.par}"
 
 tpoints, sol = model.solve_var tspan, y0, par, pidx
+
+#
+# exit -1
+#
+
 
 if $gsl_avail
    nspe = y0.length

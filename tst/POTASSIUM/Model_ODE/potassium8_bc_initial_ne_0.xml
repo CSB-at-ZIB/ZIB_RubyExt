@@ -83,7 +83,6 @@
       <parameter id="p31" name="p31" value="0.353" constant="true"/>
       <parameter id="p32" name="p32" value="1.31" constant="true"/>
       <parameter id="p33" name="p33" value="0.07819966" constant="true"/>
-      <parameter id="pH" name="pH" value="0" constant="false"/>
       <parameter id="p42" name="src_metact" value="4.5" constant="true"/>
       <parameter id="p43" name="T_src_metact" value="10" constant="true"/>
       <parameter id="p44" name="snc_metact" value="1.2" constant="true"/>
@@ -92,13 +91,10 @@
       <parameter id="p48" name="scale_blood_gluc" value="0.08" constant="true"/>
       <parameter id="p49" name="p49" value="800" constant="true"/>
       <parameter id="p41" name="p41" value="20" constant="true"/>
-      <parameter id="dmi" name="dmi" value="0" constant="false"/>
-      <parameter id="K_feed" name="K_feed" value="0" constant="false"/>
-      <parameter id="Gluc_feed" name="Gluc_feed" value="0" constant="false"/>
       <parameter id="p52" name="kmilk_content" value="1.4" constant="true"/>
       <parameter id="p53" name="basal_KeKu" value="0.01" constant="true"/>
       <parameter id="p54" name="dmi_percentage" value="1" constant="true"/>
-      <parameter id="p55" name="Milk_in_l/h" value="0" constant="true"/>
+      <parameter id="p55" name="Milk_in_l/h" value="1e-09" constant="true"/>
       <parameter id="p56" name="perctK_in_dmi" value="0.01137" constant="true"/>
       <parameter id="p34" name="con" value="0.0390983" constant="true"/>
       <parameter id="p1" name="p1" value="40.4" constant="true"/>
