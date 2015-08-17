@@ -1,0 +1,51 @@
+#! /usr/bin/env bash
+
+spec="FSH_blood" # default species to work/plot with
+if [ $# -gt 0 ]; then
+  spec="${1}"
+fi
+
+# get all derivative columns in solution .dat file corresponding
+# to the (one!) species given on command line
+awk=`which awk`
+fname="rb_ModelDL_vareq_PAEON_V2_solution.dat"
+specdp=`head -1 ${fname} | 
+        ${awk} '
+          { for (j=1; j<NF; ++j)
+            {
+              if ($j~/'${spec}'\//) 
+                      printf(" %s", $j); 
+            }
+          }'`
+specdp="${spec}${specdp}"
+
+# finally, plot all selected trajectories via gnuplot
+/usr/bin/gnuplot -p <<EOF
+dspe = "${specdp}"
+df(n) = word(dspe,n)
+
+# dspe = "FSH_blood/global_p_019_001 FSH_blood/global_p_020_001 
+#         FSH_blood/global_p_021_001 ..."
+
+# create plot window large enough to carry two plot next to each other
+set term wxt 0 size 1400,600 background "grey60"
+set grid
+set xlabel "Time [days]"
+set ylabel "Conc. [a.u.]"
+set key outside
+
+set multiplot layout 1,2
+
+# plot the original species concentration trajectory
+# (Note that here any _negative_ solution curves are clipped!)
+set ylabel "Conc. [a.u.]"
+plot [][0:*] '${fname}' u 1:df(1) t col w lp
+
+# plot all corresponding solutions of the variational equation
+# next to the first plot (multiplot layout 1,2 !)
+set ylabel "d(Conc.) / dp  [a.u.]"
+plot for [j=2:words(dspe)] '${fname}' u 1:df(j) t col w lp lc j+1
+
+unset multiplot
+EOF
+

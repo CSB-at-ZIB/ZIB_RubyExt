@@ -62,7 +62,8 @@ puts "par0 : #{model.par0}"
 pIniGuess = { 
   "global_p3"  =>  [  22.0,       1.0 ],
   "global_p4"  =>  [   0.0001783, 1.0 ],
-  "global_p5"  =>  [   0.563,     1.0 ]
+  "global_p5"  =>  [   0.563,     1.0 ],
+  "global_p6"  =>  [   0.051,     1.0 ]
 }
 
 nPar = 0
