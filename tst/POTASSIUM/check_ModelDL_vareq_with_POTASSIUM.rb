@@ -23,24 +23,30 @@ require_relative '../../lib/ModelDL'
 
 $rtol = 1.0e-6
 $atol = $rtol
+$delp = 0.25
 
 if ARGV.length > 0 then
   $rtol = Float(ARGV[0]) rescue 0.0
   if ARGV.length > 1 then
     $atol = Float(ARGV[1]) rescue 0.0
+    if ARGV.length > 2 then 
+      $delp = Float(ARGV[2]) rescue 0.0
+    end
   end
 else
   puts " "
-  puts "Usage: ./#{File.basename(__FILE__)} rtol [atol]"
+  puts "Usage: ./#{File.basename(__FILE__)} rtol [atol [dp]]"
   puts " "
   puts "         Default values"
   puts "         --------------"
   puts "          * rtol = atol = 1.0e-6"
+  puts "          * dp = 0.25"
   puts " "
   exit -1
 end
 $rtol = 1.0e-6 if $rtol <= 0.0
 $atol = 1.0e-6 if $atol <= 0.0
+$delp = 0.25 if $delp <= 0.0
 
 model = ModelDL.new 
 model.t0 = 0.0
@@ -96,12 +102,23 @@ puts "ModelDL: model.solve_var called with:"
 puts "pidx : #{pidx}"
 puts "par0 : #{model.par}"
 
+
+spout = File.open("rb_ModelDL_vareq_POTASSIUM_soldp.dat","w")
+pidx.each_with_index do |idx,j|
+  psave = par[idx-1]
+  par[idx-1] += $delp
+  model.solve_ode tspan, y0, par
+  par[idx-1] = psave
+  model.save_current_solution spout,idx
+end
+spout.close
+
+
 tpoints, sol = model.solve_var tspan, y0, par, pidx
 
 #
 # exit -1
 #
-
 
 if $gsl_avail
    nspe = y0.length

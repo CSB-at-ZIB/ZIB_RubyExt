@@ -1,13 +1,18 @@
 #! /usr/bin/env bash
 
 spec="K_sal" # default species to work/plot with
+delp=0.25
 if [ $# -gt 0 ]; then
   spec="${1}"
+  if [ $# -gt 1 ]; then
+    delp=${2}
+  fi
 fi
 
 # get all derivative columns in solution .dat file corresponding to 
 # the (one!) species given on command line
 awk=`which awk`
+f2name="rb_ModelDL_vareq_POTASSIUM_soldp.dat"
 fname="rb_ModelDL_vareq_POTASSIUM_solution.dat"
 specdp=`head -1 ${fname} | 
         ${awk} '
@@ -21,6 +26,7 @@ specdp="${spec}${specdp}"
 
 # finally, plot all selected trajectories via gnuplot
 /usr/bin/gnuplot -p <<EOF
+dp = ${delp}+0.0
 dspe = "${specdp}"
 df(n) = word(dspe,n)
 
@@ -37,11 +43,13 @@ set multiplot layout 1,2
 
 # plot the original species concentration trajectory
 # (Note that here any _negative_ solution curves are clipped!)
+set title sprintf("fixed(!) perturbed parameters: p + dp ;   dp = % e", dp)
 set ylabel "Conc. [a.u.]"
-plot [][0:*] '${fname}' u 1:df(1) t col w lp
+plot [][0:*] '${fname}' u 1:df(1) t col w lp, for [k=1:words(dspe)-1] '${f2name}' i sprintf("== Iter %4d ==", k) u 1:df(1) t col w l lc k+2, for [jj=2:words(dspe)] '${fname}' u 1:(column(df(1))+dp*column(df(jj))) t "predict" w p lc jj+1
 
 # plot all corresponding solutions of the variational equation
 # next to the first plot (multiplot layout 1,2 !)
+set title "unscaled(!) derivatives"
 set ylabel "d(Conc.) / dp  [a.u.]"
 plot for [j=2:words(dspe)] '${fname}' u 1:df(j) t col w lp lc j+1
 
