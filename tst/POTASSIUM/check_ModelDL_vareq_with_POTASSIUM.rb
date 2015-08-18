@@ -68,8 +68,8 @@ puts "par0 : #{model.par0}"
 pIniGuess = { 
   "global_p3"  =>  [  22.0,       1.0 ],
   "global_p4"  =>  [   0.0001783, 1.0 ],
-  "global_p5"  =>  [   0.563,     1.0 ],
-  "global_p6"  =>  [   0.051,     1.0 ]
+  "global_p5"  =>  [   0.563,     1.0 ]
+  # "global_p6"  =>  [   0.051,     1.0 ]
 }
 
 nPar = 0
@@ -109,6 +109,7 @@ pidx.each_with_index do |idx,j|
   par[idx-1] += $delp
   model.solve_ode tspan, y0, par
   par[idx-1] = psave
+  spout.printf("# dp = %e\n", $delp)
   model.save_current_solution spout,idx
 end
 spout.close

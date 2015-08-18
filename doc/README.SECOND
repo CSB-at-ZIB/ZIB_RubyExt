@@ -200,11 +200,15 @@ Bibliography
     Programming Ruby - The Pragmatic Programmer's Guide, 
     Addison Wesley Longman, 2001.
 
-[2] Peter Deuflhard :
+[2] Peter Deuflhard, Susanna Roeblitz:
+    A Guide to Numerical Modelling in Systems Biology,
+    Springer, 2015.
+
+[3] Peter Deuflhard :
     Newton Methods for Nonlinear Problems, 
     Springer, 2nd ed., 2006.
 
-[3] Ulli Nowak, Lutz Weimann :
+[4] Ulli Nowak, Lutz Weimann :
     A Family of Newton Codes for Systems of Highly Nonlinear Equations,
     Technical Report TR-91-10, Zuse Institute Berlin (ZIB).
 
