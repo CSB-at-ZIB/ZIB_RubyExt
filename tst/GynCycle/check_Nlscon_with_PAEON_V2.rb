@@ -166,7 +166,7 @@ puts " "
 puts "#{model.version}"
 puts " "
 
-# exit
+exit
 
 # ---------------------------------------------------------------------
 # Sensitivity Matrix Output (w.r.t. initial guess)
