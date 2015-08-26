@@ -720,6 +720,113 @@ VALUE limex_dl_ifail(VALUE self)
   return rb_iv_get(self, "@ifail");
 }
 
+static
+VALUE limex_dl_status(VALUE self)
+{
+  VALUE ifail;
+  char  *msg = "n/a";
+
+  ifail = rb_iv_get(self, "@ifail");
+
+  if ( RARRAY_LEN(ifail) == 3 )
+  {
+    int rc = NUM2INT( rb_ary_entry(ifail, 0L) );
+
+    switch (rc)
+    {
+       case   0 : msg = "ok";
+                  break;
+       case  -1 : msg = "ODE dim out of range (Max_Nr_of_Equations)";
+                  break;
+       case  -2 : msg = "rTol(j) <= 0 for some index j";
+                  break;
+       case  -3 : msg = "aTol(j) < 0 for some index j";
+                  break;
+       case  -4 : msg = "internal range error:  Iopt(1) < 0  or  Iopt(1) > 2  (integration monitor)";
+                  break;
+       case  -5 : msg = "internal range error:  Iopt(2) < 0  and  Iopt(1) > 0  (monitor output unit)";
+                  break;
+       case  -6 : msg = "internal range error:  Iopt(3) < 0  or  Iopt(3) > 2  (solution output)";
+                  break;
+       case  -7 : msg = "internal range error:  Iopt(4) < 0  and  Iopt(3) > 0  (solution output unit)";
+                  break;
+       case  -8 : msg = "internal range error:  Iopt(5) < 0  or  Iopt(5) > 1  (matrix B singular/nonsing.)";
+                  break;
+       case  -9 : msg = "internal range error:  Iopt(6) < 0  or  Iopt(6) > 1  (CIV compuation)";
+                  break;
+       case -10 : msg = "internal range error:  Iopt(7) < 0  or  Iopt(7) > 1  (numeric/analytic Jacobian)";
+                  break;
+       case -11 : msg = "internal range error:  Iopt(8) out of range (Max_Lower_Diagonals)";
+                  break;
+       case -12 : msg = "internal range error:  Iopt(9) out of range (Max_Upper_Diagonals)";
+                  break;
+       case -13 : msg = "internal range error:  Iopt(10) < 0  or  Iopt(10) > 1  (reuse of Jacobian)";
+                  break;
+       case -14 : msg = "internal range error:  Iopt(11) < 0  or  Iopt(11) > 1  (scalar/vector rTol,aTol)";
+                  break;
+       case -15 : msg = "internal range error:  Iopt(12) < 0  or  Iopt(12) > 1  (one step mode)";
+                  break;
+       case -16 : msg = "internal range error:  Iopt(13) < 0  or  Iopt(13) > 3  (dense output)";
+                  break;
+       case -17 : msg = "internal range error:  Iopt(14) < 0  and  Iopt(13) = 1 or 2  (number equidist. points)";
+                  break;
+       case -18 : msg = "internal range error:  Iopt(15) < 0  and  Iopt(13) > 0  (dense output unit)";
+                  break;
+       case -19 : msg = "internal range error:  Iopt(16) < 0  or  Iopt(16) > 1  (type of call)";
+                  break;
+       case -20 : msg = "internal range error:  Iopt(17) < 0  or  Iopt(17) > 1  (integration exactly up to t_End)";
+                  break;
+       case -21 : msg = "internal range error:  Iopt(18) < -1  (postscript plot(s) of Jacobian)";
+                  break;
+
+       case -27 : msg = "internal range error:  Ropt(1) < 0  (maximal allowed stepsize)";
+                  break;
+       case -28 : msg = "internal range error:  Ropt(2) <= 0  and  Iopt(13) = 3  (maximal distance of dense output points)";
+                  break;
+
+       case -32 : msg = "an initial value y(j) < 0, but according to IPos it should be >= 0";
+                  break;
+       case -33 : msg = "user routine FCN returns an error in the first call of the current integration";
+                  break;
+       case -34 : msg = "more than Max_Non_Zeros_B non-zero entries in B(t,y) defined";
+                  break;
+       case -35 : msg = "user routine FCN returns an error in the numerical evaluation of the Jacobian";
+                  break;
+       case -36 : msg = "user routine JAC returns an error";
+                  break;
+
+       case -39 : msg = "internal error in LAPACK dgetrf or dgbtrf; see LAPACK User's Guide";
+                  break;
+
+       case -43 : msg = "problem not solvable with this LIMEX version; probably index of DAE > 1";
+                  break;
+       case -44 : msg = "problem not solvable with this LIMEX version; probably initial values not consistent or index of DAE > 1";
+                  break;
+       case -45 : msg = "during CIV computation, some solution y(j) is negative, but according to IPos it should be >= 0";
+                  break;
+       case -46 : msg = "more stepsize reductions than allowed (parameter: Max_Step_Red_Ex)";
+                  break;
+       case -47 : msg = "singular matrix pencil B - hA; problem not solvable with LIMEX";
+                  break;
+       case -48 : msg = "more integration steps than allowed (parameter: Max_Int_Steps)";
+                  break;
+       case -49 : msg = "more internal Newton steps for CIV computation than allowed (parameter: Max_Step_CIV)";
+                  break;
+       case -50 : msg = "stepsize too small; most probably too many stepsize reductions";
+                  break;
+
+        default : msg = "unknown error";
+                  break;
+    }
+  }
+  else
+  {
+    msg = "n/a (no solver calls so far)";
+  } 
+
+  return rb_str_new2(msg);
+}
+
 
 static
 VALUE limex_dl_modelids(VALUE self)
@@ -1056,5 +1163,6 @@ void Init_LimexDL()
   rb_define_method(cLimexDL, "solution", limex_dl_solution, 0);
   rb_define_method(cLimexDL, "steps", limex_dl_steps, 0);
   rb_define_method(cLimexDL, "ifail", limex_dl_ifail, 0);
+  rb_define_method(cLimexDL, "status", limex_dl_status, 0);
 }
 
