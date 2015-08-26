@@ -23,24 +23,30 @@ require_relative '../../lib/ModelDL'
 
 $rtol = 1.0e-6
 $atol = $rtol
+$delp = 0.25
 
 if ARGV.length > 0 then
   $rtol = Float(ARGV[0]) rescue 0.0
   if ARGV.length > 1 then
     $atol = Float(ARGV[1]) rescue 0.0
+    if ARGV.length > 2 then 
+      $delp = Float(ARGV[2]) rescue 0.0
+    end
   end
 else
   puts " "
-  puts "Usage: ./#{File.basename(__FILE__)} rtol [atol]"
+  puts "Usage: ./#{File.basename(__FILE__)} rtol [atol [dp]]"
   puts " "
   puts "         Default values"
   puts "         --------------"
   puts "          * rtol = atol = 1.0e-6"
+  puts "          * dp = 0.25 (percent of p)"
   puts " "
   exit -1
 end
 $rtol = 1.0e-6 if $rtol <= 0.0
 $atol = 1.0e-6 if $atol <= 0.0
+$delp = 0.25 if $delp <= 0.0
 
 model = ModelDL.new 
 model.t0 = 0.0
@@ -103,7 +109,9 @@ end
 # pscal  = [ 1.0, 1.0 ]
 # nPar   = pidx.length
 
-tspan = (0..120).to_a  # [0.0,90.0]
+tspan = [] # (0..120).to_a  # [0.0,90.0]
+0.upto(600) { |j| tspan << j/5.0 }
+### tspan = [0.0,120.0]
 y0 = model.y0ode
 par = model.par0
 pidx = []
@@ -123,7 +131,42 @@ puts "ModelDL: model.solve_var called with:"
 puts "pidx : #{pidx}"
 puts "par0 : #{model.par}"
 
-tpoints, sol = model.solve_var tspan, y0, par, pidx
+
+tpoints, sol0 = model.solve_var tspan, y0, par, pidx
+
+sout = File.open("rb_ModelDL_vareq_PAEON_V2_solution.dat","w")
+model.save_current_solution sout
+sout.close
+
+
+spout = File.open("rb_ModelDL_vareq_PAEON_V2_soldp.dat","w")
+pidx.each_with_index do |idx,j|
+  psave = par[idx-1]
+  par[idx-1] += $delp*psave
+  tp, sol = model.solve_ode tspan, y0, par
+  par[idx-1] = psave
+  spout.printf("# dp = %.2f * %e = %e\n", $delp, psave, $delp*psave)
+  # model.save_current_solution spout,idx
+  spout.printf("# == %s ==\n", model.pId[idx-1])
+  spout.printf("%-12s","Timepoint")
+  model.yId.each do |label|
+     label = "***" if label.length == 0
+     spout.printf("\t%-12s", label)
+  end
+  spout.printf("\n")
+  tp.each_with_index do |t,ell|
+     if tp[ell] == tpoints[ell] then
+       spout.printf("%.6e", t)
+       y = sol[t] 
+       yref = sol0[t]
+       y.each_with_index { |val,k| spout.printf("\t%.6e", (y[k]-yref[k])/psave) }
+       spout.printf("\n")
+     end
+  end
+  spout.printf("\n\n")
+end
+spout.close
+
 
 if $gsl_avail
    nspe = y0.length
@@ -146,8 +189,11 @@ if $gsl_avail
                      label, label, label, label)
    end
    parout.printf("\n")
+
    tpoints[1..-1].each do |t|
-      mat = GSL::Matrix[ sol[t][nspe..-1], nspe, npar ]
+
+      mat = GSL::Matrix[ sol0[t][nspe..-1], nspe, npar ]
+
       if nspe < npar then
          v, u, s = mat.trans.SV_decomp
          # su = GSL::Matrix.diag(s)*u.trans
@@ -192,9 +238,12 @@ end
 # ---------------------------------------------------------------------
 # Result Output
 
-sout = File.open("rb_ModelDL_vareq_PAEON_V2_solution.dat","w")
-model.save_current_solution sout
-sout.close
+#
+#  already done; see above!
+#
+#sout = File.open("rb_ModelDL_vareq_PAEON_V2_solution.dat","w")
+#model.save_current_solution sout
+#sout.close
 
 puts " "
 puts "#{model.version}"

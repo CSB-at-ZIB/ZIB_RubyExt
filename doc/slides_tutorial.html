@@ -1,0 +1,868 @@
+<!--
+Automatically generated HTML file from DocOnce source
+(https://github.com/hplgit/doconce/)
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="DocOnce: https://github.com/hplgit/doconce/" />
+<meta name="description" content="YAPE (Yet Another Programming Environment): ZIB\_RubyExt">
+
+<title>YAPE (Yet Another Programming Environment): ZIB\_RubyExt</title>
+
+
+<style type="text/css">
+/* blueish style */
+
+/* Color definitions:  http://www.december.com/html/spec/color0.html
+   CSS examples:       http://www.w3schools.com/css/css_examples.asp */
+
+body {
+  margin-top: 1.0em;
+  background-color: #ffffff;
+  font-family: Helvetica, Arial, FreeSans, san-serif;
+  color: #000000;
+}
+h1 { font-size: 1.8em; color: #1e36ce; }
+h2 { font-size: 1.6em; color: #1e36ce; }
+h3 { font-size: 1.4em; color: #1e36ce; }
+a { color: #1e36ce; text-decoration:none; }
+tt { font-family: "Courier New", Courier; }
+/* pre style removed because it will interfer with pygments */
+p { text-indent: 0px; }
+hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+p.caption { width: 80%; font-style: normal; text-align: left; }
+hr.figure { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+.alert-text-small   { font-size: 80%;  }
+.alert-text-large   { font-size: 130%; }
+.alert-text-normal  { font-size: 90%;  }
+.alert {
+  padding:8px 35px 8px 14px; margin-bottom:18px;
+  text-shadow:0 1px 0 rgba(255,255,255,0.5);
+  border:1px solid #bababa;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  color: #555;
+  background-color: #f8f8f8;
+  background-position: 10px 5px;
+  background-repeat: no-repeat;
+  background-size: 38px;
+  padding-left: 55px;
+  width: 75%;
+ }
+.alert-block {padding-top:14px; padding-bottom:14px}
+.alert-block > p, .alert-block > ul {margin-bottom:1em}
+.alert li {margin-top: 1em}
+.alert-block p+p {margin-top:5px}
+.alert-notice { background-image: url(https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_images/small_gray_notice.png); }
+.alert-summary  { background-image:url(https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_images/small_gray_summary.png); }
+.alert-warning { background-image: url(https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_images/small_gray_warning.png); }
+.alert-question {background-image:url(https://cdn.rawgit.com/hplgit/doconce/master/bundled/html_images/small_gray_question.png); }
+
+div { text-align: justify; text-justify: inter-word; }
+</style>
+
+
+</head>
+
+<!-- tocinfo
+{'highest level': 2,
+ 'sections': [('Why?', 2, None, '___sec0'),
+              ('How!', 2, None, '___sec1'),
+              ('Preliminary Example 1', 2, None, '___sec2'),
+              ('Example 2', 2, None, '___sec3'),
+              ("Cont'd Example 2", 2, None, '___sec4'),
+              ("Cont'd Example 2", 2, None, '___sec5'),
+              ('SBML Example 3', 2, None, '___sec6'),
+              ("Cont'd SBML Example 3", 2, None, '___sec7'),
+              ("Cont'd SBML Example 3", 2, None, '___sec8'),
+              ("Cont'd SBML Example 3: *libODEydot.so*", 2, None, '___sec9'),
+              ("Cont'd SBML Example 3: Graphs with *gnuplot*",
+               2,
+               None,
+               '___sec10'),
+              ('Full Example 4', 2, None, '___sec11'),
+              ('Full Example 4: CSV Format', 2, None, '___sec12'),
+              ("Cont'd Full Example 4: Data with Simulation",
+               2,
+               None,
+               '___sec13'),
+              ("Cont'd Full Example 4", 2, None, '___sec14'),
+              ("Cont'd Full Example 4", 2, None, '___sec15'),
+              ("Cont'd Full Example 4: Output *NLSCON*", 2, None, '___sec16'),
+              ("Cont'd Full Example 4: Output *NLSCON*", 2, None, '___sec17'),
+              ("Cont'd Full Example 4: Output *NLSCON*", 2, None, '___sec18'),
+              ("Cont'd Full Example 4: Fit with Data (*10th iter.*)",
+               2,
+               None,
+               '___sec19')]}
+end of tocinfo -->
+
+<body>
+
+    
+<!-- ------------------- main content ---------------------- -->
+
+
+
+<center><h1>YAPE (Yet Another Programming Environment): ZIB\_RubyExt</h1></center>  <!-- document title -->
+
+<p>
+<!-- author(s): Thomas Dierkes -->
+
+<center>
+<b>Thomas Dierkes</b>  (<tt>dierkes at zib.de</tt>)
+</center>
+
+<p>
+<!-- institution -->
+
+<center><b>Zuse Institute Berlin (ZIB), Computational Systems Biology Group</b></center>
+<br>
+<p>
+<center><h4>Aug 26, 2015</h4></center> <!-- date -->
+<br>
+<p>
+<!-- !split -->
+
+<h2 id="___sec0">Why? </h2>
+
+<p>
+<b>PRO</b>
+
+<ul>
+ <li> Improved handling of <font color="blue">SBML</font> models</li> 
+ <li> Provides a user-friendly interfaces to (legacy) <code>FORTRAN</code> routines</li>
+ <li> Ready for easy integration to WEB services (i.e. <font color="blue">ReST API</font>)</li> 
+ <li> Fast!</li>
+ <li> ...</li>
+</ul>
+
+<b>CONTRA</b>
+
+<ul>
+ <li> Yet another programming/scripting language (i.e. <font color="blue">Ruby</font>)</li>
+ <li> <code>Ruby</code> infrastructure not (yet!) as rich as other environments</li>
+ <li> e.g. a <code>Modelica</code> pipeline still pending; in fact, not yet started</li>
+ <li> ...</li>
+</ul>
+
+<!-- !split -->
+
+<h2 id="___sec1">How! </h2>
+
+<p>
+Installing the <code>Ruby</code> package:
+
+<p>
+<div class="alert alert-block alert-block alert-text-normal">
+<b></b>
+<p>
+<p>
+
+<!-- code=bash (!bc shcod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">[</span>path<span style="color: #666666">]</span><span style="color: #19177C">$ </span>git clone https://github.com/CSB-at-ZIB/ZIB_RubyExt
+Cloning into <span style="color: #BA2121">&#39;ZIB_RubyExt&#39;</span>...
+remote: Counting objects: 726, <span style="color: #008000; font-weight: bold">done</span>.
+remote: Compressing objects: 100% <span style="color: #666666">(</span>6/6<span style="color: #666666">)</span>, <span style="color: #008000; font-weight: bold">done</span>.
+remote: Total 726 <span style="color: #666666">(</span>delta 0<span style="color: #666666">)</span>, reused 0 <span style="color: #666666">(</span>delta 0<span style="color: #666666">)</span>, pack-reused 719
+Receiving objects: 100% <span style="color: #666666">(</span>726/726<span style="color: #666666">)</span>, 36.65 MiB | 4.26 MiB/s, <span style="color: #008000; font-weight: bold">done</span>.
+Resolving deltas: 100% <span style="color: #666666">(</span>461/461<span style="color: #666666">)</span>, <span style="color: #008000; font-weight: bold">done</span>.
+Checking connectivity... <span style="color: #008000; font-weight: bold">done</span>.
+
+<span style="color: #666666">[</span>path<span style="color: #666666">]</span><span style="color: #19177C">$ </span><span style="color: #008000">cd </span>ZIB_RubyExt
+
+<span style="color: #666666">[</span>path/ZIB_RubyExt<span style="color: #666666">]</span><span style="color: #19177C">$ </span>make clean; make
+
+      ... <span style="color: #008000">wait</span>! ... <span style="color: #666666">[</span>lots of output<span style="color: #666666">]</span> ...
+
+<span style="color: #666666">[</span>path/ZIB_RubyExt<span style="color: #666666">]</span><span style="color: #19177C">$ </span><span style="color: #008000">cd </span>tst
+</pre></div>
+
+</div>
+
+
+<p>
+<!-- !bpop -->
+And now for something completely different: a real crash course in <code>Ruby</code>!
+<!-- !epop -->
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec2">Preliminary Example 1 </h2>
+
+<p>
+<div class="alert alert-block alert-block alert-text-normal">
+<b>prelimex1.rb.</b>
+<p>
+<p>
+
+<!-- code=ruby (!bc rbcod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #408080; font-style: italic">#! /usr/bin/env ruby</span>
+<span style="color: #008000">require</span> <span style="color: #BA2121">&#39;Nlscon&#39;</span>
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+q <span style="color: #666666">=</span> <span style="color: #666666">3</span>
+mTotal <span style="color: #666666">=</span> mFit <span style="color: #666666">=</span> <span style="color: #666666">10</span>    <span style="color: #408080; font-style: italic"># def fcn(n,m,mcon,x) [z0, ..., z9] end</span>
+
+nlscon <span style="color: #666666">=</span> <span style="color: #880000">Nlscon</span><span style="color: #666666">.</span>new <span style="color: #666666">[</span>q, mTotal, mFit<span style="color: #666666">]</span>
+
+nlscon<span style="color: #666666">.</span>f <span style="color: #666666">=</span> <span style="color: #008000">method</span>(<span style="color: #19177C">:fcn</span>)                     <span style="color: #408080; font-style: italic"># nlscon.df = ...</span>
+nlscon<span style="color: #666666">.</span>x <span style="color: #666666">=</span> <span style="color: #666666">[</span> <span style="color: #666666">1.0</span>, <span style="color: #666666">2.0</span>, <span style="color: #666666">3.0</span> <span style="color: #666666">]</span>                <span style="color: #408080; font-style: italic"># nlscon.xscal = ...</span>
+nlscon<span style="color: #666666">.</span>fobs <span style="color: #666666">=</span> <span style="color: #666666">[</span> <span style="color: #666666">6.28</span>, <span style="color: #666666">-3.7</span>, <span style="color: #666666">2</span>E<span style="color: #666666">-5</span>, <span style="color: #666666">.</span>.<span style="color: #666666">.</span>, <span style="color: #666666">42</span> <span style="color: #666666">]</span> <span style="color: #408080; font-style: italic"># nlscon.fscal = ...</span>
+nlscon<span style="color: #666666">.</span>rtol <span style="color: #666666">=</span> <span style="color: #666666">1.0</span>E<span style="color: #666666">-3</span>                        <span style="color: #408080; font-style: italic"># nlscon.iopt = ...</span>
+
+status <span style="color: #666666">=</span> <span style="color: #666666">-1</span>    <span style="color: #408080; font-style: italic"># nlscon.iopt = { &quot;nonlin&quot; =&gt; 3, &quot;jacgen&quot; =&gt; 3 }</span>
+iter <span style="color: #666666">=</span> <span style="color: #666666">0</span>       <span style="color: #408080; font-style: italic"># nlscon.iwk  = { &quot;nitmax&quot; =&gt; 35 }</span>
+
+<span style="color: #008000; font-weight: bold">while</span> status <span style="color: #666666">==</span> <span style="color: #666666">-1</span> <span style="color: #666666">&amp;&amp;</span> iter <span style="color: #666666">&lt;</span> nlscon<span style="color: #666666">.</span>iwk<span style="color: #666666">[</span><span style="color: #BA2121">&quot;nitmax&quot;</span><span style="color: #666666">]</span> <span style="color: #008000; font-weight: bold">do</span>
+  iter <span style="color: #666666">+=</span> <span style="color: #666666">1</span>
+  status <span style="color: #666666">=</span> nlscon<span style="color: #666666">.</span>iterate
+<span style="color: #008000; font-weight: bold">end</span>
+
+<span style="color: #008000">printf</span> <span style="color: #BA2121">&quot;Done! Final result: x = </span><span style="color: #BB6688; font-weight: bold">#{</span>nlscon<span style="color: #666666">.</span>x<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span> <span style="color: #008000; font-weight: bold">if</span> status <span style="color: #666666">==</span> <span style="color: #666666">0</span>
+</pre></div>
+
+</div>
+
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec3">Example 2 </h2>
+
+<p>
+<div class="alert alert-block alert-block alert-text-normal">
+<b>simulex2.rb.</b>
+<p>
+<p>
+
+<!-- code=ruby (!bc rbcod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #408080; font-style: italic">#! /usr/bin/env ruby</span>
+require_relative <span style="color: #BA2121">&#39;../../lib/Model&#39;</span>   <span style="color: #408080; font-style: italic"># uses Ruby ext. &#39;Limex&#39;!</span>
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+<span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">predator_prey</span>( t, y, par )
+  a, b, c, d <span style="color: #666666">=</span> par                            <span style="color: #408080; font-style: italic"># [ prey, pred ]</span>
+  <span style="color: #666666">[</span> y<span style="color: #666666">[0]*</span>(a <span style="color: #666666">-</span> b<span style="color: #666666">*</span>y<span style="color: #666666">[1]</span> , <span style="color: #666666">-</span>y<span style="color: #666666">[1]*</span>(c <span style="color: #666666">-</span> d<span style="color: #666666">*</span>y<span style="color: #666666">[0]</span>) <span style="color: #666666">]</span>   <span style="color: #408080; font-style: italic"># [  dy0,  dy1 ]</span>
+<span style="color: #008000; font-weight: bold">end</span>
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+initvar <span style="color: #666666">=</span> {      <span style="color: #19177C">t0</span>: <span style="color: #666666">1900.0</span>,
+                 <span style="color: #19177C">y0</span>: <span style="color: #666666">[</span>  <span style="color: #666666">30.0</span> ,   <span style="color: #666666">4.0</span>  <span style="color: #666666">]</span>,
+            <span style="color: #19177C">y0label</span>: <span style="color: #666666">[</span> <span style="color: #BA2121">&quot;n1_0&quot;</span>, <span style="color: #BA2121">&quot;n2_0&quot;</span> <span style="color: #666666">]</span>,
+                <span style="color: #19177C">par</span>: <span style="color: #666666">[</span>    <span style="color: #666666">0.5</span> ,  <span style="color: #666666">0.02</span> ,    <span style="color: #666666">1.0</span> ,   <span style="color: #666666">0.02</span>  <span style="color: #666666">]</span>,
+             <span style="color: #19177C">plabel</span>: <span style="color: #666666">[</span> <span style="color: #BA2121">&quot;alpha&quot;</span>, <span style="color: #BA2121">&quot;beta&quot;</span>, <span style="color: #BA2121">&quot;gamma&quot;</span>, <span style="color: #BA2121">&quot;delta&quot;</span> <span style="color: #666666">]</span>   }
+
+model <span style="color: #666666">=</span> <span style="color: #880000">Model</span><span style="color: #666666">.</span>new <span style="color: #19177C">:predator_prey</span>, initvar
+
+tspan <span style="color: #666666">=</span> <span style="color: #666666">[</span> model<span style="color: #666666">.</span>t0, model<span style="color: #666666">.</span>t0 <span style="color: #666666">+</span> <span style="color: #666666">20.0</span> <span style="color: #666666">]</span>
+t, sol <span style="color: #666666">=</span> model<span style="color: #666666">.</span>solve_ode tspan
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+fout <span style="color: #666666">=</span> <span style="color: #880000">File</span><span style="color: #666666">.</span>open(<span style="color: #BA2121">&quot;predator_prey_solution.dat&quot;</span>, <span style="color: #BA2121">&quot;w&quot;</span>)
+model<span style="color: #666666">.</span>save_current_solution fout
+fout<span style="color: #666666">.</span>close
+
+<span style="color: #008000">printf</span> <span style="color: #BA2121">&quot;Time steps t = </span><span style="color: #BB6688; font-weight: bold">#{</span>t<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>
+<span style="color: #008000">printf</span> <span style="color: #BA2121">&quot;Solution   y = </span><span style="color: #BB6688; font-weight: bold">#{</span>sol<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>
+</pre></div>
+
+</div>
+
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec4">Cont'd Example 2 </h2>
+
+<p>
+<div class="alert alert-block alert-block alert-text-normal">
+<b>Result: predator\_prey\_solution.dat.</b>
+<p>
+<p>
+
+<!-- code=text (!bc dat) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">Timepoint   	           1	           2
+1.900000e+03	3.000000e+01	4.000000e+00
+1.900000e+03	3.000126e+01	3.999840e+00
+1.900010e+03	3.012758e+01	3.983924e+00
+</pre></div>
+<p>
+\ \ \ \ \ \ \ \ ... [lots of numbers!] ...
+</div>
+
+
+<p>
+<center> <!-- figure -->
+<hr class="figure">
+<center><p class="caption">Figure 1:  Simulation result and some data (plotted with gnuplot). </p></center>
+<p><img src="pasted_image006.png" align="bottom" width=640></p>
+</center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec5">Cont'd Example 2 </h2>
+
+<p>
+.
+
+<p>
+Combining the <code>Ruby</code> objects <font color="purple">Nlscon</font> and <font color="purple">Model</font>, 
+we can readily perform the parameter identification task on dynamical models 
+given by ODE systems.
+
+<p>
+(cf. the <code>Ruby</code> script <font color="red">"check\_Nlscon\_with\_PredPrey\_model.rb"</font>)
+
+<p>
+<center> <!-- figure -->
+<hr class="figure">
+<center><p class="caption">Figure 2:  Fitting result and data after 8 iterations (plotted with gnuplot). </p></center>
+<p><img src="pasted_image007.png" align="bottom" width=640></p>
+</center>
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec6">SBML Example 3 </h2>
+
+<p>
+Now, we head for <font color="purple">SBML</font> models! At last.
+
+<p>
+<div class="alert alert-block alert-block alert-text-normal">
+<b>Short-hand SBML: reacAB.mod.</b>
+<p>
+<p>
+
+<!-- code=text typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">@model:3.1.1=ReactionAB
+
+@species
+  default:[A]    =    1.0       &quot;Initial Concentration A&quot;
+  default:[B]    =    0.0       &quot;Initial Concentration B&quot;
+
+@parameters
+            k1   =    2.0       &quot;Reaction Rate A -&gt; B&quot;
+            k_1  =    0.003     &quot;Reaction Rate B -&gt; A&quot;
+
+@reactions
+#
+  @r=re001                      &quot;Reaction A -&gt; B&quot;
+     A -&gt; B
+     k1 * A
+#
+  @r=r002                       &quot;Reaction B -&gt; A&quot;
+     B -&gt; A
+     k_1 * B
+#
+</pre></div>
+
+</div>
+
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec7">Cont'd SBML Example 3 </h2>
+
+<ol>
+<li> Conversion of <font color="purple">sh-SBML</font> and <em>pure</em> <font color="purple">SBML</font> 
+  (and vice versa).</li>
+<li> <font color="gray">Compiling into a dynamic link library
+  (.so files in <code>LINUX</code>).</font></li>
+<li> <font color="gray">Using libODEydot.so with 
+  <code>Ruby</code> object ModelDL.</font></li>
+</ol>
+
+<div class="alert alert-block alert-block alert-text-normal">
+<b></b>
+<p>
+<p>
+
+<!-- code=bash (!bc sh) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">[</span>.../GynCycle<span style="color: #666666">]</span><span style="color: #19177C">$ </span><span style="color: #008000">cd </span>Model_ODE 
+<span style="color: #666666">[</span>.../GynCycle/Model_ODE<span style="color: #666666">]</span><span style="color: #19177C">$ </span>./sbml2mod.py GynCycle.xml &gt;myGyn.mod
+<span style="color: #666666">[</span>.../GynCycle/Model_ODE<span style="color: #666666">]</span><span style="color: #19177C">$ </span>vi myGyn.mod
+  
+<span style="color: #666666">[</span>.../MyReacAB/Model_ODE<span style="color: #666666">]</span><span style="color: #19177C">$ </span>./mod2sbml.py reacAB.mod &gt;reacAB.xml
+<span style="color: #666666">[</span>.../MyReacAB/Model_ODE<span style="color: #666666">]</span><span style="color: #19177C">$ </span>make clean
+</pre></div>
+
+</div>
+
+
+<p>
+.
+
+<p>
+.
+
+<p>
+.
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec8">Cont'd SBML Example 3 </h2>
+
+<ol>
+<li> <font color="gray">Conversion of sh-SBML and <em>pure</em> SBML 
+  (and vice versa).</font></li>
+<li> Compiling into a dynamic link library
+  (<font color="purple">.so files</font> in <code>LINUX</code>).</li>
+<li> <font color="gray">Using libODEydot.so with 
+  <code>Ruby</code> object ModelDL.</font></li>
+</ol>
+
+<div class="alert alert-block alert-block alert-text-normal">
+<b></b>
+<p>
+<p>
+
+<!-- code=bash (!bc sh) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #666666">[</span>.../GynCycle<span style="color: #666666">]</span><span style="color: #19177C">$ </span><span style="color: #008000">cd </span>Model_ODE
+<span style="color: #666666">[</span>.../GynCycle/Model_ODE<span style="color: #666666">]</span><span style="color: #19177C">$ </span>make clean; make GynCycle.so
+/bin/rm -f *.so *.o
+./sbml2adolc GynCycle.xml &gt;ydot_LIMEXcpp.cpp
+g++ -I. -I../../../pkg/include -fexceptions -O3 -fPIC 
+-c ydot_LIMEXcpp.cpp
+g++ -shared -s ydot_LIMEXcpp.o -o GynCycle.so 
+-Wl,-init,set_adolc_num_dir 
+-Wl,-rpath,/home/tom/Work/Programs/ZIB_RubyExt/pkg/lib 
+-L/home/tom/Work/Programs/ZIB_RubyExt/pkg/lib -ladolc 
+-lColPack -lm  
+cp GynCycle.so ../libODEydot.so
+<span style="color: #666666">[</span>.../GynCycle/Model_ODE<span style="color: #666666">]</span><span style="color: #19177C">$ </span><span style="color: #008000">cd</span> .. 
+</pre></div>
+
+</div>
+
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec9">Cont'd SBML Example 3: <em>libODEydot.so</em> </h2>
+
+<ol>
+<li> <font color="gray">Conversion of sh-SBML and <em>pure</em> SBML 
+  (and vice versa).</font></li>
+<li> <font color="gray">Compiling into a dynamic link library
+  (.so files in <code>LINUX</code>).</font></li>
+<li> Using <font color="purple">libODEydot.so</font> with 
+  <code>Ruby</code> object <font color="purple">ModelDL</font>.</li>
+</ol>
+
+<div class="alert alert-block alert-block alert-text-normal">
+<b>sbmlex3.rb.</b>
+<p>
+<p>
+
+<!-- code=ruby (!bc rbcod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #408080; font-style: italic">#! /usr/bin/env ruby</span>
+require_relative <span style="color: #BA2121">&#39;../../lib/ModelDL&#39;</span> <span style="color: #408080; font-style: italic"># uses Ruby ext.&#39;LimexDL&#39;</span>
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+<span style="color: #408080; font-style: italic">#           !!! no &#39;def fcn()&#39; nor &#39;initvar = {}&#39; !!! </span>
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+model <span style="color: #666666">=</span> <span style="color: #880000">ModelDL</span><span style="color: #666666">.</span>new   <span style="color: #408080; font-style: italic"># loads automagically &#39;./libODEydot.so&#39;</span>
+model<span style="color: #666666">.</span>t0 <span style="color: #666666">=</span> <span style="color: #666666">-42.5</span>
+tspan <span style="color: #666666">=</span> <span style="color: #666666">[</span>model<span style="color: #666666">.</span>t0, model<span style="color: #666666">.</span>t0 <span style="color: #666666">+</span> <span style="color: #666666">100.0]</span>
+t, sol <span style="color: #666666">=</span> model<span style="color: #666666">.</span>solve_ode tspan
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+fout <span style="color: #666666">=</span> <span style="color: #880000">File</span><span style="color: #666666">.</span>open(<span style="color: #BA2121">&quot;</span><span style="color: #BB6688; font-weight: bold">#{</span>model<span style="color: #666666">.</span>version<span style="color: #666666">[0]</span><span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">_solution.dat&quot;</span>,<span style="color: #BA2121">&quot;w&quot;</span>)
+model<span style="color: #666666">.</span>save_current_solution fout
+fout<span style="color: #666666">.</span>close
+<span style="color: #008000">printf</span> <span style="color: #BA2121">&quot;Saved Solution: Model </span><span style="color: #BB6688; font-weight: bold">#{</span>model<span style="color: #666666">.</span>version<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">&quot;</span>
+</pre></div>
+
+</div>
+
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec10">Cont'd SBML Example 3: Graphs with <em>gnuplot</em> </h2>
+
+<p>
+<!-- !bslidecell 00 .49 -->
+<br />
+a) LH
+<center><p><img src="pasted_image008.png" align="bottom" width=640></p></center>
+<!-- !eslidecell -->
+
+<p>
+<!-- !bslidecell 01 .49 -->
+<br />
+b) FSH
+<center><p><img src="pasted_image009.png" align="bottom" width=640></p></center>
+<!-- !eslidecell -->
+
+<p>
+<!-- !bslidecell 10 .49 -->
+<br />
+c) Estradiol (E2)
+<center><p><img src="pasted_image010.png" align="bottom" width=640></p></center>
+<!-- !eslidecell -->
+
+<p>
+<!-- !bslidecell 11 .49 -->
+<br />
+d) Progesterone (P4)
+<center><p><img src="pasted_image011.png" align="bottom" width=640></p></center>
+<!-- !eslidecell -->
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec11">Full Example 4 </h2>
+
+<p>
+<div class="alert alert-block alert-block alert-text-normal">
+<b>fullex4.rb.</b>
+<p>
+<p>
+
+<!-- code=ruby (!bc rbcod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #408080; font-style: italic">#! /usr/bin/env ruby</span>
+require_relative <span style="color: #BA2121">&#39;../../lib/ModelDL&#39;</span>
+require_relative <span style="color: #BA2121">&#39;../../lib/Experiment&#39;</span>
+require_relative <span style="color: #BA2121">&#39;../../lib/SysBioFit&#39;</span> <span style="color: #408080; font-style: italic"># uses Ruby ext.&#39;Nlscon&#39;</span>
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+<span style="color: #19177C">$fndata</span> <span style="color: #666666">=</span> <span style="color: #BA2121">&quot;rb_Nlscon_with_PAEON_V2_data.dat&quot;</span>
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+<span style="color: #408080; font-style: italic"># Model/dynamic-load ODE</span>
+
+model <span style="color: #666666">=</span> <span style="color: #880000">ModelDL</span><span style="color: #666666">.</span>new
+
+model<span style="color: #666666">.</span>t0 <span style="color: #666666">=</span> <span style="color: #666666">-42.5</span>
+model<span style="color: #666666">.</span>hmax <span style="color: #666666">=</span> <span style="color: #666666">0.0</span>
+model<span style="color: #666666">.</span>inistep <span style="color: #666666">=</span> <span style="color: #666666">1.0</span>E<span style="color: #666666">-4</span>
+<span style="color: #408080; font-style: italic"># model.monitor = 1</span>
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+<span style="color: #408080; font-style: italic"># Measurement/Experiment Data:  Timepoint sId1 SD sId2 SD ... </span>
+
+ex1 <span style="color: #666666">=</span> <span style="color: #880000">Experiment</span><span style="color: #666666">.</span>new
+
+ex1<span style="color: #666666">.</span>load_data <span style="color: #19177C">$fndata</span>        <span style="color: #408080; font-style: italic">#  reads data _with_ weights!</span>
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+<span style="color: #408080; font-style: italic"># [...]</span>
+</pre></div>
+
+</div>
+
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec12">Full Example 4: CSV Format </h2>
+
+<ul>
+<li> All data shall come in <font color="purple">two</font> (!) columns.</li>
+<li> Graphs done by prepackaged (shell) script <font color="purple">'./showPreparation'</font>.</li>
+</ul>
+
+<div class="alert alert-block alert-block alert-text-normal">
+<b>Data CSV: rb\_Nlscon\_with\_PAEON\_V2\_data.dat.</b>
+<p>
+<p>
+
+<!-- code=text typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">Timepoint  E2       SD       P4       SD       LH_blood SD
+-1.50e+01  n/a      n/a      n/a      n/a      n/a      n/a
+-1.50e+01  n/a      n/a      n/a      n/a      n/a      n/a
+-1.50e+01  n/a      n/a      n/a      n/a      n/a      n/a
+-1.50e+01  n/a      n/a      n/a      n/a      n/a      n/a
+-1.50e+01  1.60e+01 1.0e+00  2.69e-01 1.0e+00  1.67e+00 1.0e+00	
+-1.50e+01  n/a      n/a      n/a      n/a      n/a      n/a
+-1.40e+01  n/a      n/a      n/a      n/a      n/a      n/a
+-1.40e+01  n/a      n/a      n/a      n/a      n/a      n/a
+-1.40e+01  n/a      n/a      n/a      n/a      n/a      n/a
+    . 
+    .
+    . 
+</pre></div>
+
+</div>
+
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec13">Cont'd Full Example 4: Data with Simulation </h2>
+
+<p>
+<!-- !bslidecell 00 .49 -->
+<br />
+a) LH
+<center><p><img src="pasted_image012.png" align="bottom" width=640></p></center>
+<!-- !eslidecell -->
+
+<p>
+<!-- !bslidecell 01 .49 -->
+<br />
+b) FSH
+<center><p><img src="pasted_image013.png" align="bottom" width=640></p></center>
+<!-- !eslidecell -->
+
+<p>
+<!-- !bslidecell 10 .49 -->
+<br />
+c) Estradiol (E2)
+<center><p><img src="pasted_image014.png" align="bottom" width=640></p></center>
+<!-- !eslidecell -->
+
+<p>
+<!-- !bslidecell 11 .49 -->
+<br />
+d) Progesterone (P4)
+<center><p><img src="pasted_image015.png" align="bottom" width=640></p></center>
+<!-- !eslidecell -->
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec14">Cont'd Full Example 4 </h2>
+
+<p>
+<div class="alert alert-block alert-block alert-text-normal">
+<b>cont'd fullex4.rb.</b>
+<p>
+<p>
+
+<!-- code=ruby (!bc rbcod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #408080; font-style: italic"># [...]</span>
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+<span style="color: #408080; font-style: italic"># Parameter Estimation/Identification</span>
+pIniGuess <span style="color: #666666">=</span> {
+  <span style="color: #BA2121">&quot;global_p_019_001&quot;</span> <span style="color: #666666">=&gt;</span> <span style="color: #666666">[</span> <span style="color: #666666">0.958</span> , <span style="color: #666666">1.0</span> <span style="color: #666666">]</span>,  <span style="color: #408080; font-style: italic"># GynCycle Param 61</span>
+  <span style="color: #BA2121">&quot;global_p_020_001&quot;</span> <span style="color: #666666">=&gt;</span> <span style="color: #666666">[</span> <span style="color: #666666">0.925</span> , <span style="color: #666666">1.0</span> <span style="color: #666666">]</span>,  <span style="color: #408080; font-style: italic"># GynCycle Param 62</span>
+  <span style="color: #BA2121">&quot;global_p_021_001&quot;</span> <span style="color: #666666">=&gt;</span> <span style="color: #666666">[</span> <span style="color: #666666">0.7576</span>, <span style="color: #666666">1.0</span> <span style="color: #666666">]</span>   <span style="color: #408080; font-style: italic"># GynCycle Param 63</span>
+}
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+<span style="color: #408080; font-style: italic"># ... computing nPar, mTotal, mFit from &#39;ex1&#39; (left out here)</span>
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+nlscon <span style="color: #666666">=</span> <span style="color: #880000">SysBioFit</span><span style="color: #666666">.</span>new <span style="color: #666666">[</span>nPar,mTotal,mFit<span style="color: #666666">]</span>
+
+nlscon<span style="color: #666666">.</span>rtol    <span style="color: #666666">=</span>  <span style="color: #666666">1.0</span>E<span style="color: #666666">-2</span>
+nlscon<span style="color: #666666">.</span>pfname  <span style="color: #666666">=</span>  <span style="color: #BA2121">&quot;rb_Nlscon_with_PAEON_V2_parameter.dat&quot;</span>
+nlscon<span style="color: #666666">.</span>sfname  <span style="color: #666666">=</span>  <span style="color: #BA2121">&quot;rb_Nlscon_with_PAEON_V2_solution.dat&quot;</span>
+nlscon<span style="color: #666666">.</span>jacgen  <span style="color: #666666">=</span>  <span style="color: #666666">1</span> <span style="color: #408080; font-style: italic"># 3</span>
+nlscon<span style="color: #666666">.</span>rwk     <span style="color: #666666">=</span>  { <span style="color: #BA2121">&quot;cond&quot;</span> <span style="color: #666666">=&gt;</span> <span style="color: #666666">1.0</span>E<span style="color: #666666">+4</span> }
+
+current_task   <span style="color: #666666">=</span>  { <span style="color: #19177C">model</span>: model, <span style="color: #19177C">data</span>: ex1, <span style="color: #19177C">guess</span>: pIniGuess }
+
+estim <span style="color: #666666">=</span> nlscon<span style="color: #666666">.</span>identify_par current_task
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+<span style="color: #408080; font-style: italic"># [...]</span>
+</pre></div>
+
+</div>
+
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec15">Cont'd Full Example 4 </h2>
+
+<p>
+<div class="alert alert-block alert-block alert-text-normal">
+<b>cont'd fullex4.rb.</b>
+<p>
+<p>
+
+<!-- code=ruby (!bc rbcod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #408080; font-style: italic"># [...]</span>
+<span style="color: #408080; font-style: italic">#--------------------------------------------------------------</span>
+<span style="color: #408080; font-style: italic"># Result Output</span>
+<span style="color: #008000; font-weight: bold">if</span> estim<span style="color: #666666">.</span>has_key?(<span style="color: #BA2121">&quot;par&quot;</span>) <span style="color: #008000; font-weight: bold">then</span>
+  <span style="color: #008000">printf</span> <span style="color: #BA2121">&quot;</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>
+  <span style="color: #008000">printf</span> <span style="color: #BA2121">&quot;   %22s     %12s      %12s     %12s</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,
+         <span style="color: #BA2121">&quot;Parameter&quot;</span>, <span style="color: #BA2121">&quot;confid_lo&quot;</span>, <span style="color: #BA2121">&quot;*p_estim*&quot;</span>, <span style="color: #BA2121">&quot;confid_up&quot;</span>
+  <span style="color: #008000">printf</span> <span style="color: #BA2121">&quot;   %22s     %12s      %12s     %12s</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,
+         <span style="color: #BA2121">&quot;---------&quot;</span>, <span style="color: #BA2121">&quot;---------&quot;</span>, <span style="color: #BA2121">&quot;---------&quot;</span>, <span style="color: #BA2121">&quot;---------&quot;</span>
+
+  estim<span style="color: #666666">[</span><span style="color: #BA2121">&quot;pidx&quot;</span><span style="color: #666666">].</span>each_with_index <span style="color: #008000; font-weight: bold">do</span> <span style="color: #666666">|</span>j,idx<span style="color: #666666">|</span>
+    label <span style="color: #666666">=</span> (j <span style="color: #666666">&gt;</span> <span style="color: #666666">0</span>) ? model<span style="color: #666666">.</span>pId<span style="color: #666666">[</span>j<span style="color: #666666">-1]</span> : model<span style="color: #666666">.</span>y0Id<span style="color: #666666">[-</span>j<span style="color: #666666">-1]</span>
+    <span style="color: #008000">printf</span> <span style="color: #BA2121">&quot;  %22s     % 12.6f    % 12.6f    % 12.6f</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,
+            label<span style="color: #666666">[0.</span>.<span style="color: #666666">21]</span>,
+            estim<span style="color: #666666">[</span><span style="color: #BA2121">&quot;rwk&quot;</span><span style="color: #666666">][</span><span style="color: #BA2121">&quot;xl&quot;</span><span style="color: #666666">][</span>idx<span style="color: #666666">]</span>,
+            estim<span style="color: #666666">[</span><span style="color: #BA2121">&quot;par&quot;</span><span style="color: #666666">][</span>idx<span style="color: #666666">]</span>,
+            estim<span style="color: #666666">[</span><span style="color: #BA2121">&quot;rwk&quot;</span><span style="color: #666666">][</span><span style="color: #BA2121">&quot;xr&quot;</span><span style="color: #666666">][</span>idx<span style="color: #666666">]</span>
+  <span style="color: #008000; font-weight: bold">end</span>
+
+  <span style="color: #008000">printf</span> <span style="color: #BA2121">&quot;</span><span style="color: #BB6622; font-weight: bold">\n\n</span><span style="color: #BA2121">&quot;</span>
+  <span style="color: #008000">printf</span> <span style="color: #BA2121">&quot;incomp. kappa:  % .4e</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span> , estim<span style="color: #666666">[</span><span style="color: #BA2121">&quot;rwk&quot;</span><span style="color: #666666">][</span><span style="color: #BA2121">&quot;skap&quot;</span><span style="color: #666666">]</span>
+  <span style="color: #008000">printf</span> <span style="color: #BA2121">&quot;achieved rtol:  % .4e</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span> , estim<span style="color: #666666">[</span><span style="color: #BA2121">&quot;rwk&quot;</span><span style="color: #666666">][</span><span style="color: #BA2121">&quot;prec&quot;</span><span style="color: #666666">]</span>
+  <span style="color: #008000">printf</span> <span style="color: #BA2121">&quot;</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>
+  <span style="color: #008000">printf</span> <span style="color: #BA2121">&quot;Done!  (Model: </span><span style="color: #BB6688; font-weight: bold">#{</span>model<span style="color: #666666">.</span>version<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">)</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span> 
+</pre></div>
+
+</div>
+
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec16">Cont'd Full Example 4: Output <em>NLSCON</em> </h2>
+
+<p>
+<div class="alert alert-block alert-block alert-text-normal">
+<b></b>
+<p>
+<p>
+
+<!-- code=text typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">   [...]
+
+   Correlation coefficients
+   ------------------------
+
+         1      2      3      4      5
+   1   1.00
+   2  -0.05   1.00
+   3  -0.22   0.84   1.00
+   4  -0.03  -0.98  -0.89   1.00
+   5  -0.16  -0.88  -0.70   0.83   1.00
+
+
+   Standard deviation of parameters
+   --------------------------------
+     No.  Estimate           sigma(X)
+      1   0.150D+01   +/-   0.681D+00     =   45.58 %
+      2   0.487D+00   +/-   0.213D+00     =   43.74 %
+      3   0.125D+01   +/-   0.119D+01     =   94.93 %
+      4   0.468D+00   +/-   0.232D+00     =   49.62 %
+      5   0.447D+00   +/-   0.403D-01     =    9.01 %
+
+   [...]
+</pre></div>
+
+</div>
+
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec17">Cont'd Full Example 4: Output <em>NLSCON</em> </h2>
+
+<p>
+<div class="alert alert-block alert-block alert-text-normal">
+<b></b>
+<p>
+<p>
+
+<!-- code=text typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">   [...]
+
+   Independent confidence intervals
+   --------------------------------
+      (on 95%-probability level using F-distribution  
+                                         F(alfa,1,m-n)=  3.88)
+
+      1  (  0.153D+00 ,  0.284D+01 )
+      2  (  0.674D-01 ,  0.907D+00 )
+      3  ( -0.109D+01 ,  0.360D+01 )
+      4  (  0.105D-01 ,  0.924D+00 )
+      5  (  0.367D+00 ,  0.526D+00 )
+
+   ******  Statistics * NLSCON   *******
+   ***  Gauss-Newton iter.:      13  ***
+   ***  Corrector steps   :      12  ***
+   ***  Rejected rk-1 st. :       4  ***
+   ***  Jacobian eval.    :      13  ***
+   ***  Function eval.    :      26  ***
+   ***  ...  for Jacobian :       0  ***
+   *************************************
+
+   [...]
+</pre></div>
+
+</div>
+
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec18">Cont'd Full Example 4: Output <em>NLSCON</em> </h2>
+
+<p>
+<div class="alert alert-block alert-block alert-text-normal">
+<b></b>
+<p>
+<p>
+
+<!-- code=text typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%">   [...]
+
+12
+         Parameter   confid_lower    *p_estim*    confid_upper
+         ---------   ------------    ---------    ------------
+ global_p_019_001       0.152736      1.495117       2.837498
+ global_p_020_001       0.067438      0.486973       0.906507
+ global_p_021_001      -1.089967      1.252936       3.595838
+ global_p_022_001       0.010549      0.467514       0.924479
+ global_p_023_001       0.367445      0.446749       0.526052
+
+
+incomp. kappa:  -1.0000e+00
+achieved rtol:  -1.0000e+00
+
+ 
+[&quot;PAEON_V2__OvF_ne_0&quot;, &quot;Mon Aug 24 09:18:13 2015&quot;, 
+        &quot;001440400693&quot;, &quot;PAEON_V2__OvF_ne_0.xml&quot;, &quot;with vareq&quot;]
+</pre></div>
+
+</div>
+
+
+<p>
+<!-- !bpop -->
+
+<ul>
+<li> Again, plots by a (shell) script <font color="purple">./showSolutionIter "0 10"</font></li>
+</ul>
+
+<!-- !epop -->
+
+<p>
+<!-- !split -->
+
+<h2 id="___sec19">Cont'd Full Example 4: Fit with Data (<em>10th iter.</em>) </h2>
+
+<p>
+<!-- !bslidecell 00 .49 -->
+<br />
+a) LH
+<center><p><img src="pasted_image016.png" align="bottom" width=640></p></center>
+<!-- !eslidecell -->
+
+<p>
+<!-- !bslidecell 01 .49 -->
+<br />
+b) FSH
+<center><p><img src="pasted_image017.png" align="bottom" width=640></p></center>
+<!-- !eslidecell -->
+
+<p>
+<!-- !bslidecell 10 .49 -->
+<br />
+c) Estradiol (E2)
+<center><p><img src="pasted_image018.png" align="bottom" width=640></p></center>
+<!-- !eslidecell -->
+
+<p>
+<!-- !bslidecell 11 .49 -->
+<br />
+d) Progesterone (P4)
+<center><p><img src="pasted_image019.png" align="bottom" width=640></p></center>
+<!-- !eslidecell -->
+
+<p>
+
+<!-- ------------------- end of main content --------------- -->
+
+
+</body>
+</html>
+    
+
