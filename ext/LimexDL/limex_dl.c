@@ -367,6 +367,8 @@ VALUE limex_dl_srun(VALUE self, VALUE tspan, VALUE pidx)
   rb_ary_push( arr, INT2NUM(iFail[1]) );
   rb_ary_push( arr, INT2NUM(iFail[2]) );
 
+  rb_iv_set(self, "@ifail", arr);
+
   return arr;
 }
 
@@ -679,6 +681,8 @@ VALUE limex_dl_run(VALUE self, VALUE tspan)
   rb_ary_push( arr, INT2NUM(iFail[1]) );
   rb_ary_push( arr, INT2NUM(iFail[2]) );
 
+  rb_iv_set(self, "@ifail", arr);
+
   return arr;
 }
 
@@ -707,6 +711,13 @@ static
 VALUE limex_dl_solution(VALUE self)
 {
   return rb_iv_get(self, "@solution");
+}
+
+
+static
+VALUE limex_dl_ifail(VALUE self)
+{
+  return rb_iv_get(self, "@ifail");
 }
 
 
@@ -1044,5 +1055,6 @@ void Init_LimexDL()
   rb_define_method(cLimexDL, "interval", limex_dl_interval, 0);
   rb_define_method(cLimexDL, "solution", limex_dl_solution, 0);
   rb_define_method(cLimexDL, "steps", limex_dl_steps, 0);
+  rb_define_method(cLimexDL, "ifail", limex_dl_ifail, 0);
 }
 
