@@ -1,8 +1,8 @@
 
-Providing Ancient FORTRAN Routines As Simple RubyExts
-=====================================================
+Providing Legacy FORTRAN Routines As Simple RubyExts
+====================================================
 
-  Date: Oct 24th, 2014
+  Date: Oct 27, 2015
 Author: Thomas Dierkes (dierkes at zib dot de)
 
 Abstract
@@ -46,15 +46,16 @@ In the root directory of the package (i.e. ZIB_RubyExt/),
 there is a file 'Makefile': simply enter the root directory,
 and
 
-  .../ZIB_RubyExt$ make
+  [.../ZIB_RubyExt]$ make
 
 should do the rest.  There had cases been reported that the 
 build process of 'libsbml.so' during the make run failed, 
 unfortunately.  In such a case, follow the error messages 
-of that libsbml-package, fix these, and try the make command 
-in the root directoy ZIB_RubyExt/ again.  Same applies, if 
-some 'ruby-dev' are missing.  Needless to mention, all of 
-ZIB_RubyExt/ takes Ruby 1.9.1 (and above) for granted.
+of that libsbml-package, fix these, and try the make command,
+probably as sequence 'make clean; make', in the root directoy 
+ZIB_RubyExt/ again.  Same applies, if some prepackaged 'ruby-dev' 
+from the underlying OS are missing.  Needless to mention, all of 
+ZIB_RubyExt/ takes Ruby 1.9.1 (and above?!) for granted.
 
 Finally, the make command should finish with ``Done "all" target´´.
 Congartulation, you just built your own Ruby extensions! 
@@ -75,7 +76,7 @@ are available in ZIB_RubyExt/tst/.  The 'check_Nlscon_with_*.rb' script
 can be called, inside the corresponding subdirectory, directly from the 
 command line, e.g.
 
-  ...ZIB_RubyExt/tst/PredatorPrey$ ./check_Nlscon_with_PredPrey_model.rb
+  [...ZIB_RubyExt/tst/PredatorPrey]$ ./check_Nlscon_with_PredPrey_model.rb
 
 if everthing worked fine up to here.  Note that './' in front of the 
 call is certainly necessary, because of security reason you will not 
@@ -165,6 +166,8 @@ have the current directory '.' in search path, will you?
   limex.monitor = ... # Int
   
   # out attributes
+  limex.ifail         # Array(3): ifail
+  limex.status        # String: some description of ifail
   limex.tolerance     # Hash(    "rtol" => Value,
                       #          "atol" => Value,
                       #       "inistep" => Value,
