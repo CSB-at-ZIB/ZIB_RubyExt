@@ -84,7 +84,7 @@ File.open($dout, "w") do |fout|
         ary = $d[t][spe]
         val = ary[k-1]
         if val then
-          fout.printf("\t%.6e\t%.6e", val, 1.0)
+          fout.printf("\t%.6e\t%.6e", val, val)  # , 1.0)
         else
           fout.printf("\t%-12s\t%-12s", "n/a", "n/a")
         end
