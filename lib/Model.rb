@@ -138,7 +138,7 @@ class Model < Limex
     then
        @pidx.each_with_index do |ell,dmy|
           self.y0.each_with_index do |val,idx|
-             str = "#{'%5d/%5d' % [idx+1, ell]}"
+             str = "#{'%05d/%05d' % [idx+1, ell]}"
              fout.printf("\t%12s", str)
           end
        end

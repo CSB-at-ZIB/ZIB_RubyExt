@@ -101,7 +101,7 @@ class SysBioFit < Nlscon
 
     t, sol = @model.solve_var(@tspan, y0, par, @pidx)
 
-    # puts "t.length = {t.length}" unless t==nil or t==[]
+    # puts "t.length = #{t.length}" unless t==nil or t==[]
     # puts "##########"
 
     dfdx = []
@@ -117,12 +117,14 @@ class SysBioFit < Nlscon
         kk = dfdx.length
         dfdx << []
         n.times do |ell|
-          # puts "sens = #{z[j]}       meas = #{@mdata[k][idx]}"
+          # puts "sens = #{z[nDAE*(ell+1) + j]}       meas = #{@mdata[k][idx]}"
           dfdx[kk] << z[nDAE*(ell+1) + j] unless j==nil
         end
       end
     end
     
+    # dfdx.each_with_index { |v,kk| puts "#{kk}: #{v}" }
+
     dfdx
     #
   end
@@ -294,12 +296,12 @@ class SysBioFit < Nlscon
     ajmin = self.rwk["ajmin"]
     ajdel = self.rwk["ajdel"]
 
-    n = self.y.length 
+    n = y.length 
 
     z0 = []
     z0 = gn_fcn(n,0,0,y)
 
-    return if z.compact == nil
+    return if z0.compact == nil
 
     aa = []
     y.each_with_index do |w,k|
@@ -323,6 +325,14 @@ class SysBioFit < Nlscon
 
     end
 
+    # puts "########## SysBioFit.ncjac :"
+    # puts "       x = #{y}"
+    # puts "   @pidx = #{@pidx}"
+    #
+    # puts "##########"
+    #
+    # aa.each_with_index { |v,kk| puts "#{kk}: #{v}" }
+
     aa
 
   end
@@ -340,6 +350,8 @@ class SysBioFit < Nlscon
 
     z0 = []
     z0 = gn_fcn(n,0,0,y)
+
+    return if z0.compact == nil
 
     aa = []
     y.each_with_index do |w,k|
@@ -385,6 +397,14 @@ class SysBioFit < Nlscon
 
     end  #  y.each_with_index
 
+    # puts "########## SysBioFit.ncjcf :"
+    # puts "       x = #{y}"
+    # puts "   @pidx = #{@pidx}"
+    #
+    # puts "##########"
+    #
+    # aa.each_with_index { |v,kk| puts "#{kk}: #{v}" }
+
     aa
 
   end
@@ -403,11 +423,16 @@ class SysBioFit < Nlscon
     aa = []
     jcnrm = []
 
-    if self.iopt["jacgen"] == 3 then
+    self.xscal = self.xscal.collect { |val| (val==0.0) ? 1.0 : val }
+
+    # puts "### SysBioFit.compute_sensitivity(): jacgen = #{@jacgen}"
+    # puts "###   xscal = #{self.xscal}"
+
+    if @jacgen == 3 then
       aa = ncjcf(self.x.clone)
-    elsif self.iopt["jacgen"] == 2 then
+    elsif @jacgen == 2 then
       aa = ncjac(self.x.clone)
-    elsif self.iopt["jacgen"] == 1 then
+    elsif @jacgen == 1 then
       aa = gn_jac(self.x.length,-1,@mcon,self.x.clone)
     end
 

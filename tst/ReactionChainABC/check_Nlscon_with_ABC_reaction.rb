@@ -32,7 +32,7 @@ else
   exit -1
 end
 $ptol = 1.0e-2 if $ptol <= 0.0
-$eta = Math::sqrt(10.0*$rtol) if $ptol <= 0.0
+$eta = Math::sqrt(10.0*$rtol) if $eta <= 0.0
 
 # ---------------------------------------------------------------------
 # ODE system

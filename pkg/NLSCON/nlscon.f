@@ -1719,6 +1719,8 @@ C         2.3.2 Copy matrix to Jacobian work array A(M2,N)
             DO 2321 L2=1,M2
                A(L2,L1)=AA(L2,L1)
 2321        CONTINUE
+Ctd 16010       FORMAT(/,'AA SENS COL=',i5,':',/,(1x,4d18.9) )
+Ctd             WRITE(LUMON,16010) L1, (AA(L2,L1), L2=1,M2)
 232       CONTINUE
 C         --------------------------------------------------------
 C         2.4 Prepare solution of the linear system
