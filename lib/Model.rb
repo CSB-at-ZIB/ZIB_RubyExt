@@ -24,6 +24,7 @@ class Model < Limex
     @pidx = []
     @odejac = nil
     @odefcn = odefcn.is_a?(Symbol) ? method(odefcn) : nil
+    @odefcn = odefcn if odefcn.is_a?(Proc)
     @y0ode = y0
     @version = ["#{modelname}", "#{now.asctime}", "#{now.to_i}", "n/a"]
     if initvals.has_key?(:version) and
@@ -56,10 +57,9 @@ class Model < Limex
 
     @t0 = initvals.has_key?(:t0) ? initvals[:t0] : 0.0
 
-    if initvals.has_key?(:jac) and
-       initvals[:jac].is_a?(Symbol)
-    then
-      @odejac = method(initvals[:jac])
+    if initvals.has_key?(:jac) then
+      @odejac = initvals[:jac].is_a?(Symbol) ? method(initvals[:jac]) : nil
+      @odejac = initvals[:jac] if initvals[:jac].is_a?(Proc)
     end
 
     if @odejac.nil? then
@@ -82,10 +82,12 @@ class Model < Limex
 
   def odefcn=(fcn)
     @odefcn = fcn.is_a?(Symbol) ? method(fcn) : nil
+    @odefcn = fcn if fcn.is_a?(Proc)
   end
 
   def odejac=(jac)
     @odejac = jac.is_a?(Symbol) ? method(jac) : nil
+    @odejac = jac if jac.is_a?(Proc)
   end
 
 

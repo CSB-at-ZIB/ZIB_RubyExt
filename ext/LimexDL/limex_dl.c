@@ -1156,6 +1156,8 @@ void Init_LimexDL()
   rb_define_method(cLimexDL, "inistep=", limex_dl_inistep_eq, 1);
   rb_define_method(cLimexDL, "monitor", limex_dl_monitor, 0);
   rb_define_method(cLimexDL, "monitor=", limex_dl_monitor_eq, 1);
+  rb_define_method(cLimexDL, "debug", limex_dl_monitor, 0);
+  rb_define_method(cLimexDL, "debug=", limex_dl_monitor_eq, 1);
   rb_define_method(cLimexDL, "dense", limex_dl_dense, 0);
   rb_define_method(cLimexDL, "dense=", limex_dl_dense_eq, 1);
   rb_define_method(cLimexDL, "tolerance", limex_dl_tolerance, 0);

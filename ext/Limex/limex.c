@@ -985,6 +985,8 @@ void Init_Limex()
   rb_define_method(cLimex, "inistep=", limex_inistep_eq, 1);
   rb_define_method(cLimex, "monitor", limex_monitor, 0);
   rb_define_method(cLimex, "monitor=", limex_monitor_eq, 1);
+  rb_define_method(cLimex, "debug", limex_monitor, 0);
+  rb_define_method(cLimex, "debug=", limex_monitor_eq, 1);
   rb_define_method(cLimex, "dense", limex_dense, 0);
   rb_define_method(cLimex, "dense=", limex_dense_eq, 1);
   rb_define_method(cLimex, "tolerance", limex_tolerance, 0);
