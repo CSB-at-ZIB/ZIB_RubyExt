@@ -7,7 +7,7 @@ prepare :
 	/bin/rm -f $(MTARGETS)
 
 $(MTARGETS) : $(@F)
-	cd $(@D) && /usr/bin/ruby extconf.rb
+	cd $(@D) && ruby extconf.rb
 
 clean :
 	# /bin/rm -f $(MTARGETS)

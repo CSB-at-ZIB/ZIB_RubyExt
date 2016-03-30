@@ -97,8 +97,7 @@ void fcn(int *n, int *nz,
 static
 VALUE limex_srun(VALUE self, VALUE tspan, VALUE pidx)
 {
-  Check_Type(tspan, T_ARRAY);
-  Check_Type(pidx, T_ARRAY);
+  VALUE arr;
 
   int     j, k, n, nDAE, nTp, nPdx;
   double  t0, T;
@@ -117,6 +116,10 @@ VALUE limex_srun(VALUE self, VALUE tspan, VALUE pidx)
   VALUE y0;
   VALUE steps;
   VALUE solution;
+  VALUE tmparr;
+
+  Check_Type(tspan, T_ARRAY);
+  Check_Type(pidx, T_ARRAY);
 
   nTp = RARRAY_LEN(tspan);
   nPdx = RARRAY_LEN(pidx);
@@ -251,7 +254,6 @@ VALUE limex_srun(VALUE self, VALUE tspan, VALUE pidx)
 
   iFail[0] = iFail[1] = iFail[2] = 0;
 
-  VALUE tmparr;
 
   tmparr = rb_ary_new2(n);
   steps = rb_ary_new();
@@ -372,7 +374,6 @@ VALUE limex_srun(VALUE self, VALUE tspan, VALUE pidx)
   rb_iv_set(self, "@steps", steps);
   rb_iv_set(self, "@solution", solution);
 
-  VALUE arr;
   arr = rb_ary_new();
   rb_ary_push( arr, INT2NUM(iFail[0]) );
   rb_ary_push( arr, INT2NUM(iFail[1]) );
@@ -387,7 +388,7 @@ VALUE limex_srun(VALUE self, VALUE tspan, VALUE pidx)
 static
 VALUE limex_run(VALUE self, VALUE tspan)
 {
-  Check_Type(tspan, T_ARRAY);
+  VALUE arr;
 
   int     j, k, n, nTp;
   double  t0, T;
@@ -406,6 +407,8 @@ VALUE limex_run(VALUE self, VALUE tspan)
   VALUE y0;
   VALUE steps;
   VALUE solution;
+
+  Check_Type(tspan, T_ARRAY);
 
   nTp = RARRAY_LEN(tspan);
 
@@ -669,7 +672,6 @@ VALUE limex_run(VALUE self, VALUE tspan)
   rb_iv_set(self, "@steps", steps);
   rb_iv_set(self, "@solution", solution);
 
-  VALUE arr;
   arr = rb_ary_new();
   rb_ary_push( arr, INT2NUM(iFail[0]) );
   rb_ary_push( arr, INT2NUM(iFail[1]) );
@@ -717,8 +719,8 @@ VALUE limex_ifail(VALUE self)
 static
 VALUE limex_status(VALUE self)
 {
-  VALUE ifail;
-  char  *msg = "n/a";
+  VALUE       ifail;
+  const char  *msg = "n/a";
 
   ifail = rb_iv_get(self, "@ifail");
 
