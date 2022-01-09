@@ -336,7 +336,7 @@ C
       IF (.NOT. QSTART) RETURN
       IF (QDISAB) RETURN
 C
-      DO 1060 I=0,MAXIND
+      DO 1060 I=1,MAXIND
          AVER(I) = DBLE(ASEC(I))
  1060 CONTINUE
 C
@@ -381,7 +381,7 @@ C
 C
  1150 CONTINUE
       WRITE (MONI,9100) 'MONON', 'Nesting is too deep.',
-     $     'The following indices are active', (INDACT(I),I=0,IONCNT)
+     $     'The following indices are active', (INDACT(I),I=1,IONCNT)
       GOTO 1200
 C
  1160 CONTINUE
@@ -391,7 +391,7 @@ C
  1170 CONTINUE
       WRITE (MONI,9110) 'MONOFF', 'Measuring ', INDX,
      $     'cannot be stopped.',
-     $     'The following indices are active', (INDACT(I),I=0,IONCNT)
+     $     'The following indices are active', (INDACT(I),I=1,IONCNT)
       GOTO 1200
 C
  1180 CONTINUE

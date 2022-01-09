@@ -22,7 +22,7 @@ class Experiment
     table = []
 
     if csvfile.is_a?(String) then
-      table = CSV.read(csvfile, col_sep: ' ', converters: :numeric)
+      table = CSV.read(csvfile, col_sep: ",", strip: true, converters: :numeric)
     elsif csvfile.is_a?(CSV) then
       csvfile.foreach do |row|
         table << row
