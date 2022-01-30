@@ -1,0 +1,7 @@
+malloc.lo: malloc.c /usr/include/stdc-predef.h malloc.h config.h
+
+/usr/include/stdc-predef.h:
+
+malloc.h:
+
+config.h:
